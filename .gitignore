@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+build/
+dist/
+*.egg-info/
+ofa_upstream/
+
+# Large datasets and experiment artifacts used by the upstream research code.
+dataset/
+exp/

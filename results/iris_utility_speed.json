@@ -1,0 +1,30 @@
+{
+  "sklearn_linear_svm_accuracy": {
+    "calls": 2000,
+    "calls_per_second": 1443.03514024758,
+    "seconds": 1.3859676346182823,
+    "utility_mean": 0.7710208333333333,
+    "utility_std": 0.14780206681525504
+  },
+  "sklearn_lr_accuracy": {
+    "calls": 2000,
+    "calls_per_second": 614.5868759635529,
+    "seconds": 3.254218529909849,
+    "utility_mean": 0.7722291666666667,
+    "utility_std": 0.1566737462385344
+  },
+  "sklearn_rbf_svm_accuracy": {
+    "calls": 2000,
+    "calls_per_second": 1281.0509078868265,
+    "seconds": 1.5612182058393955,
+    "utility_mean": 0.7530625,
+    "utility_std": 0.16506573685243978
+  },
+  "upstream_style_torch_lr_cross_entropy": {
+    "calls": 2000,
+    "calls_per_second": 357.3479500650556,
+    "seconds": 5.596785988658667,
+    "utility_mean": -0.7158089798561391,
+    "utility_std": 0.3587098584739253
+  }
+}
