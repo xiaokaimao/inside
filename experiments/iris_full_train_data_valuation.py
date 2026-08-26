@@ -1,9 +1,9 @@
-"""Full-training-set Iris data valuation with RBF-SVM accuracy utility.
+"""Full-training-set sklearn data valuation with RBF-SVM accuracy utility.
 
-All 120 observations in a stratified 80% training split are Shapley players;
-the remaining 30 observations form the fixed test set.  Ground truth is a
-streaming antithetic permutation Monte Carlo estimate so tens of millions of
-prefix utilities never need to be materialized at once.
+Every observation in a stratified training split is a Shapley player and the
+held-out split is the fixed performance set.  Ground truth is a streaming
+antithetic permutation Monte Carlo estimate, so tens of millions of prefix
+utilities never need to be materialized at once.
 """
 
 from __future__ import annotations
@@ -37,8 +37,8 @@ from .iris_data_valuation import (
     paired_rmse_difference,
     summarize_method,
 )
-from .iris_game import load_iris_train_test_split
-from .iris_sklearn_game import IrisSklearnGame
+from .iris_sklearn_game import SklearnClassificationGame
+from .sklearn_data import load_sklearn_train_test_split
 
 
 def _permutation_path_contribution(
@@ -185,6 +185,7 @@ def streaming_ground_truth(
     progress_cache: Path | None = None,
     progress_cache_key: dict[str, Any] | None = None,
     resume_progress: bool = True,
+    report_fraction: float = 0.05,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Estimate Shapley values with bounded-memory antithetic permutations."""
     if num_pairs < 2 or num_pairs % 2:
@@ -193,6 +194,8 @@ def streaming_ground_truth(
         raise ValueError("block_pairs must be positive")
     if task_pairs < 1:
         raise ValueError("task_pairs must be positive")
+    if not 0 < report_fraction <= 1:
+        raise ValueError("report_fraction must lie in (0, 1]")
 
     rng = np.random.default_rng(seed)
     total = np.zeros(num_players, dtype=np.float64)
@@ -244,8 +247,11 @@ def streaming_ground_truth(
     conceptual_internal_calls = 2 * completed * (num_players - 1)
     peak_forward_permutation_bytes = 0
     split = num_pairs // 2
-    next_report = 0.05 * (
-        math.floor(completed / num_pairs / 0.05 + 1e-12) + 1
+    next_report = report_fraction * (
+        math.floor(
+            completed / num_pairs / report_fraction + 1e-12
+        )
+        + 1
     )
     started = time.perf_counter()
 
@@ -308,7 +314,7 @@ def streaming_ground_truth(
                 flush=True,
             )
             while next_report <= fraction + 1e-12:
-                next_report += 0.05
+                next_report += report_fraction
             if (
                 progress_cache is not None
                 and progress_cache_key is not None
@@ -445,27 +451,39 @@ def _write_checkpoint(path: Path, report: dict[str, Any]) -> None:
 
 
 def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
-    game_args, dataset_metadata = load_iris_train_test_split(
+    loader_options: dict[str, Any] = {}
+    if args.dataset == "digits":
+        loader_options["samples_per_class"] = args.samples_per_class
+    game_args, dataset_metadata = load_sklearn_train_test_split(
+        args.dataset,
         test_size=args.test_size,
         dataset_seed=args.dataset_seed,
+        **loader_options,
     )
     game_args = game_args | {
         "model": "rbf_svm",
         "regularization": args.regularization,
     }
     num_players = len(game_args["y_valued"])
+    if args.budgets is None:
+        args.budgets = [
+            num_players * multiplier
+            for multiplier in args.budget_multipliers
+        ]
     boundary_rows = boundary_coalitions(num_players)
     boundary_calls = len(boundary_rows)
     minimum_orbit_calls = num_players * (num_players - 3)
     if any(budget % num_players for budget in args.budgets):
-        raise ValueError("every inner budget must be divisible by n=120")
+        raise ValueError(
+            f"every inner budget must be divisible by n={num_players}"
+        )
     if any(budget < minimum_orbit_calls for budget in args.budgets):
         raise ValueError(
             "orbit-ratio needs at least n(n-3) inner utility calls"
         )
 
     cache_key = {
-        "dataset": "iris",
+        "dataset": args.dataset,
         "dataset_seed": args.dataset_seed,
         "test_size": args.test_size,
         "model": "sklearn.svm.SVC",
@@ -477,8 +495,11 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
         "seed": args.gt_seed,
         "pairing": "permutation_reverse",
     }
+    if args.dataset == "digits":
+        cache_key["samples_per_class"] = args.samples_per_class
     print(
-        f"Iris full-train valuation: {num_players} players, "
+        f"{args.dataset.title()} full-train valuation: "
+        f"{num_players} players, "
         f"{len(game_args['y_performance'])} test examples, "
         f"{args.jobs} processes",
         flush=True,
@@ -491,7 +512,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     with GameEvaluator(
-        IrisSklearnGame,
+        SklearnClassificationGame,
         game_args,
         n_jobs=args.jobs,
         chunksize=args.chunksize,
@@ -531,6 +552,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 progress_cache=args.ground_truth_progress_cache,
                 progress_cache_key=cache_key,
                 resume_progress=args.reuse_ground_truth,
+                report_fraction=args.gt_report_percent / 100.0,
             )
             ground_truth_diagnostics["loaded_from_cache"] = False
             save_ground_truth_cache(
@@ -564,6 +586,9 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 "environment_python": os.sys.version,
                 "num_players": num_players,
                 "n_test": len(game_args["y_performance"]),
+                "samples_per_class": dataset_metadata[
+                    "subset_samples_per_class"
+                ],
                 "utility": "fixed-test classification accuracy",
                 "model": (
                     "sklearn.svm.SVC(C="
@@ -579,17 +604,20 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 "gt_seed": args.gt_seed,
                 "gt_block_pairs": args.gt_block_pairs,
                 "gt_task_pairs": args.gt_task_pairs,
+                "gt_report_percent": args.gt_report_percent,
                 "ground_truth_progress_cache": str(
                     args.ground_truth_progress_cache
                 ),
                 "method_seed": args.method_seed,
                 "inner_budgets": args.budgets,
+                "budget_multipliers": args.budget_multipliers,
                 "total_call_budgets": [
                     budget + boundary_calls for budget in args.budgets
                 ],
                 "repeats": args.repeats,
                 "candidate_pool": args.candidate_pool,
                 "mean_balance": args.mean_balance,
+                "mean_balance_mode": "raw",
                 "coupled_design": args.coupled_design,
                 "jobs": args.jobs,
                 "worker_threads": 1,
@@ -660,7 +688,10 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
 
                 started = time.perf_counter()
                 iid_design = iid_ofa_design(
-                    num_players, inner_budget, seed
+                    num_players,
+                    inner_budget,
+                    seed,
+                    compute_diagnostics=False,
                 )
                 iid_design_seconds = time.perf_counter() - started
                 started = time.perf_counter()
@@ -695,6 +726,11 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 missing_fractions.append(
                     missing_stratum_fraction(iid_design)
                 )
+                # At the larger dataset scales a Boolean design occupies
+                # several GiB.  The estimates above own their small result
+                # vectors, so release the completed design before building
+                # the next method.
+                del iid_design, iid_utilities
 
                 started = time.perf_counter()
                 if args.coupled_design == "orbit_coupled":
@@ -711,6 +747,8 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                         seed=seed,
                         candidate_pool=args.candidate_pool,
                         mean_balance=args.mean_balance,
+                        # Preserve this historical CLI's raw coefficient.
+                        mean_balance_mode="raw",
                     )
                 frame_design_seconds = time.perf_counter() - started
                 started = time.perf_counter()
@@ -732,6 +770,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 timings["frame_coupled_linear"]["utility"].append(
                     frame_utility_seconds
                 )
+                del frame_design, frame_utilities
 
                 started = time.perf_counter()
                 orbit_design = cyclic_orbit_frame_design(
@@ -759,6 +798,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 timings["frame_orbit_ratio"]["utility"].append(
                     orbit_utility_seconds
                 )
+                del orbit_design, orbit_utilities
 
                 print(
                     f"  repeat {repeat + 1}/{args.repeats}: "
@@ -866,14 +906,30 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dataset",
+        choices=("iris", "wine", "cancer", "breast_cancer", "digits"),
+        default="iris",
+    )
     parser.add_argument("--gt-pairs", type=int, default=800_000)
     parser.add_argument("--gt-block-pairs", type=int, default=1_024)
     parser.add_argument("--gt-task-pairs", type=int, default=8)
+    parser.add_argument("--gt-report-percent", type=float, default=5.0)
     parser.add_argument(
         "--budgets",
         type=int,
         nargs="+",
-        default=[14_040, 21_600, 36_000, 60_000, 96_000],
+        default=None,
+        help=(
+            "inner utility calls; when omitted, use n times "
+            "--budget-multipliers"
+        ),
+    )
+    parser.add_argument(
+        "--budget-multipliers",
+        type=int,
+        nargs="+",
+        default=[500, 1_000, 2_000, 5_000, 10_000],
     )
     parser.add_argument("--repeats", type=int, default=10)
     parser.add_argument("--jobs", type=int, default=128)
@@ -893,19 +949,26 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--test-size", type=float, default=0.2)
     parser.add_argument("--regularization", type=float, default=1.0)
     parser.add_argument("--dataset-seed", type=int, default=2024)
+    parser.add_argument(
+        "--samples-per-class",
+        type=int,
+        default=100,
+        help=(
+            "seeded observations retained per class before splitting "
+            "the digits dataset; ignored for other datasets"
+        ),
+    )
     parser.add_argument("--gt-seed", type=int, default=730_001)
     parser.add_argument("--method-seed", type=int, default=910_001)
     parser.add_argument(
         "--ground-truth-cache",
         type=Path,
-        default=Path("results/iris_full_train_rbf_svm_gt.npz"),
+        default=None,
     )
     parser.add_argument(
         "--ground-truth-progress-cache",
         type=Path,
-        default=Path(
-            "results/iris_full_train_rbf_svm_gt.partial.npz"
-        ),
+        default=None,
     )
     parser.add_argument(
         "--reuse-ground-truth",
@@ -920,11 +983,28 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(
-            "results/iris_full_train_rbf_svm_frame_ofa.json"
-        ),
+        default=None,
     )
     args = parser.parse_args()
+    if args.dataset == "digits":
+        result_stem = (
+            f"digits_{args.samples_per_class}_per_class_"
+            "full_train_rbf_svm"
+        )
+    else:
+        result_stem = f"{args.dataset}_full_train_rbf_svm"
+    if args.ground_truth_cache is None:
+        args.ground_truth_cache = Path(
+            f"results/{result_stem}_gt.npz"
+        )
+    if args.ground_truth_progress_cache is None:
+        args.ground_truth_progress_cache = Path(
+            f"results/{result_stem}_gt.partial.npz"
+        )
+    if args.output is None:
+        args.output = Path(
+            f"results/{result_stem}_frame_ofa.json"
+        )
     if args.gt_pairs < 2 or args.gt_pairs % 2:
         raise ValueError("gt-pairs must be an even integer of at least 2")
     if args.gt_block_pairs < 1:
@@ -933,18 +1013,35 @@ def parse_args() -> argparse.Namespace:
         raise ValueError("gt-task-pairs must be positive")
     if args.gt_task_pairs > args.gt_block_pairs:
         raise ValueError("gt-task-pairs cannot exceed gt-block-pairs")
-    if len(args.budgets) != 5:
-        raise ValueError("the formal experiment requires five budgets")
-    if len(set(args.budgets)) != len(args.budgets):
-        raise ValueError("budgets must be distinct")
-    if any(budget < 1 for budget in args.budgets):
-        raise ValueError("all budgets must be positive")
+    if not 0 < args.gt_report_percent <= 100:
+        raise ValueError("gt-report-percent must lie in (0, 100]")
+    if len(args.budget_multipliers) != 5:
+        raise ValueError(
+            "the formal experiment requires five budget multipliers"
+        )
+    if len(set(args.budget_multipliers)) != len(
+        args.budget_multipliers
+    ):
+        raise ValueError("budget multipliers must be distinct")
+    if any(value < 1 for value in args.budget_multipliers):
+        raise ValueError("all budget multipliers must be positive")
+    if args.budgets is not None:
+        if len(args.budgets) != 5:
+            raise ValueError(
+                "the formal experiment requires five budgets"
+            )
+        if len(set(args.budgets)) != len(args.budgets):
+            raise ValueError("budgets must be distinct")
+        if any(budget < 1 for budget in args.budgets):
+            raise ValueError("all budgets must be positive")
     if args.repeats < 2:
         raise ValueError("repeats must be at least two")
     if args.jobs < 1:
         raise ValueError("jobs must be positive")
     if not 0 < args.test_size < 1:
         raise ValueError("test-size must lie strictly between zero and one")
+    if args.samples_per_class < 1:
+        raise ValueError("samples-per-class must be positive")
     return args
 
 

@@ -1,0 +1,779 @@
+{
+  "all_greedy_hyperparameters_share_relabels": true,
+  "all_greedy_hyperparameters_share_size_schedules": true,
+  "all_rmse_and_aggregates_independently_recomputed": true,
+  "base_seed": 20260911,
+  "budget_multipliers": [
+    500,
+    2000
+  ],
+  "coverage_failures": 0,
+  "dataset": "airport",
+  "evaluated_configurations": [
+    {
+      "candidate_pool": 64,
+      "lambda0": 0.25
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 0.5
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 1.0
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 2.0
+    },
+    {
+      "candidate_pool": 4,
+      "lambda0": 1.0
+    }
+  ],
+  "holdout_stage_eligible_pending_cross_report_seed_audit": false,
+  "num_players": 100,
+  "orbit_is_equal-call_but_independently_randomized": true,
+  "passed": true,
+  "recomputed_results_by_configuration": {
+    "lambda0=0.25|K=64": {
+      "budgets": {
+        "0": {
+          "actual_utility_calls_by_repeat": [
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202
+          ],
+          "aggregate_rmse": 0.005146859438727009,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.9600369319808422,
+          "aggregate_rmse_ratio_to_registered_default": 0.8646125945162374,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.00595279258175362,
+          "default_rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "design_seconds_by_repeat": [
+            83.85368620976806,
+            81.41671498864889,
+            80.83762500435114,
+            80.80373864620924,
+            80.95477620512247,
+            108.71632026135921,
+            107.10619858652353,
+            128.37313548102975
+          ],
+          "mean_design_seconds": 94.00777442287654,
+          "mean_repeat_rmse": 0.0051368193666290465,
+          "orbit_aggregate_rmse": 0.005361105669244937,
+          "orbit_rmse_by_repeat": [
+            0.005311657722815288,
+            0.0054606444833184805,
+            0.0052112402456405485,
+            0.0048722701242582735,
+            0.006188199084299033,
+            0.0055059684852107665,
+            0.004790599532472676,
+            0.005426223753941352
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.005627526754549405,
+            0.004734472735916613,
+            0.004748591977935122,
+            0.005232108031032992,
+            0.0048647422521790485,
+            0.0052685467412159235,
+            0.005546610428266877,
+            0.00507195601193639
+          ],
+          "successful_repeats": 8
+        },
+        "1": {
+          "actual_utility_calls_by_repeat": [
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202
+          ],
+          "aggregate_rmse": 0.00174308756307483,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.8278025319323294,
+          "aggregate_rmse_ratio_to_registered_default": 0.7209741533442682,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.0024176838448222407,
+          "default_rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "design_seconds_by_repeat": [
+            370.70736007392406,
+            352.62473871186376,
+            352.5310998558998,
+            333.33255623281,
+            361.0176751278341,
+            341.8683254942298,
+            335.15048840641975,
+            317.9118570163846
+          ],
+          "mean_design_seconds": 345.64301261492074,
+          "mean_repeat_rmse": 0.0017339436353917249,
+          "orbit_aggregate_rmse": 0.002105680395789515,
+          "orbit_rmse_by_repeat": [
+            0.002199343461566396,
+            0.0023914286935913637,
+            0.002617751025014274,
+            0.001730465865427999,
+            0.001830985293283309,
+            0.0019716720312378967,
+            0.0019808747497552064,
+            0.0019758748739870436
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.0016975165336931654,
+            0.0019068379124341124,
+            0.001540910012847835,
+            0.0020328432604477392,
+            0.00165943053780313,
+            0.0014480838492772457,
+            0.0017591054060134008,
+            0.0018268215706171685
+          ],
+          "successful_repeats": 8
+        }
+      },
+      "candidate_pool": 64,
+      "lambda0": 0.25,
+      "overall": {
+        "coverage_failures": 0,
+        "geometric_mean_rmse_ratio_to_inside_orbit": 0.8914712575525285,
+        "geometric_mean_rmse_ratio_to_registered_default": 0.7895336175883426,
+        "mean_design_seconds": 219.82539351889864,
+        "selection_eligible": true,
+        "worst_budget_rmse_ratio_to_inside_orbit": 0.9600369319808422,
+        "worst_budget_rmse_ratio_to_registered_default": 0.8646125945162374
+      }
+    },
+    "lambda0=0.5|K=64": {
+      "budgets": {
+        "0": {
+          "actual_utility_calls_by_repeat": [
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202
+          ],
+          "aggregate_rmse": 0.005076042422182466,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.9468275268853973,
+          "aggregate_rmse_ratio_to_registered_default": 0.8527161584197388,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.00595279258175362,
+          "default_rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "design_seconds_by_repeat": [
+            80.57455348223448,
+            79.96381688117981,
+            122.76725916564465,
+            81.0787384621799,
+            97.28770900145173,
+            101.99691094085574,
+            117.6267272233963,
+            125.22116088494658
+          ],
+          "mean_design_seconds": 100.81460950523615,
+          "mean_repeat_rmse": 0.0050685021631726975,
+          "orbit_aggregate_rmse": 0.005361105669244937,
+          "orbit_rmse_by_repeat": [
+            0.005311657722815288,
+            0.0054606444833184805,
+            0.0052112402456405485,
+            0.0048722701242582735,
+            0.006188199084299033,
+            0.0055059684852107665,
+            0.004790599532472676,
+            0.005426223753941352
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.005613719752316678,
+            0.004763713309851648,
+            0.004910792579712978,
+            0.005155422276616807,
+            0.005047641494638235,
+            0.0047299489752868195,
+            0.005331159300942543,
+            0.004995619616015871
+          ],
+          "successful_repeats": 8
+        },
+        "1": {
+          "actual_utility_calls_by_repeat": [
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202
+          ],
+          "aggregate_rmse": 0.0018205199722588893,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.8645756383063509,
+          "aggregate_rmse_ratio_to_registered_default": 0.7530016698245102,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.0024176838448222407,
+          "default_rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "design_seconds_by_repeat": [
+            354.807606138289,
+            349.0790908113122,
+            352.0130477808416,
+            355.99912121519446,
+            352.6474101021886,
+            345.1342903636396,
+            340.34644911438227,
+            316.9060352630913
+          ],
+          "mean_design_seconds": 345.8666313486174,
+          "mean_repeat_rmse": 0.0018157742618940468,
+          "orbit_aggregate_rmse": 0.002105680395789515,
+          "orbit_rmse_by_repeat": [
+            0.002199343461566396,
+            0.0023914286935913637,
+            0.002617751025014274,
+            0.001730465865427999,
+            0.001830985293283309,
+            0.0019716720312378967,
+            0.0019808747497552064,
+            0.0019758748739870436
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.001734230560019605,
+            0.0016984024373254921,
+            0.0018518414594205434,
+            0.0016973935921080062,
+            0.0019393918882673884,
+            0.0016413647457073927,
+            0.001954443203206127,
+            0.00200912620909782
+          ],
+          "successful_repeats": 8
+        }
+      },
+      "candidate_pool": 64,
+      "lambda0": 0.5,
+      "overall": {
+        "coverage_failures": 0,
+        "geometric_mean_rmse_ratio_to_inside_orbit": 0.9047673808349669,
+        "geometric_mean_rmse_ratio_to_registered_default": 0.8013093604697282,
+        "mean_design_seconds": 223.34062042692676,
+        "selection_eligible": true,
+        "worst_budget_rmse_ratio_to_inside_orbit": 0.9468275268853973,
+        "worst_budget_rmse_ratio_to_registered_default": 0.8527161584197388
+      }
+    },
+    "lambda0=1|K=4": {
+      "budgets": {
+        "0": {
+          "actual_utility_calls_by_repeat": [
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202
+          ],
+          "aggregate_rmse": 0.00595279258175362,
+          "aggregate_rmse_ratio_to_inside_orbit": 1.1103665827560563,
+          "aggregate_rmse_ratio_to_registered_default": 1.0,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.00595279258175362,
+          "default_rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "design_seconds_by_repeat": [
+            18.9541343934834,
+            30.955103743821383,
+            18.96461569145322,
+            31.206061109900475,
+            31.181964244693518,
+            31.0919324234128,
+            31.196447987109423,
+            31.189348615705967
+          ],
+          "mean_design_seconds": 28.092451026197523,
+          "mean_repeat_rmse": 0.005906141632163918,
+          "orbit_aggregate_rmse": 0.005361105669244937,
+          "orbit_rmse_by_repeat": [
+            0.005311657722815288,
+            0.0054606444833184805,
+            0.0052112402456405485,
+            0.0048722701242582735,
+            0.006188199084299033,
+            0.0055059684852107665,
+            0.004790599532472676,
+            0.005426223753941352
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "successful_repeats": 8
+        },
+        "1": {
+          "actual_utility_calls_by_repeat": [
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202
+          ],
+          "aggregate_rmse": 0.0024176838448222407,
+          "aggregate_rmse_ratio_to_inside_orbit": 1.1481722723242345,
+          "aggregate_rmse_ratio_to_registered_default": 1.0,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.0024176838448222407,
+          "default_rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "design_seconds_by_repeat": [
+            106.24776056036353,
+            105.87313762679696,
+            93.2808598689735,
+            100.71118118986487,
+            79.47411962971091,
+            86.0025890097022,
+            77.68659559264779,
+            77.54325875639915
+          ],
+          "mean_design_seconds": 90.85243777930737,
+          "mean_repeat_rmse": 0.0024129661014080615,
+          "orbit_aggregate_rmse": 0.002105680395789515,
+          "orbit_rmse_by_repeat": [
+            0.002199343461566396,
+            0.0023914286935913637,
+            0.002617751025014274,
+            0.001730465865427999,
+            0.001830985293283309,
+            0.0019716720312378967,
+            0.0019808747497552064,
+            0.0019758748739870436
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "successful_repeats": 8
+        }
+      },
+      "candidate_pool": 4,
+      "lambda0": 1.0,
+      "overall": {
+        "coverage_failures": 0,
+        "geometric_mean_rmse_ratio_to_inside_orbit": 1.1291112090648627,
+        "geometric_mean_rmse_ratio_to_registered_default": 1.0,
+        "mean_design_seconds": 59.472444402752444,
+        "selection_eligible": true,
+        "worst_budget_rmse_ratio_to_inside_orbit": 1.1481722723242345,
+        "worst_budget_rmse_ratio_to_registered_default": 1.0
+      }
+    },
+    "lambda0=1|K=64": {
+      "budgets": {
+        "0": {
+          "actual_utility_calls_by_repeat": [
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202
+          ],
+          "aggregate_rmse": 0.005312519578352297,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.9909373002715908,
+          "aggregate_rmse_ratio_to_registered_default": 0.8924415734954592,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.00595279258175362,
+          "default_rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "design_seconds_by_repeat": [
+            107.21138472110033,
+            94.73473014682531,
+            81.40355589613318,
+            122.05593894049525,
+            81.80692791193724,
+            117.84702718257904,
+            108.26860613748431,
+            107.68590228632092
+          ],
+          "mean_design_seconds": 102.62675915285945,
+          "mean_repeat_rmse": 0.005301288238790303,
+          "orbit_aggregate_rmse": 0.005361105669244937,
+          "orbit_rmse_by_repeat": [
+            0.005311657722815288,
+            0.0054606444833184805,
+            0.0052112402456405485,
+            0.0048722701242582735,
+            0.006188199084299033,
+            0.0055059684852107665,
+            0.004790599532472676,
+            0.005426223753941352
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.005163368274985514,
+            0.005990791460647614,
+            0.0051415520863222815,
+            0.005513566992145365,
+            0.0047671361615258204,
+            0.005041558334653864,
+            0.0053016624311389765,
+            0.005490670168902994
+          ],
+          "successful_repeats": 8
+        },
+        "1": {
+          "actual_utility_calls_by_repeat": [
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202
+          ],
+          "aggregate_rmse": 0.0017850315361607335,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.8477219713542731,
+          "aggregate_rmse_ratio_to_registered_default": 0.7383229779954861,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.0024176838448222407,
+          "default_rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "design_seconds_by_repeat": [
+            366.02195885032415,
+            345.0222022533417,
+            347.671742901206,
+            368.6511977799237,
+            350.3250741362572,
+            335.1209690310061,
+            312.52729570120573,
+            317.14618276804686
+          ],
+          "mean_design_seconds": 342.8108279276639,
+          "mean_repeat_rmse": 0.0017836263401337753,
+          "orbit_aggregate_rmse": 0.002105680395789515,
+          "orbit_rmse_by_repeat": [
+            0.002199343461566396,
+            0.0023914286935913637,
+            0.002617751025014274,
+            0.001730465865427999,
+            0.001830985293283309,
+            0.0019716720312378967,
+            0.0019808747497552064,
+            0.0019758748739870436
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.0018789707312690405,
+            0.0017076546179551925,
+            0.0017997890603216687,
+            0.0016612255023649497,
+            0.0017760860620668819,
+            0.0017575242098925444,
+            0.001875602564110769,
+            0.0018121579730891555
+          ],
+          "successful_repeats": 8
+        }
+      },
+      "candidate_pool": 64,
+      "lambda0": 1.0,
+      "overall": {
+        "coverage_failures": 0,
+        "geometric_mean_rmse_ratio_to_inside_orbit": 0.9165365904723685,
+        "geometric_mean_rmse_ratio_to_registered_default": 0.8117327886873518,
+        "mean_design_seconds": 222.7187935402617,
+        "selection_eligible": true,
+        "worst_budget_rmse_ratio_to_inside_orbit": 0.9909373002715908,
+        "worst_budget_rmse_ratio_to_registered_default": 0.8924415734954592
+      }
+    },
+    "lambda0=2|K=64": {
+      "budgets": {
+        "0": {
+          "actual_utility_calls_by_repeat": [
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202,
+            50202
+          ],
+          "aggregate_rmse": 0.00561788209176608,
+          "aggregate_rmse_ratio_to_inside_orbit": 1.0478961688806459,
+          "aggregate_rmse_ratio_to_registered_default": 0.9437389283453113,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.00595279258175362,
+          "default_rmse_by_repeat": [
+            0.005601139664526732,
+            0.006310115925653181,
+            0.005353644438366291,
+            0.006576519615985805,
+            0.004667546204771512,
+            0.005566174730330317,
+            0.005939639691317195,
+            0.007234352786360309
+          ],
+          "design_seconds_by_repeat": [
+            80.7739897146821,
+            106.23366744443774,
+            110.44077301770449,
+            108.8152403831482,
+            109.82272573933005,
+            108.0542615763843,
+            127.11786680296063,
+            102.39190653711557
+          ],
+          "mean_design_seconds": 106.70630390197039,
+          "mean_repeat_rmse": 0.005606654557983929,
+          "orbit_aggregate_rmse": 0.005361105669244937,
+          "orbit_rmse_by_repeat": [
+            0.005311657722815288,
+            0.0054606444833184805,
+            0.0052112402456405485,
+            0.0048722701242582735,
+            0.006188199084299033,
+            0.0055059684852107665,
+            0.004790599532472676,
+            0.005426223753941352
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.005250488316128378,
+            0.006167526197803451,
+            0.00556777799898341,
+            0.005255923862689899,
+            0.005754064610115298,
+            0.005957105628392479,
+            0.005097528719478528,
+            0.005802821130279985
+          ],
+          "successful_repeats": 8
+        },
+        "1": {
+          "actual_utility_calls_by_repeat": [
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202,
+            200202
+          ],
+          "aggregate_rmse": 0.0018771617457443506,
+          "aggregate_rmse_ratio_to_inside_orbit": 0.8914751495516098,
+          "aggregate_rmse_ratio_to_registered_default": 0.7764297841359684,
+          "coverage_failure_rate": 0.0,
+          "coverage_failures": 0,
+          "default_aggregate_rmse": 0.0024176838448222407,
+          "default_rmse_by_repeat": [
+            0.002395831048152935,
+            0.0023088846302252485,
+            0.002473644298804099,
+            0.002653637335221591,
+            0.002600155087514991,
+            0.0021697608301928352,
+            0.0022888751447803883,
+            0.0024129404363724045
+          ],
+          "design_seconds_by_repeat": [
+            346.96657613292336,
+            359.5594378076494,
+            327.9304661825299,
+            366.9256718941033,
+            326.989896196872,
+            339.16487335041165,
+            317.92424281686544,
+            318.52178048714995
+          ],
+          "mean_design_seconds": 337.9978681085631,
+          "mean_repeat_rmse": 0.0018718238099624455,
+          "orbit_aggregate_rmse": 0.002105680395789515,
+          "orbit_rmse_by_repeat": [
+            0.002199343461566396,
+            0.0023914286935913637,
+            0.002617751025014274,
+            0.001730465865427999,
+            0.001830985293283309,
+            0.0019716720312378967,
+            0.0019808747497552064,
+            0.0019758748739870436
+          ],
+          "registered_repeats": 8,
+          "rmse_by_repeat": [
+            0.0021129251068421704,
+            0.0017424430037558444,
+            0.001982318673408106,
+            0.0017576252047400627,
+            0.0018920825123684348,
+            0.0017521391838973127,
+            0.0017171898417165357,
+            0.002017866952971098
+          ],
+          "successful_repeats": 8
+        }
+      },
+      "candidate_pool": 64,
+      "lambda0": 2.0,
+      "overall": {
+        "coverage_failures": 0,
+        "geometric_mean_rmse_ratio_to_inside_orbit": 0.966526457924165,
+        "geometric_mean_rmse_ratio_to_registered_default": 0.856006432461731,
+        "mean_design_seconds": 222.35208600526676,
+        "selection_eligible": true,
+        "worst_budget_rmse_ratio_to_inside_orbit": 1.0478961688806459,
+        "worst_budget_rmse_ratio_to_registered_default": 0.9437389283453113
+      }
+    }
+  },
+  "repeats": 8,
+  "requested_configurations": [
+    {
+      "candidate_pool": 64,
+      "lambda0": 0.25
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 0.5
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 1.0
+    },
+    {
+      "candidate_pool": 64,
+      "lambda0": 2.0
+    },
+    {
+      "candidate_pool": 4,
+      "lambda0": 1.0
+    }
+  ],
+  "screening_selection_eligible": true,
+  "selected_budget_indices": [
+    0,
+    1
+  ],
+  "selected_budget_multipliers": [
+    500,
+    2000
+  ],
+  "stage": "screening",
+  "status": "ready_to_select"
+}

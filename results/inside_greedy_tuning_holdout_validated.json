@@ -1,0 +1,729 @@
+{
+  "experiment": "inside_greedy_joint_hyperparameter_selection",
+  "holdout_validation": {
+    "additional_predeclared_diagnostic_challengers": [
+      {
+        "candidate_pool": 8,
+        "lambda0": 0.0
+      },
+      {
+        "candidate_pool": 16,
+        "lambda0": 0.25
+      }
+    ],
+    "base_seed": 20260929,
+    "bootstrap": {
+      "base_seed": 20260825,
+      "cells_resampled_independently_for_joint_summary": true,
+      "comparison_resampling": "paired indices across compared methods",
+      "confidence_level": 0.95,
+      "joint_cell_count": 6,
+      "samples": 20000,
+      "unit": "repeat within each dataset-budget cell"
+    },
+    "curves": {
+      "airport": [
+        {
+          "budget_index": 0,
+          "inside_orbit_rmse": 0.00569542754255284,
+          "locked_best_rmse": 0.005024914061281159,
+          "locked_ratio_to_default": 0.8501469707219406,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.803289212930491,
+            0.9011234797745643
+          ],
+          "locked_ratio_to_orbit": 0.8822716159125888,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.8390783426995585,
+            0.9320486680622201
+          ],
+          "registered_default_rmse": 0.005910641611783933,
+          "total_utility_calls": 50202
+        },
+        {
+          "budget_index": 1,
+          "inside_orbit_rmse": 0.002154458283244352,
+          "locked_best_rmse": 0.0018913973185819167,
+          "locked_ratio_to_default": 0.8231195271596584,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.787249150049551,
+            0.8630494281144055
+          ],
+          "locked_ratio_to_orbit": 0.8778992535115149,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.8342570867894747,
+            0.9228642484967462
+          ],
+          "registered_default_rmse": 0.002297840418278702,
+          "total_utility_calls": 200202
+        },
+        {
+          "budget_index": 2,
+          "inside_orbit_rmse": 0.000771059613705404,
+          "locked_best_rmse": 0.0007261591927754863,
+          "locked_ratio_to_default": 0.8808200042312123,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.8343015176514003,
+            0.92868453431025
+          ],
+          "locked_ratio_to_orbit": 0.941767899482967,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.897575133482712,
+            0.9839213913076371
+          ],
+          "registered_default_rmse": 0.0008244126941795386,
+          "total_utility_calls": 1000202
+        }
+      ],
+      "voting": [
+        {
+          "budget_index": 0,
+          "inside_orbit_rmse": 0.002214805704674198,
+          "locked_best_rmse": 0.00203656939776732,
+          "locked_ratio_to_default": 0.8677183146488786,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.8033634909482706,
+            0.9358063216992483
+          ],
+          "locked_ratio_to_orbit": 0.9195250822540676,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.8584356059788661,
+            0.985874247630495
+          ],
+          "registered_default_rmse": 0.0023470397747584896,
+          "total_utility_calls": 25604
+        },
+        {
+          "budget_index": 1,
+          "inside_orbit_rmse": 0.0009945563681273816,
+          "locked_best_rmse": 0.0009235918751751954,
+          "locked_ratio_to_default": 0.8693860863558087,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.8183190629966642,
+            0.9274006312015798
+          ],
+          "locked_ratio_to_orbit": 0.928647088062185,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.8817555983634844,
+            0.9817373624766215
+          ],
+          "registered_default_rmse": 0.0010623495011826106,
+          "total_utility_calls": 102104
+        },
+        {
+          "budget_index": 2,
+          "inside_orbit_rmse": 0.0004265851341903406,
+          "locked_best_rmse": 0.000403207331883532,
+          "locked_ratio_to_default": 0.9840735328367727,
+          "locked_ratio_to_default_bootstrap_95_percent_ci": [
+            0.9312375181451478,
+            1.0386883563226261
+          ],
+          "locked_ratio_to_orbit": 0.9451978035962746,
+          "locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+            0.8982557815720039,
+            0.9964839762974395
+          ],
+          "registered_default_rmse": 0.00040973292993788055,
+          "total_utility_calls": 510104
+        }
+      ]
+    },
+    "joint_geometric_mean_locked_ratio_to_default": 0.8778301931954408,
+    "joint_geometric_mean_locked_ratio_to_default_bootstrap_95_percent_ci": [
+      0.8568868057691004,
+      0.8996999793111718
+    ],
+    "joint_geometric_mean_locked_ratio_to_orbit": 0.9154921876802637,
+    "joint_geometric_mean_locked_ratio_to_orbit_bootstrap_95_percent_ci": [
+      0.895190329504182,
+      0.9364141759139838
+    ],
+    "locked_best_and_registered_default_present": true,
+    "locked_selection_source": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_tuning_joint_selection.json",
+      "sha256": "dfdcdeb28454ecfecb4087f86ef2034858dc2ca8d18b236bb691e6c69dcee37a"
+    },
+    "main_curves_ignore_additional_challengers": true,
+    "repeats": 20,
+    "screening_and_validation_seed_sets_disjoint": true,
+    "sources": {
+      "airport": {
+        "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_tuning_validation_airport.json",
+        "sha256": "ff7cd5e45b8b6b3b0d2c0f5102b36a33c3a1ce740a60701184aa6257c5cdf1ac"
+      },
+      "voting": {
+        "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_tuning_validation_voting.json",
+        "sha256": "d5cf01bd6af42c015ef94cd9812b9cbe404e16f7498da5b8cfa284830ec12eae"
+      }
+    },
+    "temporal_precedence_is_not_inferred_from_file_timestamps": true,
+    "validation_configuration_matches_locked_selection": true
+  },
+  "locked_configuration": {
+    "candidate_pool": 16,
+    "configuration_id": "lambda0=0|K=16",
+    "joint_geometric_mean_rmse_ratio_to_default": 0.8736332075859968,
+    "joint_geometric_mean_rmse_ratio_to_orbit": 0.9281270339398899,
+    "lambda0": 0.0,
+    "mean_design_seconds": 70.98419140325859,
+    "worst_cell_rmse_ratio_to_default": 0.9352192625341438,
+    "worst_cell_rmse_ratio_to_orbit": 0.9869045131715216
+  },
+  "plots": {
+    "holdout_curves": {
+      "airport": [
+        "results/inside_greedy_tuning_holdout_airport.png",
+        "results/inside_greedy_tuning_holdout_airport.pdf"
+      ],
+      "voting": [
+        "results/inside_greedy_tuning_holdout_voting.png",
+        "results/inside_greedy_tuning_holdout_voting.pdf"
+      ]
+    },
+    "screening_heatmaps": [
+      "results/inside_greedy_tuning_screen_heatmaps.png",
+      "results/inside_greedy_tuning_screen_heatmaps.pdf"
+    ]
+  },
+  "ranking": [
+    {
+      "candidate_pool": 16,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8888096314299304,
+        "airport:budget_index=1": 0.7876504816528742,
+        "voting:budget_index=0": 0.8897352479971359,
+        "voting:budget_index=1": 0.9352192625341438
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9869045131715216,
+        "airport:budget_index=1": 0.9043584433166583,
+        "voting:budget_index=0": 0.8805774287356125,
+        "voting:budget_index=1": 0.9441617646352598
+      },
+      "configuration_id": "lambda0=0|K=16",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8367026558422641,
+        "voting": 0.9121938075225653
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8736332075859968,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9281270339398899,
+      "lambda0": 0.0,
+      "mean_design_seconds": 70.98419140325859,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9352192625341438,
+      "worst_cell_rmse_ratio_to_orbit": 0.9869045131715216
+    },
+    {
+      "candidate_pool": 16,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.9306463749702023,
+        "airport:budget_index=1": 0.8138737420556866,
+        "voting:budget_index=0": 0.8815667654942861,
+        "voting:budget_index=1": 0.9224638303997932
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.0333586351299748,
+        "airport:budget_index=1": 0.9344672638011056,
+        "voting:budget_index=0": 0.8724930223515526,
+        "voting:budget_index=1": 0.9312843659383804
+      },
+      "configuration_id": "lambda0=0.25|K=16",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8703037675016455,
+        "voting": 0.9017834857941319
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.885903812587687,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9411630313424334,
+      "lambda0": 0.25,
+      "mean_design_seconds": 72.35795447265264,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9306463749702023,
+      "worst_cell_rmse_ratio_to_orbit": 1.0333586351299748
+    },
+    {
+      "candidate_pool": 8,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8661260506230187,
+        "airport:budget_index=1": 0.7692685225792482,
+        "voting:budget_index=0": 0.9626060954141631,
+        "voting:budget_index=1": 0.9776080209384196
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9617174230662803,
+        "airport:budget_index=1": 0.883252787597322,
+        "voting:budget_index=0": 0.9526982350009809,
+        "voting:budget_index=1": 0.9869558414245171
+      },
+      "configuration_id": "lambda0=0|K=8",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8162619109882371,
+        "voting": 0.9700780586535804
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8898526675603837,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9453582004608267,
+      "lambda0": 0.0,
+      "mean_design_seconds": 57.088991825818084,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9776080209384196,
+      "worst_cell_rmse_ratio_to_orbit": 0.9869558414245171
+    },
+    {
+      "candidate_pool": 16,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.9701977382232005,
+        "airport:budget_index=1": 0.815897252272864,
+        "voting:budget_index=0": 0.9514421664999599,
+        "voting:budget_index=1": 0.9263070564336875
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.07727514718855,
+        "airport:budget_index=1": 0.9367906021252336,
+        "voting:budget_index=0": 0.9416492135758032,
+        "voting:budget_index=1": 0.9351643406346044
+      },
+      "configuration_id": "lambda0=1|K=16",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8897087550303507,
+        "voting": 0.9387904945287144
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.9139201946130033,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9709269658232825,
+      "lambda0": 1.0,
+      "mean_design_seconds": 71.2368523721816,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9701977382232005,
+      "worst_cell_rmse_ratio_to_orbit": 1.07727514718855
+    },
+    {
+      "candidate_pool": 8,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.9049702933033837,
+        "airport:budget_index=1": 0.8038598485847167,
+        "voting:budget_index=0": 0.955994097618406,
+        "voting:budget_index=1": 1.0141125375412696
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.0048487720710242,
+        "airport:budget_index=1": 0.9229695889797292,
+        "voting:budget_index=0": 0.9461542928216642,
+        "voting:budget_index=1": 1.0238094116979863
+      },
+      "configuration_id": "lambda0=0.25|K=8",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8529180986170505,
+        "voting": 0.9846245986213619
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.9164082826490104,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9735702510704418,
+      "lambda0": 0.25,
+      "mean_design_seconds": 56.2684791990323,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0141125375412696,
+      "worst_cell_rmse_ratio_to_orbit": 1.0238094116979863
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.9592309259858635,
+        "airport:budget_index=1": 0.8967110988548731,
+        "voting:budget_index=0": 0.9170133056144557,
+        "voting:budget_index=1": 0.9808510446910184
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.0650979653608508,
+        "airport:budget_index=1": 1.029578819990561,
+        "voting:budget_index=0": 0.9075747202238763,
+        "voting:budget_index=1": 0.9902298747466183
+      },
+      "configuration_id": "lambda0=0|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.9274443474928084,
+        "voting": 0.9483952018053987
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.9378612739119354,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9963613961151854,
+      "lambda0": 0.0,
+      "mean_design_seconds": 44.81260969967116,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9808510446910184,
+      "worst_cell_rmse_ratio_to_orbit": 1.0650979653608508
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.9840931478932438,
+        "airport:budget_index=1": 0.8643026529964444,
+        "voting:budget_index=0": 0.9534736942862657,
+        "voting:budget_index=1": 1.0416501215313287
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.0927041457398712,
+        "airport:budget_index=1": 0.9923683410667918,
+        "voting:budget_index=0": 0.9436598313618212,
+        "voting:budget_index=1": 1.051610308167328
+      },
+      "configuration_id": "lambda0=0.25|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.9222550181591602,
+        "voting": 0.9965871710644352
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.958700954180821,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0185009742221822,
+      "lambda0": 0.25,
+      "mean_design_seconds": 44.488237606710754,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0416501215313287,
+      "worst_cell_rmse_ratio_to_orbit": 1.0927041457398712
+    },
+    {
+      "candidate_pool": 8,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0219824288368795,
+        "airport:budget_index=1": 0.8630647789117653,
+        "voting:budget_index=0": 0.9794591983592942,
+        "voting:budget_index=1": 1.0280319618312515
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1347751371443402,
+        "airport:budget_index=1": 0.9909470483661346,
+        "voting:budget_index=0": 0.96937787323162,
+        "voting:budget_index=1": 1.0378619325632272
+      },
+      "configuration_id": "lambda0=1|K=8",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.939168269798235,
+        "voting": 1.0034517234142208
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.9707780482195665,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0313313902039265,
+      "lambda0": 1.0,
+      "mean_design_seconds": 57.53053167567123,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0280319618312515,
+      "worst_cell_rmse_ratio_to_orbit": 1.1347751371443402
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0,
+        "airport:budget_index=1": 1.0,
+        "voting:budget_index=0": 1.0,
+        "voting:budget_index=1": 1.0
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1103665827560563,
+        "airport:budget_index=1": 1.1481722723242345,
+        "voting:budget_index=0": 0.9897072536103989,
+        "voting:budget_index=1": 1.0095619310458648
+      },
+      "configuration_id": "lambda0=1|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0,
+        "voting": 1.0
+      },
+      "is_registered_default": true,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0623760931712627,
+      "lambda0": 1.0,
+      "mean_design_seconds": 48.45696512423456,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0,
+      "worst_cell_rmse_ratio_to_orbit": 1.1481722723242345
+    },
+    {
+      "candidate_pool": 16,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0278560464970197,
+        "airport:budget_index=1": 0.9082506191492874,
+        "voting:budget_index=0": 1.0621660433783044,
+        "voting:budget_index=1": 1.0576736960658777
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1412970059140457,
+        "airport:budget_index=1": 1.0428281772285302,
+        "voting:budget_index=0": 1.0512334376701655,
+        "voting:budget_index=1": 1.0677870990166847
+      },
+      "configuration_id": "lambda0=4|K=16",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.9662043731153657,
+        "voting": 1.059917489682853
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0119767357370588,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0750998908925438,
+      "lambda0": 4.0,
+      "mean_design_seconds": 77.20888406666927,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0621660433783044,
+      "worst_cell_rmse_ratio_to_orbit": 1.1412970059140457
+    },
+    {
+      "candidate_pool": 2,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0037410556225066,
+        "airport:budget_index=1": 0.9788637469914502,
+        "voting:budget_index=0": 1.015580431314972,
+        "voting:budget_index=1": 1.0761537960104655
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1145205259035191,
+        "airport:budget_index=1": 1.1239042126789878,
+        "voting:budget_index=0": 1.0051273194972052,
+        "voting:budget_index=1": 1.0864439044026633
+      },
+      "configuration_id": "lambda0=0|K=2",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.9912243594241419,
+        "voting": 1.045428494117868
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0179657113114022,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0814624353653126,
+      "lambda0": 0.0,
+      "mean_design_seconds": 38.60107038996648,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0761537960104655,
+      "worst_cell_rmse_ratio_to_orbit": 1.1239042126789878
+    },
+    {
+      "candidate_pool": 2,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0323779713963002,
+        "airport:budget_index=1": 1.0179394554312593,
+        "voting:budget_index=0": 1.0288879151702175,
+        "voting:budget_index=1": 1.03587933047375
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1463180002119395,
+        "airport:budget_index=1": 1.1687698576310026,
+        "voting:budget_index=0": 1.018297832796045,
+        "voting:budget_index=1": 1.0457843372035764
+      },
+      "configuration_id": "lambda0=0.25|K=2",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.025133293773243,
+        "voting": 1.0323777044759623
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0287491222875977,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0929184733892636,
+      "lambda0": 0.25,
+      "mean_design_seconds": 39.81395508709829,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.03587933047375,
+      "worst_cell_rmse_ratio_to_orbit": 1.1687698576310026
+    },
+    {
+      "candidate_pool": 8,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0136424190469013,
+        "airport:budget_index=1": 0.9500975128937948,
+        "voting:budget_index=0": 1.1108584445670828,
+        "voting:budget_index=1": 1.0886716171881585
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1255146689736901,
+        "airport:budget_index=1": 1.090875620308872,
+        "voting:budget_index=0": 1.099424660322407,
+        "voting:budget_index=1": 1.099081420123302
+      },
+      "configuration_id": "lambda0=4|K=8",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.9813557669367978,
+        "voting": 1.099709079399624
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0388483272458873,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.1036476272969868,
+      "lambda0": 4.0,
+      "mean_design_seconds": 56.26228364685085,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.1108584445670828,
+      "worst_cell_rmse_ratio_to_orbit": 1.1255146689736901
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0408945178545415,
+        "airport:budget_index=1": 1.0783797693992545,
+        "voting:budget_index=0": 1.047869198725708,
+        "voting:budget_index=1": 1.1427247028724792
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.15577448879966,
+        "airport:budget_index=1": 1.238165750259626,
+        "voting:budget_index=0": 1.0370837468137497,
+        "voting:budget_index=1": 1.153651357685752
+      },
+      "configuration_id": "lambda0=4|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0594713729652767,
+        "voting": 1.0942696279999082
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0767299313993577,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.143892137920611,
+      "lambda0": 4.0,
+      "mean_design_seconds": 46.85962692601606,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.1427247028724792,
+      "worst_cell_rmse_ratio_to_orbit": 1.238165750259626
+    },
+    {
+      "candidate_pool": 2,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0667728665077063,
+        "airport:budget_index=1": 1.0035643685192523,
+        "voting:budget_index=0": 1.1104516362674495,
+        "voting:budget_index=1": 1.167489125834897
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1845089423610442,
+        "airport:budget_index=1": 1.1522647814263853,
+        "voting:budget_index=0": 1.099022039197431,
+        "voting:budget_index=1": 1.1786525763529272
+      },
+      "configuration_id": "lambda0=1|K=2",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0346860577635513,
+        "voting": 1.1386132838272245
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.085406509083303,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.153109926622578,
+      "lambda0": 1.0,
+      "mean_design_seconds": 39.35485912812874,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.167489125834897,
+      "worst_cell_rmse_ratio_to_orbit": 1.1845089423610442
+    },
+    {
+      "candidate_pool": 2,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0382068014482102,
+        "airport:budget_index=1": 1.1010643501148738,
+        "voting:budget_index=0": 1.1801042396920487,
+        "voting:budget_index=1": 1.2813209310131863
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1527901383181447,
+        "airport:budget_index=1": 1.264211556846601,
+        "voting:budget_index=0": 1.1679577260396055,
+        "voting:budget_index=1": 1.2935728334031578
+      },
+      "configuration_id": "lambda0=4|K=2",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.069173745058031,
+        "voting": 1.2296716078265872
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.1466178954348665,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.2181394401123489,
+      "lambda0": 4.0,
+      "mean_design_seconds": 37.09772373060696,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.2813209310131863,
+      "worst_cell_rmse_ratio_to_orbit": 1.2935728334031578
+    },
+    {
+      "candidate_pool": 1,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0858695754889276,
+        "airport:budget_index=1": 1.0965615243448041,
+        "voting:budget_index=0": 1.189949539673368,
+        "voting:budget_index=1": 1.316027166664033
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.2057132898544098,
+        "airport:budget_index=1": 1.2590415371503,
+        "voting:budget_index=0": 1.1777016908450872,
+        "voting:budget_index=1": 1.3286109276861595
+      },
+      "configuration_id": "lambda0=1|K=1",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0912024546058279,
+        "voting": 1.2514015826941856
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.1685600021965126,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.2414502097697329,
+      "lambda0": 1.0,
+      "mean_design_seconds": 32.5020254481351,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.316027166664033,
+      "worst_cell_rmse_ratio_to_orbit": 1.3286109276861595
+    }
+  ],
+  "screening_contract": {
+    "all_rmse_and_aggregates_independently_recomputed": true,
+    "base_seed": 20260911,
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "greedy_size_schedules_and_relabels_paired_across_hyperparameters": true,
+    "orbit_is_equal-call_but_independently_randomized": true,
+    "repeats": 8
+  },
+  "screening_sources": {
+    "airport": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_tuning_screen_airport.json",
+      "sha256": "2198a565f4d9c844d52ec5a0b0b8fb46c64034ec09a9f321f9b4b9f95849003b"
+    },
+    "voting": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_tuning_screen_voting.json",
+      "sha256": "37e6c26e8752b3594af6f77c9a6535fc7ba707f81f7a9c6050bfc498fff8e16f"
+    }
+  },
+  "selection_rule": {
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "cell_count": 4,
+    "coverage_policy": "eliminate any configuration with a coverage failure",
+    "datasets": [
+      "airport",
+      "voting"
+    ],
+    "design_time_is_descriptive_not_a_selection_tie_break": true,
+    "primary": "minimize the equal-weight mean log aggregate-RMSE ratio to the registered default across 2 datasets x 2 budgets",
+    "tie_breaks": [
+      "lower worst dataset-budget RMSE ratio to default",
+      "smaller candidate pool K",
+      "smaller lambda0"
+    ]
+  },
+  "status": "holdout_validated"
+}

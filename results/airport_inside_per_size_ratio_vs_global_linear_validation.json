@@ -1,0 +1,79 @@
+{
+  "call_accounting": {
+    "ratio_branch_actual_utility_calls": 5553030,
+    "total_actual_utility_calls": 50767502
+  },
+  "caveats": [
+    "The per-size Greedy design is not exactly 1-balanced, so its official ratio estimate uses unequal observed denominators; complete coverage and uniform batch-wide relabeling preserve the estimator's symmetry, while the unequal denominators can still change finite-sample variance.",
+    "Three repeats give only coarse uncertainty intervals; interpret small curve gaps cautiously.",
+    "TMC-Shapley is positioned at observed physical calls after truncation."
+  ],
+  "checks": {
+    "all_retained_rmse_metrics_recomputed": "passed",
+    "controlled_design_and_estimator_identities": "passed",
+    "five_budget_points": "passed",
+    "independently_reconstructed_exact_ground_truth": "passed",
+    "physical_utility_call_accounting": "passed",
+    "ratio_all_player_size_strata_covered": "passed",
+    "ratio_linear_reconstruction_matches_source": "passed",
+    "same_relabel_permutation_for_three_controlled_branches": "passed",
+    "same_size_schedule_for_three_controlled_branches": "passed",
+    "ten_method_identity_and_order": "passed",
+    "three_repeats_per_method_budget": "passed"
+  },
+  "controlled_randomization_audit": {
+    "matching_relabel_permutation_sha256_groups_checked": 15,
+    "matching_size_schedule_sha256_groups_checked": 15
+  },
+  "dataset": "airport",
+  "ground_truth_audit": {
+    "kind": "analytic_exact",
+    "maximum_truth_discrepancy": 0.0
+  },
+  "maximum_discrepancies": {
+    "linear_reconstruction_absolute": 0.0,
+    "sample_estimate_efficiency_residual": 0.17472518188170305,
+    "stored_metric_absolute": 3.552713678800501e-15
+  },
+  "method_identity_audit": {
+    "inside_greedy_global": {
+      "design_method": "frame_coupled",
+      "estimator": "coupled_linear",
+      "second_moment_scope": "global_weighted"
+    },
+    "inside_greedy_per_size_linear": {
+      "design_method": "frame_coupled_per_size",
+      "estimator": "coupled_linear",
+      "second_moment_scope": "per_size"
+    },
+    "inside_greedy_per_size_ratio": {
+      "design_method": "frame_coupled_per_size",
+      "estimator": "ofa_conditional_mean_ratio_missing_raise",
+      "second_moment_scope": "per_size"
+    }
+  },
+  "ratio_coverage_audit": {
+    "cells_checked": 15,
+    "maximum_absolute_inclusion_count_deviation": 12.920000000000073,
+    "maximum_linear_reconstruction_abs_difference": 0.0,
+    "maximum_relative_inclusion_count_deviation": 0.09665763324299911,
+    "minimum_exclusion_count": 25,
+    "minimum_inclusion_count": 25,
+    "reconstruction_tolerance": 5e-13
+  },
+  "ratio_efficiency_audit": {
+    "maximum_absolute_residual": 0.009148360809330569,
+    "mean_absolute_residual": 0.0016048981907373398,
+    "mean_signed_residual": -0.000928564560744268
+  },
+  "status": "ready_to_share",
+  "validated_report": "analytic_inside_per_size_ratio_vs_global_linear",
+  "validated_shape": {
+    "budget_points": 5,
+    "methods": 10,
+    "per_repeat_estimates_checked": 150,
+    "players": 100,
+    "repeats": 3,
+    "scalar_player_estimates_checked": 15000
+  }
+}

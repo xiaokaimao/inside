@@ -1,0 +1,311 @@
+{
+  "aggregation": {
+    "coverage_policy": "retain every failure; suppress RMSE aggregates containing a failure",
+    "dataset_ratio": "geometric mean over selected budgets",
+    "design_time_is_descriptive_only": true,
+    "joint_ratio": "equal-weight geometric mean over dataset-budget cells",
+    "rmse_within_budget": "sqrt(mean repeat-level squared RMSE)"
+  },
+  "experiment": "inside_greedy_fixed_lambda0_larger_k",
+  "fixed_lambda0": 0.0,
+  "protocol": {
+    "base_seed": 20260911,
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "k_values": [
+      16,
+      32,
+      64
+    ],
+    "raw_cells_audited": {
+      "airport": 80,
+      "voting": 80
+    },
+    "repeats": 8,
+    "stage": "screening"
+  },
+  "reference": {
+    "candidate_pool": 16,
+    "choice": "k16",
+    "configuration_id": "lambda0=0|K=16",
+    "label": "$K=16$",
+    "lambda0": 0.0
+  },
+  "rows": [
+    {
+      "candidate_pool": 16,
+      "configuration_id": "lambda0=0|K=16",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005290899380567259,
+              "candidate_mean_design_seconds": 35.34815857978538,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.0,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 35.34815857978538,
+              "rmse_ratio_to_reference": 1.0
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0019042898448586106,
+              "candidate_mean_design_seconds": 138.24906392861158,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.0,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 138.24906392861158,
+              "rmse_ratio_to_reference": 1.0
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 1.0
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019979561039735016,
+              "candidate_mean_design_seconds": 19.53152565425262,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.0,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 19.53152565425262,
+              "rmse_ratio_to_reference": 1.0
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009444069858828281,
+              "candidate_mean_design_seconds": 69.14637657487765,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.0,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 69.14637657487765,
+              "rmse_ratio_to_reference": 1.0
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 1.0
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 1.0,
+        "joint": 1.0,
+        "voting": 1.0
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_reference": {
+        "airport": 1.0,
+        "joint": 1.0,
+        "voting": 1.0
+      },
+      "selection_eligible": true
+    },
+    {
+      "candidate_pool": 32,
+      "configuration_id": "lambda0=0|K=32",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005129076396306293,
+              "candidate_mean_design_seconds": 56.42519233142957,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.5962696388857314,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 35.34815857978538,
+              "rmse_ratio_to_reference": 0.9694148437493786
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017659574483288646,
+              "candidate_mean_design_seconds": 195.6272874926217,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.415035168655021,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 138.24906392861158,
+              "rmse_ratio_to_reference": 0.9273574887230379
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.50292304449681,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 0.948153001909639
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0020198585169892186,
+              "candidate_mean_design_seconds": 31.208520121406764,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.5978536789117497,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 19.53152565425262,
+              "rmse_ratio_to_reference": 1.0109624095204883
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009756043106998164,
+              "candidate_mean_design_seconds": 97.60676312725991,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 1.4115962102737647,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 69.14637657487765,
+              "rmse_ratio_to_reference": 1.033033771756596
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.5018402703762537,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 1.021938506472423
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 1.50292304449681,
+        "joint": 1.502381559891425,
+        "voting": 1.5018402703762537
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_reference": {
+        "airport": 0.948153001909639,
+        "joint": 0.984354642737505,
+        "voting": 1.021938506472423
+      },
+      "selection_eligible": true
+    },
+    {
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0|K=64",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0047697306949054325,
+              "candidate_mean_design_seconds": 90.59098096983507,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 2.562820373382661,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 35.34815857978538,
+              "rmse_ratio_to_reference": 0.9014971466711299
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017959053220160523,
+              "candidate_mean_design_seconds": 318.6610018238425,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 2.3049776451896355,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 138.24906392861158,
+              "rmse_ratio_to_reference": 0.9430840199378338
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 2.4304821886373884,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 0.922056155038887
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0018776754067784793,
+              "candidate_mean_design_seconds": 46.275151640642434,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 2.3692543255353375,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 19.53152565425262,
+              "rmse_ratio_to_reference": 0.9397981282192286
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009154166706089351,
+              "candidate_mean_design_seconds": 144.18497957661748,
+              "coverage_failures": 0,
+              "design_time_ratio_to_reference": 2.0852138133439513,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_mean_design_seconds": 69.14637657487765,
+              "rmse_ratio_to_reference": 0.9693031545644561
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 2.222701474991905,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_reference": 0.9544366350558163
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 2.4304821886373884,
+        "joint": 2.3242711428802534,
+        "voting": 2.222701474991905
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_reference": {
+        "airport": 0.922056155038887,
+        "joint": 0.9381066964625183,
+        "voting": 0.9544366350558163
+      },
+      "selection_eligible": true
+    }
+  ],
+  "source_validation": {
+    "all_greedy_hyperparameters_share_relabels": true,
+    "all_greedy_hyperparameters_share_size_schedules": true,
+    "all_rmse_and_aggregates_independently_recomputed_from_raw_cells": true,
+    "coverage_failures_retained": true,
+    "sources": {
+      "airport": {
+        "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_airport.json",
+        "sha256": "6432f3d6e447ccf9987a3a3ac92ec58a401fc0e0e3c81b4a069a41ffd638ff2c"
+      },
+      "voting": {
+        "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_voting.json",
+        "sha256": "b519da8a27a6cb556a2f917aad08ce615876e02cf0e5172c6707c7bee2e60dfa"
+      }
+    }
+  },
+  "status": "validated_larger_k_summary"
+}

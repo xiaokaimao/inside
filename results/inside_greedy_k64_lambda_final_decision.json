@@ -1,0 +1,88 @@
+{
+  "status": "final_configuration_recommended",
+  "experiment": "inside_greedy_k64_lambda_tuning",
+  "recommended_configuration": {
+    "candidate_pool": 64,
+    "lambda0": 0.0,
+    "mean_balance_mode": "normalized"
+  },
+  "decision_rule": "A nonzero screening winner is adopted only if it reproduces a lower equal-cell joint RMSE on the untouched holdout; otherwise retain the simpler lambda0=0 configuration. Bootstrap intervals quantify uncertainty but are not used to search the holdout.",
+  "provenance": {
+    "screening_summary": {
+      "path": "results/inside_greedy_k64_lambda_fine_summary.json",
+      "sha256": "96403b4fcfa9e62c3f5e74501a64bb933c5fa7eed852e17c6a17dcd32e2c606f"
+    },
+    "locked_selection": {
+      "path": "results/inside_greedy_k64_lambda_fine_locked_selection.json",
+      "sha256": "b4bee02e97f0dd804b42b29a1ee9326d2d80bee56017e6d3346111f87a4a78e3"
+    },
+    "holdout_validation": {
+      "path": "results/inside_greedy_k64_lambda_holdout_validation.json",
+      "sha256": "ef7e4cf88a8b7c3f08afd0ea44f70e766f1d626d826418bd3ac205a744c0501b"
+    },
+    "zero_to_two_screening_summary": {
+      "path": "results/inside_greedy_k64_lambda_zero_to_two_summary.json",
+      "sha256": "04cf4be2766e38459ac53e9a17ef00839449fb1af8f59246d29df1902281ae55"
+    }
+  },
+  "screening": {
+    "datasets": [
+      "airport",
+      "voting"
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "repeats": 8,
+    "base_seed": 20260911,
+    "screening_winner": {
+      "candidate_pool": 64,
+      "lambda0": 0.0625
+    },
+    "winner_over_lambda0_zero_joint_rmse_ratio": 0.9941224718074767,
+    "source": "results/inside_greedy_k64_lambda_fine_locked_selection.json"
+  },
+  "holdout": {
+    "datasets": [
+      "airport",
+      "voting"
+    ],
+    "budget_multipliers": [
+      500,
+      2000,
+      10000
+    ],
+    "repeats": 20,
+    "base_seed": 20261031,
+    "screening_winner_over_lambda0_zero_joint_rmse_ratio": 1.0085504082839045,
+    "paired_bootstrap_95_percent_ci": [
+      0.9856542293361782,
+      1.0324018781849382
+    ],
+    "bootstrap_probability_screening_winner_is_better": 0.2359,
+    "recommended_lambda0_zero_over_registered_default_joint_rmse_ratio": 0.858646784963731,
+    "recommended_lambda0_zero_over_inside_orbit_joint_rmse_ratio": 0.9284421000714249,
+    "coverage_failures": 0,
+    "source": "results/inside_greedy_k64_lambda_holdout_validation.json"
+  },
+  "upper_range_screening_extension": {
+    "candidate_pool": 64,
+    "lambda0_values": [
+      0.25,
+      0.5,
+      1.0,
+      2.0
+    ],
+    "joint_rmse_ratios_to_lambda0_zero": [
+      1.0054288466264811,
+      1.036671167278716,
+      1.0542310986257801,
+      1.089768053809618
+    ],
+    "all_candidates_worse_than_lambda0_zero": true,
+    "additional_holdout_required": false,
+    "source": "results/inside_greedy_k64_lambda_zero_to_two_summary.json"
+  },
+  "interpretation": "The 0.59% screening gain of lambda0=1/16 did not replicate: it was 0.86% worse than lambda0=0 on the six-cell holdout. Every added high-range candidate from lambda0=1/4 through 2 was also worse than zero in screening. Retain lambda0=0."
+}

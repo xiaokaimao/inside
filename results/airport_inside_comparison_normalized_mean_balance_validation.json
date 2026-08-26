@@ -1,0 +1,46 @@
+{
+  "call_accounting": {
+    "total_actual_utility_calls": 39661442,
+    "total_unused_utility_calls": 4762798
+  },
+  "caveats": [
+    "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+    "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+  ],
+  "checks": {
+    "actual_calls_do_not_exceed_target": "passed",
+    "available_method_diagnostic_call_accounting": "passed",
+    "common_method_order_exactly_eight": "passed",
+    "five_budget_points": "passed",
+    "ground_truth": "passed",
+    "ground_truth_uncertainty_metadata_if_mc": "passed",
+    "inside_candidate_pool_K_equals_4": "passed",
+    "inside_greedy_mean_balance_configuration": "passed",
+    "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+    "rmse_and_retained_secondary_metrics_recomputed": "passed",
+    "three_repeats_per_method_budget": "passed"
+  },
+  "dataset": "airport",
+  "ground_truth_audit": {
+    "kind": "analytic_exact",
+    "maximum_truth_discrepancy": 0.0
+  },
+  "inside_greedy_balance_audit": {
+    "coefficient": 1.0,
+    "mode": "normalized"
+  },
+  "maximum_discrepancies": {
+    "sample_estimate_efficiency_residual": 0.17472518188170305,
+    "stored_metric_absolute": 3.552713678800501e-15
+  },
+  "status": "ready_to_share",
+  "validated_report": "analytic_inside_baseline_comparison_normalized_mean_balance",
+  "validated_shape": {
+    "budget_points": 5,
+    "methods": 8,
+    "per_repeat_estimates_checked": 120,
+    "players": 100,
+    "repeats": 3,
+    "scalar_player_estimates_checked": 12000
+  }
+}

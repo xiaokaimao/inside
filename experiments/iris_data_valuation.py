@@ -125,14 +125,17 @@ def missing_stratum_fraction(design: Any) -> float:
     """Fraction of official player/size/in-out conditional means unobserved."""
     num_players = design.coalitions.shape[1]
     missing = 0
-    total = 0
     for size in range(2, num_players - 1):
         rows = design.coalitions[design.sizes == size]
-        for player in range(num_players):
-            included = rows[:, player] if len(rows) else np.zeros(0, bool)
-            missing += int(not np.any(included))
-            missing += int(not np.any(~included)) if len(rows) else 1
-            total += 2
+        if not len(rows):
+            missing += 2 * num_players
+            continue
+        inclusion_counts = rows.sum(axis=0, dtype=np.int64)
+        missing += int(np.count_nonzero(inclusion_counts == 0))
+        missing += int(
+            np.count_nonzero(inclusion_counts == len(rows))
+        )
+    total = 2 * num_players * (num_players - 3)
     return missing / total
 
 
@@ -387,6 +390,8 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                     seed=seed,
                     candidate_pool=args.candidate_pool,
                     mean_balance=args.mean_balance,
+                    # Preserve this historical CLI's raw coefficient.
+                    mean_balance_mode="raw",
                 )
                 frame_design_seconds = time.perf_counter() - start
                 start = time.perf_counter()
@@ -554,6 +559,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
             "repeats": args.repeats,
             "candidate_pool": args.candidate_pool,
             "mean_balance": args.mean_balance,
+            "mean_balance_mode": "raw",
             "jobs": args.jobs,
             "chunksize": args.chunksize,
             "start_method": args.start_method,

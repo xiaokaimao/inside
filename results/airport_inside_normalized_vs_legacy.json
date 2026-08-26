@@ -1,0 +1,154 @@
+{
+  "dataset": "Airport",
+  "experiment": "inside_greedy_mean_balance_before_after",
+  "legacy_report": "/home/maoxiaokai/python_project/frame/results/airport_inside_comparison_3repeats_50k_1m.json",
+  "method_identity": {
+    "canonical_label": "INSIDE-Greedy",
+    "legacy_ablation": {
+      "mean_balance_mode": "raw",
+      "raw_lambda": 0.1
+    },
+    "normalized": {
+      "lambda0": 1.0,
+      "mean_balance_mode": "normalized"
+    }
+  },
+  "normalized_report": "/home/maoxiaokai/python_project/frame/results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+  "rows": [
+    {
+      "inside_orbit_rmse": 0.004739567011499814,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.05334577045746104,
+      "normalized_greedy_to_orbit_rmse_ratio": 4.393707639391416,
+      "normalized_lambda0_1_greedy_rmse": 0.020824271785834278,
+      "normalized_vs_legacy_fractional_rmse_change": -0.6096359353842316,
+      "total_utility_calls": 50202
+    },
+    {
+      "inside_orbit_rmse": 0.0035887695312649148,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.0398462811030107,
+      "normalized_greedy_to_orbit_rmse_ratio": 2.773351176164488,
+      "normalized_lambda0_1_greedy_rmse": 0.009952918200516829,
+      "normalized_vs_legacy_fractional_rmse_change": -0.7502171363298241,
+      "total_utility_calls": 100202
+    },
+    {
+      "inside_orbit_rmse": 0.0021412571090201693,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.02856943626250499,
+      "normalized_greedy_to_orbit_rmse_ratio": 2.469822484698279,
+      "normalized_lambda0_1_greedy_rmse": 0.0052885249533780486,
+      "normalized_vs_legacy_fractional_rmse_change": -0.8148887186717507,
+      "total_utility_calls": 200202
+    },
+    {
+      "inside_orbit_rmse": 0.0011459402907172897,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.017786687671508913,
+      "normalized_greedy_to_orbit_rmse_ratio": 2.169048921155041,
+      "normalized_lambda0_1_greedy_rmse": 0.0024856005512884313,
+      "normalized_vs_legacy_fractional_rmse_change": -0.8602550065985631,
+      "total_utility_calls": 500202
+    },
+    {
+      "inside_orbit_rmse": 0.0007645018893985256,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.012573158776036831,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.8650498981708712,
+      "normalized_lambda0_1_greedy_rmse": 0.0014258341709741588,
+      "normalized_vs_legacy_fractional_rmse_change": -0.8865969804110281,
+      "total_utility_calls": 1000202
+    }
+  ],
+  "status": "ready_to_share",
+  "validation": {
+    "legacy": {
+      "call_accounting": {
+        "total_actual_utility_calls": 39661442,
+        "total_unused_utility_calls": 4762798
+      },
+      "caveats": [
+        "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+        "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+      ],
+      "checks": {
+        "actual_calls_do_not_exceed_target": "passed",
+        "available_method_diagnostic_call_accounting": "passed",
+        "common_method_order_exactly_eight": "passed",
+        "five_budget_points": "passed",
+        "ground_truth": "passed",
+        "ground_truth_uncertainty_metadata_if_mc": "passed",
+        "inside_candidate_pool_K_equals_4": "passed",
+        "inside_greedy_mean_balance_configuration": "passed",
+        "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+        "rmse_and_retained_secondary_metrics_recomputed": "passed",
+        "three_repeats_per_method_budget": "passed"
+      },
+      "dataset": "airport",
+      "ground_truth_audit": {
+        "kind": "analytic_exact",
+        "maximum_truth_discrepancy": 0.0
+      },
+      "inside_greedy_balance_audit": {
+        "coefficient": 0.1,
+        "mode": "legacy_raw"
+      },
+      "maximum_discrepancies": {
+        "sample_estimate_efficiency_residual": 0.17472518188170305,
+        "stored_metric_absolute": 3.552713678800501e-15
+      },
+      "status": "ready_to_share",
+      "validated_report": "analytic_inside_baseline_comparison",
+      "validated_shape": {
+        "budget_points": 5,
+        "methods": 8,
+        "per_repeat_estimates_checked": 120,
+        "players": 100,
+        "repeats": 3,
+        "scalar_player_estimates_checked": 12000
+      }
+    },
+    "normalized": {
+      "call_accounting": {
+        "total_actual_utility_calls": 39661442,
+        "total_unused_utility_calls": 4762798
+      },
+      "caveats": [
+        "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+        "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+      ],
+      "checks": {
+        "actual_calls_do_not_exceed_target": "passed",
+        "available_method_diagnostic_call_accounting": "passed",
+        "common_method_order_exactly_eight": "passed",
+        "five_budget_points": "passed",
+        "ground_truth": "passed",
+        "ground_truth_uncertainty_metadata_if_mc": "passed",
+        "inside_candidate_pool_K_equals_4": "passed",
+        "inside_greedy_mean_balance_configuration": "passed",
+        "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+        "rmse_and_retained_secondary_metrics_recomputed": "passed",
+        "three_repeats_per_method_budget": "passed"
+      },
+      "dataset": "airport",
+      "ground_truth_audit": {
+        "kind": "analytic_exact",
+        "maximum_truth_discrepancy": 0.0
+      },
+      "inside_greedy_balance_audit": {
+        "coefficient": 1.0,
+        "mode": "normalized"
+      },
+      "maximum_discrepancies": {
+        "sample_estimate_efficiency_residual": 0.17472518188170305,
+        "stored_metric_absolute": 3.552713678800501e-15
+      },
+      "status": "ready_to_share",
+      "validated_report": "analytic_inside_baseline_comparison_normalized_mean_balance",
+      "validated_shape": {
+        "budget_points": 5,
+        "methods": 8,
+        "per_repeat_estimates_checked": 120,
+        "players": 100,
+        "repeats": 3,
+        "scalar_player_estimates_checked": 12000
+      }
+    }
+  }
+}

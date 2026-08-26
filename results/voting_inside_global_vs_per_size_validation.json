@@ -1,0 +1,63 @@
+{
+  "call_accounting": {
+    "total_actual_utility_calls": 24380186
+  },
+  "caveats": [
+    "Three repeats give only coarse uncertainty intervals; interpret small curve gaps cautiously.",
+    "TMC-Shapley is positioned at observed physical calls after truncation."
+  ],
+  "checks": {
+    "all_retained_rmse_metrics_recomputed": "passed",
+    "five_budget_points": "passed",
+    "global_weighted_scope_identity": "passed",
+    "independently_reconstructed_exact_ground_truth": "passed",
+    "nine_method_identity_and_order": "passed",
+    "per_size_scope_identity": "passed",
+    "physical_utility_call_accounting": "passed",
+    "same_relabel_permutation_per_budget_repeat": "passed",
+    "same_size_schedule_per_budget_repeat": "passed",
+    "three_repeats_per_method_budget": "passed"
+  },
+  "dataset": "voting",
+  "ground_truth_audit": {
+    "kind": "analytic_exact",
+    "maximum_truth_discrepancy": 1.3877787807814457e-17
+  },
+  "maximum_discrepancies": {
+    "sample_estimate_efficiency_residual": 0.0015256601952254867,
+    "stored_metric_absolute": 0.0
+  },
+  "method_identity_audit": {
+    "controlled_components": [
+      "outer size schedule",
+      "seed",
+      "candidate pool",
+      "final relabel permutation",
+      "coupled-linear estimator"
+    ],
+    "inside_greedy_global": {
+      "estimator": "coupled_linear",
+      "second_moment_scope": "global_weighted"
+    },
+    "inside_greedy_per_size": {
+      "estimator": "coupled_linear",
+      "second_moment_scope": "per_size"
+    }
+  },
+  "relabel_permutation_audit": {
+    "matching_sha256_pairs_checked": 15
+  },
+  "size_schedule_audit": {
+    "matching_sha256_pairs_checked": 15
+  },
+  "status": "ready_to_share",
+  "validated_report": "analytic_inside_second_moment_scope_ablation",
+  "validated_shape": {
+    "budget_points": 5,
+    "methods": 9,
+    "per_repeat_estimates_checked": 135,
+    "players": 51,
+    "repeats": 3,
+    "scalar_player_estimates_checked": 6885
+  }
+}

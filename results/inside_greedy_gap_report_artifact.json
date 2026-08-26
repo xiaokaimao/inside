@@ -1,0 +1,1799 @@
+{
+  "manifest": {
+    "blocks": [
+      {
+        "body": "# Why INSIDE-Greedy Looks Worse Than INSIDE-Orbit",
+        "id": "title",
+        "type": "markdown"
+      },
+      {
+        "body": "## Technical summary\n\n**No formula, call-budget, or estimator implementation bug was found.** The apparent failure is primarily a method-bundle mismatch: INSIDE-Greedy uses a global HT/linear estimator with an endpoint-linear size baseline, while INSIDE-Orbit enforces exact fixed-size first-moment balance and uses the equivalent balanced ratio/slice-wise estimator. Greedy still beats its matched IID-linear baseline at every formal point.",
+        "id": "technical_summary",
+        "type": "markdown"
+      },
+      {
+        "body": "## Greedy has beaten Orbit before\n\nThe exact n=8, T=40 synthetic experiment is a real counterexample, not a misnamed old curve. Across 100 repeats, Greedy reduces RMSE by 67.0% on additive, 47.6% on pairwise, and 46.4% on degree-3 games. With only one cyclic orbit per inner size, Orbit has poorer aggregate second-moment coverage; Greedy can compensate across sizes.",
+        "id": "historical_finding",
+        "sourceId": "synthetic_results",
+        "type": "markdown"
+      },
+      {
+        "chartId": "synthetic_chart",
+        "id": "synthetic_chart_block",
+        "type": "chart"
+      },
+      {
+        "body": "## The formal large-game gap is real but not design-only\n\nOrbit is lower at all 15 Wine, Airport, and Voting budget points. Yet the matched controls show that Greedy improves on IID linear by 1.7%--25.9% at every point. The IID-linear estimator itself is 4.6--5.0 times worse than IID ratio on Wine, roughly 9.0--10.8 times worse on Airport, and 1.45--1.73 times worse on Voting. That family gap dominates the headline Greedy/Orbit ratio.",
+        "id": "formal_finding",
+        "type": "markdown"
+      },
+      {
+        "chartId": "formal_gap_chart",
+        "id": "formal_gap_chart_block",
+        "type": "chart"
+      },
+      {
+        "id": "formal_table_block",
+        "tableId": "formal_table",
+        "type": "table"
+      },
+      {
+        "body": "## The root cause is fixed-size mean leakage\n\nWrite `mu_s = E[v(S) | |S|=s]` and let `ell_s` be the endpoint baseline. The global inner update decomposes as `C/T sum_s sum_t (v_t-mu_s)u_t + C/T sum_s (mu_s-ell_s)m_s`, where `m_s=sum_t u_t`. Row-wise Greedy only softly penalizes `m_s`; complete cyclic orbits make every `m_s=0` exactly. Airport's q*-weighted endpoint mismatch is 5.575, and Voting's is 0.2143, so the second term can dominate despite a small frame discrepancy.",
+        "id": "root_cause",
+        "sourceId": "debug_results",
+        "type": "markdown"
+      },
+      {
+        "id": "size_profile_table_block",
+        "tableId": "size_profile_table",
+        "type": "table"
+      },
+      {
+        "body": "## Same-coalition ablations isolate the mechanism\n\nOn identical Greedy rows, replacing only the endpoint baseline with the exact fixed-size mean cuts Airport RMSE by about 88% and Voting RMSE by 30%--32%. The upstream row-ratio estimator gives almost the same gains, although its random denominators generally sacrifice finite-sample unbiasedness. On identical q*-marginal complete-orbit rows, switching only global HT to strict ratio changes RMSE by less than 1%. Thus fixed-size centering/cancellation explains most of the gap.",
+        "id": "ablation_finding",
+        "sourceId": "debug_results",
+        "type": "markdown"
+      },
+      {
+        "chartId": "ablation_chart",
+        "id": "ablation_chart_block",
+        "type": "chart"
+      },
+      {
+        "body": "## Formula and implementation audit\n\nThe direction normalization, q* distribution, systematic size marginal, row-greedy score, random relabeling, exact boundary vector, global HT coefficient, cyclic 1-balance, strict ratio formula, and physical call accounting all match their stated identities. Strict ratio and slice-wise linear agree to 5.6e-16 in the diagnostic. The issue is statistical: the current named curves bind different estimators to different designs.",
+        "id": "formula_audit",
+        "sourceId": "design_code",
+        "type": "markdown"
+      },
+      {
+        "id": "audit_table_block",
+        "tableId": "audit_table",
+        "type": "table"
+      },
+      {
+        "body": "## K and lambda do not repair the missing constraint\n\nIncreasing K sharply improves second-moment frame discrepancy, but barely changes the exact-size-centered RMSE or slice-mean imbalance. Changing lambda from 0 to 1 yields only a modest Airport improvement and is non-monotone on Voting. The raw Eq. (12) terms are scale-sensitive, so a fixed lambda=0.1 is a weak soft penalty at large n; it is not a substitute for exact first-moment balance. A dimensionless parameter can be converted with `lambda_eff=lambda0*(1-1/(n-1))*mean_q*[s(n-s)]`.",
+        "id": "sensitivity_finding",
+        "sourceId": "debug_results",
+        "type": "markdown"
+      },
+      {
+        "id": "sensitivity_table_block",
+        "tableId": "sensitivity_table",
+        "type": "table"
+      },
+      {
+        "id": "lambda_scale_table_block",
+        "tableId": "lambda_scale_table",
+        "type": "table"
+      },
+      {
+        "body": "## Scope and definitions\n\nRMSE is coordinate RMSE against exact truth for Airport/Voting and the stored high-budget truth for Wine. Formal results use three repeats per budget. The paired ablation uses six repeats and exact truths. The exact size-mean baseline is an oracle diagnostic and is not presented as a deployable estimator. Lower RMSE is better.",
+        "id": "scope",
+        "type": "markdown"
+      },
+      {
+        "body": "## Methodology\n\nThe audit first classified every historical JSON by the actual constructor and estimator, excluding old `frame_coupled_linear` fields whose config says `orbit_coupled`. It then checked identities against source and tests. Finally, it reused each realized design across endpoint/oracle baselines and global/ratio aggregation so each causal comparison changes one factor only.",
+        "id": "methodology",
+        "sourceId": "debug_code",
+        "type": "markdown"
+      },
+      {
+        "body": "## Limitations and robustness\n\nThe oracle size mean is available only for the two analytic games. Wine's same mechanism is inferred from matched IID families, not directly proven with an exact learning curve. Formal results have only three repeats, though the analytic gaps are much larger than their observed repeat variation. Dependent designs have no universal MSE dominance for arbitrary high-order games, and the synthetic counterexample should not be generalized beyond its small-n, low-order setting.",
+        "id": "limitations",
+        "type": "markdown"
+      },
+      {
+        "body": "## Recommended next steps\n\n1. Do not interpret the current Greedy-versus-Orbit plot as a pure design ablation; retain matched IID-linear and IID-ratio controls.\n2. Keep current production code unchanged until choosing a statistical fix. The clean options are exact/near-exact per-size first-moment balancing, cross-fitted size baselines, or a normalized first-moment objective.\n3. Re-run Wine after estimating a size-only baseline from an independent pilot split; this tests the mechanism without using an oracle.\n4. If Greedy remains a named main method, report both its global-linear and a balanced/centered variant.",
+        "id": "next_steps",
+        "type": "markdown"
+      },
+      {
+        "body": "## Further questions\n\nCan partial orbits or dependent rounding enforce `m_s=0` at arbitrary budgets? Can a pilot-estimated size baseline preserve unbiasedness through cross-fitting while retaining Greedy's small-n second-moment advantage? Those are the most direct paths to a stronger INSIDE-Greedy.",
+        "id": "further_questions",
+        "type": "markdown"
+      }
+    ],
+    "cards": [],
+    "charts": [
+      {
+        "dataset": "formal_gap",
+        "encodings": {
+          "color": {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "nominal"
+          },
+          "tooltip": [
+            {
+              "field": "linear_to_ratio_family_ratio",
+              "format": "number",
+              "label": "IID linear / IID ratio RMSE",
+              "type": "quantitative"
+            },
+            {
+              "field": "greedy_gain_vs_iid_linear_percent",
+              "format": "number",
+              "label": "Greedy gain vs matched IID linear",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "budget_multiplier",
+            "label": "Inner calls / players",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "greedy_to_orbit_ratio",
+            "format": "number",
+            "label": "Greedy RMSE / Orbit RMSE",
+            "type": "quantitative"
+          }
+        },
+        "id": "formal_gap_chart",
+        "intent": "trend",
+        "question": "How large is the formal RMSE gap across normalized budgets?",
+        "rationale": "A normalized ratio compares datasets with different RMSE scales.",
+        "source": {
+          "id": "formal_transform",
+          "label": "Formal comparison transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read all formal Wine, Airport, and Voting budget summaries and compute matched RMSE ratios.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "formal_transform",
+            "input_files": [
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "greedy_to_orbit_ratio = INSIDE-Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "matched gain = 1 - method RMSE / estimator-matched IID RMSE"
+            ],
+            "sql": "SELECT * FROM artifact.formal_gap",
+            "tables_used": [
+              "artifact.formal_gap"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _formal_rows\nrows = _formal_rows()",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "formal_transform",
+        "subtitle": "All formal points exceed 1, but this compares two design-and-estimator bundles.",
+        "title": "Greedy-to-Orbit RMSE ratio",
+        "type": "line"
+      },
+      {
+        "dataset": "ablation_effects",
+        "encodings": {
+          "color": {
+            "field": "component",
+            "label": "Paired change",
+            "type": "nominal"
+          },
+          "tooltip": [
+            {
+              "field": "before_rmse",
+              "format": "number",
+              "label": "Before RMSE",
+              "type": "quantitative"
+            },
+            {
+              "field": "after_rmse",
+              "format": "number",
+              "label": "After RMSE",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "scenario",
+            "label": "Dataset and budget multiplier",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "rmse_reduction_percent",
+            "format": "number",
+            "label": "RMSE reduction (%)",
+            "type": "quantitative"
+          }
+        },
+        "id": "ablation_chart",
+        "intent": "comparison",
+        "options": {
+          "grouping": "grouped",
+          "orientation": "vertical"
+        },
+        "question": "Which factor explains the observed gap?",
+        "rationale": "Paired rows isolate the baseline and aggregation effects.",
+        "source": {
+          "id": "debug_transform",
+          "label": "Paired-ablation transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read paired same-coalition ablations and express before/after changes as RMSE reductions.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "debug_transform",
+            "input_files": [
+              "results/inside_greedy_gap_debug.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "RMSE reduction (%) = 100 * (1 - after RMSE / before RMSE)",
+              "Every paired change reuses the identical realized coalition rows"
+            ],
+            "sql": "SELECT * FROM artifact.ablation_effects",
+            "tables_used": [
+              "artifact.ablation_effects"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _ablation_rows, _read, DEBUG_REPORT\nrows = _ablation_rows(_read(DEBUG_REPORT))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "debug_transform",
+        "subtitle": "Exact size centering or row-ratio transforms Greedy; changing only global-versus-ratio aggregation on balanced rows does not.",
+        "title": "RMSE change under same-coalition ablations",
+        "type": "bar"
+      },
+      {
+        "dataset": "synthetic_results",
+        "encodings": {
+          "color": {
+            "field": "method",
+            "label": "Method",
+            "type": "nominal"
+          },
+          "x": {
+            "field": "game",
+            "label": "Synthetic game",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "rmse",
+            "format": "number",
+            "label": "RMSE",
+            "type": "quantitative"
+          }
+        },
+        "id": "synthetic_chart",
+        "intent": "comparison",
+        "options": {
+          "grouping": "grouped",
+          "orientation": "vertical"
+        },
+        "question": "Has INSIDE-Greedy ever beaten INSIDE-Orbit?",
+        "rationale": "The exact benchmark is the clean historical counterexample.",
+        "source": {
+          "id": "synthetic_transform",
+          "label": "Exact synthetic comparison transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read exact n=8 synthetic results for the true row-Greedy and cyclic-Orbit methods.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "synthetic_transform",
+            "input_files": [
+              "results/synthetic_n8_t40.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "RMSE is aggregate coordinate RMSE over 100 independent repeats"
+            ],
+            "sql": "SELECT * FROM artifact.synthetic_results",
+            "tables_used": [
+              "artifact.synthetic_results"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _synthetic_rows\nrows = _synthetic_rows()",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "synthetic_transform",
+        "subtitle": "Greedy wins when second-order coverage matters and the size baseline is well aligned with low-order structure.",
+        "title": "Exact n=8 synthetic-game RMSE",
+        "type": "bar"
+      }
+    ],
+    "description": "Code, formula, history, and paired-ablation audit of the INSIDE-Greedy versus INSIDE-Orbit RMSE gap.",
+    "generatedAt": "2026-08-24T14:28:35.304530+00:00",
+    "sources": [
+      {
+        "id": "formal_transform",
+        "label": "Formal comparison transformation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Read all formal Wine, Airport, and Voting budget summaries and compute matched RMSE ratios.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "formal_transform",
+          "input_files": [
+            "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+            "results/airport_inside_comparison_3repeats_50k_1m.json",
+            "results/voting_inside_comparison_3repeats_25k_510k.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "greedy_to_orbit_ratio = INSIDE-Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+            "matched gain = 1 - method RMSE / estimator-matched IID RMSE"
+          ],
+          "sql": "SELECT * FROM artifact.formal_gap",
+          "tables_used": [
+            "artifact.formal_gap"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _formal_rows\nrows = _formal_rows()",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "debug_transform",
+        "label": "Paired-ablation transformation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Read paired same-coalition ablations and express before/after changes as RMSE reductions.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "debug_transform",
+          "input_files": [
+            "results/inside_greedy_gap_debug.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "RMSE reduction (%) = 100 * (1 - after RMSE / before RMSE)",
+            "Every paired change reuses the identical realized coalition rows"
+          ],
+          "sql": "SELECT * FROM artifact.ablation_effects",
+          "tables_used": [
+            "artifact.ablation_effects"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _ablation_rows, _read, DEBUG_REPORT\nrows = _ablation_rows(_read(DEBUG_REPORT))",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "synthetic_transform",
+        "label": "Exact synthetic comparison transformation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Read exact n=8 synthetic results for the true row-Greedy and cyclic-Orbit methods.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "synthetic_transform",
+          "input_files": [
+            "results/synthetic_n8_t40.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "RMSE is aggregate coordinate RMSE over 100 independent repeats"
+          ],
+          "sql": "SELECT * FROM artifact.synthetic_results",
+          "tables_used": [
+            "artifact.synthetic_results"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _synthetic_rows\nrows = _synthetic_rows()",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "audit_transform",
+        "label": "Code-audit checklist",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Assemble reviewed formula, implementation, invariant, and comparison checks.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "audit_transform",
+          "input_files": [
+            "frame_ofa/design.py",
+            "frame_ofa/estimator.py",
+            "experiments/run_analytic_inside_comparison.py",
+            "results/inside_greedy_gap_debug.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "PASS denotes exact identity or validated implementation behavior"
+          ],
+          "sql": "SELECT * FROM artifact.audit_checks",
+          "tables_used": [
+            "artifact.audit_checks"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _audit_rows, _read, DEBUG_REPORT\nrows = _audit_rows(_read(DEBUG_REPORT)['invariants'])",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "size_profile_transform",
+        "label": "Exact size-profile mismatch transformation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Read exact fixed-size means and summarize mismatch from the endpoint-linear baseline.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "size_profile_transform",
+          "input_files": [
+            "results/inside_greedy_gap_debug.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "q*-weighted RMS mismatch = sqrt(sum_s q_s * (mu_s - ell_s)^2)"
+          ],
+          "sql": "SELECT * FROM artifact.size_profiles",
+          "tables_used": [
+            "artifact.size_profiles"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _size_profile_rows, _read, DEBUG_REPORT\nrows = _size_profile_rows(_read(DEBUG_REPORT))",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "sensitivity_transform",
+        "label": "Greedy K and lambda sensitivity transformation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Read the fixed-budget Greedy candidate-pool and raw-lambda sweep.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "sensitivity_transform",
+          "input_files": [
+            "results/inside_greedy_gap_debug.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "Aggregate RMSE = sqrt(mean over repeats of coordinate MSE)"
+          ],
+          "sql": "SELECT * FROM artifact.sensitivity",
+          "tables_used": [
+            "artifact.sensitivity"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _sensitivity_rows, _read, DEBUG_REPORT\nrows = _sensitivity_rows(_read(DEBUG_REPORT))",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "lambda_transform",
+        "label": "Lambda-scale calculation",
+        "path": "experiments/build_inside_greedy_gap_report.py",
+        "query": {
+          "description": "Compute the raw first-moment penalty corresponding to a dimensionless lambda0 under inner q*.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T14:28:35.304530+00:00",
+          "filters": [
+            "Use only completed stored experiment reports",
+            "Preserve every formal budget point"
+          ],
+          "id": "lambda_transform",
+          "input_files": [
+            "frame_ofa/design.py"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "lambda_eff = lambda0 * (1 - 1/(n-1)) * E_q*[s(n-s)]"
+          ],
+          "sql": "SELECT * FROM artifact.lambda_scales",
+          "tables_used": [
+            "artifact.lambda_scales"
+          ],
+          "transformation_code": "from experiments.build_inside_greedy_gap_report import _lambda_scale_rows\nrows = _lambda_scale_rows()",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "debug_results",
+        "label": "Paired INSIDE gap ablation",
+        "path": "results/inside_greedy_gap_debug.json"
+      },
+      {
+        "id": "synthetic_results",
+        "label": "Exact n=8 synthetic benchmark",
+        "path": "results/synthetic_n8_t40.json"
+      },
+      {
+        "id": "formal_wine",
+        "label": "Formal Wine INSIDE comparison",
+        "path": "results/wine_inside_comparison_3repeats_71k_1p42m.json"
+      },
+      {
+        "id": "formal_airport",
+        "label": "Formal Airport INSIDE comparison",
+        "path": "results/airport_inside_comparison_3repeats_50k_1m.json"
+      },
+      {
+        "id": "formal_voting",
+        "label": "Formal Voting INSIDE comparison",
+        "path": "results/voting_inside_comparison_3repeats_25k_510k.json"
+      },
+      {
+        "id": "design_code",
+        "label": "Coalition-design implementation",
+        "path": "frame_ofa/design.py"
+      },
+      {
+        "id": "estimator_code",
+        "label": "OFA estimator implementation",
+        "path": "frame_ofa/estimator.py"
+      },
+      {
+        "id": "debug_code",
+        "label": "Reproducible paired diagnostic",
+        "path": "experiments/debug_inside_greedy_gap.py"
+      }
+    ],
+    "surface": "report",
+    "tables": [
+      {
+        "columns": [
+          {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "text"
+          },
+          {
+            "field": "budget_multiplier",
+            "format": "number",
+            "label": "Calls / n"
+          },
+          {
+            "field": "greedy_rmse",
+            "format": "number",
+            "label": "Greedy RMSE"
+          },
+          {
+            "field": "orbit_rmse",
+            "format": "number",
+            "label": "Orbit RMSE"
+          },
+          {
+            "field": "greedy_to_orbit_ratio",
+            "format": "number",
+            "label": "Greedy / Orbit"
+          },
+          {
+            "field": "greedy_gain_vs_iid_linear_percent",
+            "format": "number",
+            "label": "Greedy gain vs IID linear (%)"
+          }
+        ],
+        "dataset": "formal_gap",
+        "defaultSort": {
+          "direction": "desc",
+          "field": "greedy_to_orbit_ratio"
+        },
+        "id": "formal_table",
+        "source": {
+          "id": "formal_transform",
+          "label": "Formal comparison transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read all formal Wine, Airport, and Voting budget summaries and compute matched RMSE ratios.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "formal_transform",
+            "input_files": [
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "greedy_to_orbit_ratio = INSIDE-Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "matched gain = 1 - method RMSE / estimator-matched IID RMSE"
+            ],
+            "sql": "SELECT * FROM artifact.formal_gap",
+            "tables_used": [
+              "artifact.formal_gap"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _formal_rows\nrows = _formal_rows()",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "formal_transform",
+        "subtitle": "Three repeats per point; lower RMSE is better.",
+        "title": "Formal comparison and matched-family controls"
+      },
+      {
+        "columns": [
+          {
+            "field": "check",
+            "label": "Check",
+            "type": "text"
+          },
+          {
+            "field": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "field": "evidence",
+            "label": "Evidence",
+            "type": "text"
+          }
+        ],
+        "dataset": "audit_checks",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "status"
+        },
+        "id": "audit_table",
+        "source": {
+          "id": "audit_transform",
+          "label": "Code-audit checklist",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Assemble reviewed formula, implementation, invariant, and comparison checks.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "audit_transform",
+            "input_files": [
+              "frame_ofa/design.py",
+              "frame_ofa/estimator.py",
+              "experiments/run_analytic_inside_comparison.py",
+              "results/inside_greedy_gap_debug.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "PASS denotes exact identity or validated implementation behavior"
+            ],
+            "sql": "SELECT * FROM artifact.audit_checks",
+            "tables_used": [
+              "artifact.audit_checks"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _audit_rows, _read, DEBUG_REPORT\nrows = _audit_rows(_read(DEBUG_REPORT)['invariants'])",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "audit_transform",
+        "subtitle": "A failed comparison check is a caveat, not a numerical crash.",
+        "title": "Code and comparison audit"
+      },
+      {
+        "columns": [
+          {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "text"
+          },
+          {
+            "field": "ofa_weighted_rms_mismatch",
+            "format": "number",
+            "label": "q*-weighted RMS"
+          },
+          {
+            "field": "maximum_absolute_mismatch",
+            "format": "number",
+            "label": "Maximum absolute mismatch"
+          }
+        ],
+        "dataset": "size_profiles",
+        "defaultSort": {
+          "direction": "desc",
+          "field": "ofa_weighted_rms_mismatch"
+        },
+        "id": "size_profile_table",
+        "source": {
+          "id": "size_profile_transform",
+          "label": "Exact size-profile mismatch transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read exact fixed-size means and summarize mismatch from the endpoint-linear baseline.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "size_profile_transform",
+            "input_files": [
+              "results/inside_greedy_gap_debug.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "q*-weighted RMS mismatch = sqrt(sum_s q_s * (mu_s - ell_s)^2)"
+            ],
+            "sql": "SELECT * FROM artifact.size_profiles",
+            "tables_used": [
+              "artifact.size_profiles"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _size_profile_rows, _read, DEBUG_REPORT\nrows = _size_profile_rows(_read(DEBUG_REPORT))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "size_profile_transform",
+        "subtitle": "Mismatch is E[v(S) | |S|=s] minus endpoint interpolation.",
+        "title": "Endpoint baseline mismatch"
+      },
+      {
+        "columns": [
+          {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "text"
+          },
+          {
+            "field": "configuration",
+            "label": "Configuration",
+            "type": "text"
+          },
+          {
+            "field": "endpoint_rmse",
+            "format": "number",
+            "label": "Endpoint RMSE"
+          },
+          {
+            "field": "oracle_size_rmse",
+            "format": "number",
+            "label": "Exact-size RMSE"
+          },
+          {
+            "field": "frame_frobenius",
+            "format": "number",
+            "label": "Frame discrepancy"
+          },
+          {
+            "field": "slice_mean_direction_rms",
+            "format": "number",
+            "label": "Slice mean RMS"
+          }
+        ],
+        "dataset": "sensitivity",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "dataset"
+        },
+        "id": "sensitivity_table",
+        "source": {
+          "id": "sensitivity_transform",
+          "label": "Greedy K and lambda sensitivity transformation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Read the fixed-budget Greedy candidate-pool and raw-lambda sweep.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "sensitivity_transform",
+            "input_files": [
+              "results/inside_greedy_gap_debug.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over repeats of coordinate MSE)"
+            ],
+            "sql": "SELECT * FROM artifact.sensitivity",
+            "tables_used": [
+              "artifact.sensitivity"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _sensitivity_rows, _read, DEBUG_REPORT\nrows = _sensitivity_rows(_read(DEBUG_REPORT))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "sensitivity_transform",
+        "subtitle": "Six repeats at inner calls = 100n; oracle means diagnostic only.",
+        "title": "Greedy K and lambda sensitivity"
+      },
+      {
+        "columns": [
+          {
+            "field": "dataset",
+            "label": "Reference",
+            "type": "text"
+          },
+          {
+            "field": "players",
+            "format": "number",
+            "label": "Players"
+          },
+          {
+            "field": "raw_lambda_for_lambda0_1",
+            "format": "number",
+            "label": "Raw lambda for lambda0=1"
+          },
+          {
+            "field": "lambda0_equivalent_of_raw_0_1",
+            "format": "number",
+            "label": "Dimensionless value of raw 0.1"
+          }
+        ],
+        "dataset": "lambda_scales",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "players"
+        },
+        "id": "lambda_scale_table",
+        "source": {
+          "id": "lambda_transform",
+          "label": "Lambda-scale calculation",
+          "path": "experiments/build_inside_greedy_gap_report.py",
+          "query": {
+            "description": "Compute the raw first-moment penalty corresponding to a dimensionless lambda0 under inner q*.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T14:28:35.304530+00:00",
+            "filters": [
+              "Use only completed stored experiment reports",
+              "Preserve every formal budget point"
+            ],
+            "id": "lambda_transform",
+            "input_files": [
+              "frame_ofa/design.py"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "lambda_eff = lambda0 * (1 - 1/(n-1)) * E_q*[s(n-s)]"
+            ],
+            "sql": "SELECT * FROM artifact.lambda_scales",
+            "tables_used": [
+              "artifact.lambda_scales"
+            ],
+            "transformation_code": "from experiments.build_inside_greedy_gap_report import _lambda_scale_rows\nrows = _lambda_scale_rows()",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "lambda_transform",
+        "subtitle": "Conversion for dimensionless lambda0 = 1 on inner sizes 2,...,n-2.",
+        "title": "Raw lambda scale under the OFA size distribution"
+      }
+    ],
+    "title": "Why INSIDE-Greedy Looks Worse Than INSIDE-Orbit",
+    "version": 1
+  },
+  "snapshot": {
+    "datasets": {
+      "ablation_effects": [
+        {
+          "after_rmse": 0.009813895020297827,
+          "before_rmse": 0.08256840892711143,
+          "budget_multiplier": 250,
+          "component": "Greedy: exact size-mean baseline",
+          "dataset": "Airport",
+          "rmse_reduction_percent": 88.11422534620814,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7250"
+        },
+        {
+          "after_rmse": 0.009226704641211069,
+          "before_rmse": 0.08256840892711143,
+          "budget_multiplier": 250,
+          "component": "Greedy: official ratio aggregation",
+          "dataset": "Airport",
+          "rmse_reduction_percent": 88.82538157014011,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7250"
+        },
+        {
+          "after_rmse": 0.008645267858160964,
+          "before_rmse": 0.008605779345657009,
+          "budget_multiplier": 250,
+          "component": "Same orbit: ratio instead of global HT",
+          "dataset": "Airport",
+          "rmse_reduction_percent": -0.45886038809352936,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7250"
+        },
+        {
+          "after_rmse": 0.0067206683851109665,
+          "before_rmse": 0.05725453451147513,
+          "budget_multiplier": 500,
+          "component": "Greedy: exact size-mean baseline",
+          "dataset": "Airport",
+          "rmse_reduction_percent": 88.261770980316,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7500"
+        },
+        {
+          "after_rmse": 0.006185472660432961,
+          "before_rmse": 0.05725453451147513,
+          "budget_multiplier": 500,
+          "component": "Greedy: official ratio aggregation",
+          "dataset": "Airport",
+          "rmse_reduction_percent": 89.19653663555111,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7500"
+        },
+        {
+          "after_rmse": 0.005757290454320985,
+          "before_rmse": 0.005793877031238623,
+          "budget_multiplier": 500,
+          "component": "Same orbit: ratio instead of global HT",
+          "dataset": "Airport",
+          "rmse_reduction_percent": 0.6314696829148314,
+          "same_coalitions": "yes",
+          "scenario": "Airport \u00d7500"
+        },
+        {
+          "after_rmse": 0.0033673998556355165,
+          "before_rmse": 0.004814270646173449,
+          "budget_multiplier": 250,
+          "component": "Greedy: exact size-mean baseline",
+          "dataset": "Voting",
+          "rmse_reduction_percent": 30.053790010496318,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7250"
+        },
+        {
+          "after_rmse": 0.003385528505796062,
+          "before_rmse": 0.004814270646173449,
+          "budget_multiplier": 250,
+          "component": "Greedy: official ratio aggregation",
+          "dataset": "Voting",
+          "rmse_reduction_percent": 29.677229333024748,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7250"
+        },
+        {
+          "after_rmse": 0.0033734499676397367,
+          "before_rmse": 0.003379106432549757,
+          "budget_multiplier": 250,
+          "component": "Same orbit: ratio instead of global HT",
+          "dataset": "Voting",
+          "rmse_reduction_percent": 0.167395286976868,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7250"
+        },
+        {
+          "after_rmse": 0.0023818580797761047,
+          "before_rmse": 0.003478299436568817,
+          "budget_multiplier": 500,
+          "component": "Greedy: exact size-mean baseline",
+          "dataset": "Voting",
+          "rmse_reduction_percent": 31.522339487663587,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7500"
+        },
+        {
+          "after_rmse": 0.0023778373783372984,
+          "before_rmse": 0.003478299436568817,
+          "budget_multiplier": 500,
+          "component": "Greedy: official ratio aggregation",
+          "dataset": "Voting",
+          "rmse_reduction_percent": 31.637933372322713,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7500"
+        },
+        {
+          "after_rmse": 0.002225818863949675,
+          "before_rmse": 0.0022245015114526014,
+          "budget_multiplier": 500,
+          "component": "Same orbit: ratio instead of global HT",
+          "dataset": "Voting",
+          "rmse_reduction_percent": -0.05922012146502009,
+          "same_coalitions": "yes",
+          "scenario": "Voting \u00d7500"
+        }
+      ],
+      "audit_checks": [
+        {
+          "check": "Draft Eq. (12)/(13) vs row-greedy score",
+          "evidence": "w_s u^T A u + lambda u^T m_s is implemented directly",
+          "status": "PASS"
+        },
+        {
+          "check": "Cyclic strict ratio vs slice-wise linear",
+          "evidence": "maximum absolute difference 5.55e-16",
+          "status": "PASS"
+        },
+        {
+          "check": "Complete-orbit cancellation of any fixed size baseline",
+          "evidence": "maximum absolute difference 7.08e-14",
+          "status": "PASS"
+        },
+        {
+          "check": "Formal physical call accounting",
+          "evidence": "all three stored validation reports are ready_to_share",
+          "status": "PASS"
+        },
+        {
+          "check": "Fixed lambda=0.1 gives exact first-moment balance",
+          "evidence": "row-wise objective is a soft, scale-sensitive penalty; m_s is nonzero",
+          "status": "FAIL (method limitation)"
+        },
+        {
+          "check": "Greedy and Orbit curves isolate coalition design alone",
+          "evidence": "Greedy uses global HT; Orbit uses balanced fixed-size ratio",
+          "status": "FAIL (comparison caveat)"
+        }
+      ],
+      "formal_gap": [
+        {
+          "budget_multiplier": 500,
+          "dataset": "Wine",
+          "greedy_gain_vs_iid_linear_percent": 1.9963944595743688,
+          "greedy_over_iid_linear_factor": 0.9800360554042563,
+          "greedy_rmse": 0.002813820562828758,
+          "greedy_to_orbit_ratio": 4.428707144329493,
+          "iid_linear_over_iid_ratio_factor": 4.694012659217804,
+          "iid_linear_rmse": 0.0028711398395113957,
+          "iid_ratio_over_orbit_factor": 0.9626992925111393,
+          "iid_ratio_rmse": 0.0006116600120098172,
+          "inner_calls": 71000,
+          "linear_to_ratio_family_ratio": 4.694012659217804,
+          "orbit_gain_vs_iid_ratio_percent": -3.874595917855528,
+          "orbit_rmse": 0.0006353593658663042,
+          "players": 142,
+          "total_calls": 71286
+        },
+        {
+          "budget_multiplier": 1000,
+          "dataset": "Wine",
+          "greedy_gain_vs_iid_linear_percent": 13.261273271440821,
+          "greedy_over_iid_linear_factor": 0.8673872672855918,
+          "greedy_rmse": 0.0018711834485940814,
+          "greedy_to_orbit_ratio": 4.537440389107301,
+          "iid_linear_over_iid_ratio_factor": 4.6599587707864405,
+          "iid_linear_rmse": 0.002157264141598224,
+          "iid_ratio_over_orbit_factor": 1.1225761616462318,
+          "iid_ratio_rmse": 0.0004629363150425797,
+          "inner_calls": 142000,
+          "linear_to_ratio_family_ratio": 4.6599587707864405,
+          "orbit_gain_vs_iid_ratio_percent": 10.919184446824225,
+          "orbit_rmse": 0.0004123874449317491,
+          "players": 142,
+          "total_calls": 142286
+        },
+        {
+          "budget_multiplier": 2000,
+          "dataset": "Wine",
+          "greedy_gain_vs_iid_linear_percent": 7.243537760233199,
+          "greedy_over_iid_linear_factor": 0.927564622397668,
+          "greedy_rmse": 0.0013971341200072875,
+          "greedy_to_orbit_ratio": 5.091806174293898,
+          "iid_linear_over_iid_ratio_factor": 5.014581503520509,
+          "iid_linear_rmse": 0.0015062391193789023,
+          "iid_ratio_over_orbit_factor": 1.0946946428722997,
+          "iid_ratio_rmse": 0.0003003718492403485,
+          "inner_calls": 284000,
+          "linear_to_ratio_family_ratio": 5.014581503520509,
+          "orbit_gain_vs_iid_ratio_percent": 8.65032486354702,
+          "orbit_rmse": 0.0002743887084824147,
+          "players": 142,
+          "total_calls": 284286
+        },
+        {
+          "budget_multiplier": 5000,
+          "dataset": "Wine",
+          "greedy_gain_vs_iid_linear_percent": 1.742894285150165,
+          "greedy_over_iid_linear_factor": 0.9825710571484984,
+          "greedy_rmse": 0.000903401206396081,
+          "greedy_to_orbit_ratio": 5.14550530692483,
+          "iid_linear_over_iid_ratio_factor": 4.621948260525206,
+          "iid_linear_rmse": 0.0009194258265838047,
+          "iid_ratio_over_orbit_factor": 1.133023672085521,
+          "iid_ratio_rmse": 0.0001989260317854202,
+          "inner_calls": 710000,
+          "linear_to_ratio_family_ratio": 4.621948260525206,
+          "orbit_gain_vs_iid_ratio_percent": 11.74059071869773,
+          "orbit_rmse": 0.00017557094056054747,
+          "players": 142,
+          "total_calls": 710286
+        },
+        {
+          "budget_multiplier": 10000,
+          "dataset": "Wine",
+          "greedy_gain_vs_iid_linear_percent": 12.124184211742396,
+          "greedy_over_iid_linear_factor": 0.878758157882576,
+          "greedy_rmse": 0.000615707303084792,
+          "greedy_to_orbit_ratio": 4.648740765311867,
+          "iid_linear_over_iid_ratio_factor": 4.652583978848164,
+          "iid_linear_rmse": 0.0007006561447672681,
+          "iid_ratio_over_orbit_factor": 1.1370295143522082,
+          "iid_ratio_rmse": 0.0001505950559845088,
+          "inner_calls": 1420000,
+          "linear_to_ratio_family_ratio": 4.652583978848164,
+          "orbit_gain_vs_iid_ratio_percent": 12.051535393105173,
+          "orbit_rmse": 0.00013244603951226917,
+          "players": 142,
+          "total_calls": 1420286
+        },
+        {
+          "budget_multiplier": 500,
+          "dataset": "Airport",
+          "greedy_gain_vs_iid_linear_percent": 19.033708723625796,
+          "greedy_over_iid_linear_factor": 0.809662912763742,
+          "greedy_rmse": 0.05334577045746104,
+          "greedy_to_orbit_ratio": 11.255410109831956,
+          "iid_linear_over_iid_ratio_factor": 9.79746556692923,
+          "iid_linear_rmse": 0.06588639496326693,
+          "iid_ratio_over_orbit_factor": 1.4188723694346683,
+          "iid_ratio_rmse": 0.0067248406757011315,
+          "inner_calls": 50000,
+          "linear_to_ratio_family_ratio": 9.79746556692923,
+          "orbit_gain_vs_iid_ratio_percent": 29.521497384684626,
+          "orbit_rmse": 0.004739567011499814,
+          "players": 100,
+          "total_calls": 50202
+        },
+        {
+          "budget_multiplier": 1000,
+          "dataset": "Airport",
+          "greedy_gain_vs_iid_linear_percent": 16.612177777943018,
+          "greedy_over_iid_linear_factor": 0.8338782222205698,
+          "greedy_rmse": 0.0398462811030107,
+          "greedy_to_orbit_ratio": 11.103048205206505,
+          "iid_linear_over_iid_ratio_factor": 10.83026174191895,
+          "iid_linear_rmse": 0.0477842927674767,
+          "iid_ratio_over_orbit_factor": 1.2294210389847167,
+          "iid_ratio_rmse": 0.0044121087658044065,
+          "inner_calls": 100000,
+          "linear_to_ratio_family_ratio": 10.83026174191895,
+          "orbit_gain_vs_iid_ratio_percent": 18.660900676807824,
+          "orbit_rmse": 0.0035887695312649148,
+          "players": 100,
+          "total_calls": 100202
+        },
+        {
+          "budget_multiplier": 2000,
+          "dataset": "Airport",
+          "greedy_gain_vs_iid_linear_percent": 14.577719976731473,
+          "greedy_over_iid_linear_factor": 0.8542228002326853,
+          "greedy_rmse": 0.02856943626250499,
+          "greedy_to_orbit_ratio": 13.342366099874036,
+          "iid_linear_over_iid_ratio_factor": 10.226262445561638,
+          "iid_linear_rmse": 0.03344494697955012,
+          "iid_ratio_over_orbit_factor": 1.5273717712278014,
+          "iid_ratio_rmse": 0.0032704956632582573,
+          "inner_calls": 200000,
+          "linear_to_ratio_family_ratio": 10.226262445561638,
+          "orbit_gain_vs_iid_ratio_percent": 34.52805539307994,
+          "orbit_rmse": 0.0021412571090201693,
+          "players": 100,
+          "total_calls": 200202
+        },
+        {
+          "budget_multiplier": 5000,
+          "dataset": "Airport",
+          "greedy_gain_vs_iid_linear_percent": 15.363537860278909,
+          "greedy_over_iid_linear_factor": 0.8463646213972109,
+          "greedy_rmse": 0.017786687671508913,
+          "greedy_to_orbit_ratio": 15.52147857579518,
+          "iid_linear_over_iid_ratio_factor": 8.99378811693391,
+          "iid_linear_rmse": 0.021015395991087118,
+          "iid_ratio_over_orbit_factor": 2.039073763279329,
+          "iid_ratio_rmse": 0.0023366567810863123,
+          "inner_calls": 500000,
+          "linear_to_ratio_family_ratio": 8.99378811693391,
+          "orbit_gain_vs_iid_ratio_percent": 50.95812530137431,
+          "orbit_rmse": 0.0011459402907172897,
+          "players": 100,
+          "total_calls": 500202
+        },
+        {
+          "budget_multiplier": 10000,
+          "dataset": "Airport",
+          "greedy_gain_vs_iid_linear_percent": 15.173985213845121,
+          "greedy_over_iid_linear_factor": 0.8482601478615488,
+          "greedy_rmse": 0.012573158776036831,
+          "greedy_to_orbit_ratio": 16.446210206136712,
+          "iid_linear_over_iid_ratio_factor": 10.597049200656448,
+          "iid_linear_rmse": 0.014822291024438172,
+          "iid_ratio_over_orbit_factor": 1.829581761482211,
+          "iid_ratio_rmse": 0.001398718713462233,
+          "inner_calls": 1000000,
+          "linear_to_ratio_family_ratio": 10.597049200656448,
+          "orbit_gain_vs_iid_ratio_percent": 45.342699569224855,
+          "orbit_rmse": 0.0007645018893985256,
+          "players": 100,
+          "total_calls": 1000202
+        },
+        {
+          "budget_multiplier": 500,
+          "dataset": "Voting",
+          "greedy_gain_vs_iid_linear_percent": 5.8193333656234465,
+          "greedy_over_iid_linear_factor": 0.9418066663437655,
+          "greedy_rmse": 0.003966185991546338,
+          "greedy_to_orbit_ratio": 1.83079392221402,
+          "iid_linear_over_iid_ratio_factor": 1.533548859388971,
+          "iid_linear_rmse": 0.004211252832753526,
+          "iid_ratio_over_orbit_factor": 1.2675937364115368,
+          "iid_ratio_rmse": 0.002746083247997369,
+          "inner_calls": 25500,
+          "linear_to_ratio_family_ratio": 1.533548859388971,
+          "orbit_gain_vs_iid_ratio_percent": 21.11037067515612,
+          "orbit_rmse": 0.0021663748952967577,
+          "players": 51,
+          "total_calls": 25604
+        },
+        {
+          "budget_multiplier": 1000,
+          "dataset": "Voting",
+          "greedy_gain_vs_iid_linear_percent": 25.868236461116943,
+          "greedy_over_iid_linear_factor": 0.7413176353888306,
+          "greedy_rmse": 0.002032784898725978,
+          "greedy_to_orbit_ratio": 1.3578462434270382,
+          "iid_linear_over_iid_ratio_factor": 1.4547051769427097,
+          "iid_linear_rmse": 0.002742124025769003,
+          "iid_ratio_over_orbit_factor": 1.2591320509506625,
+          "iid_ratio_rmse": 0.0018850032771121398,
+          "inner_calls": 51000,
+          "linear_to_ratio_family_ratio": 1.4547051769427097,
+          "orbit_gain_vs_iid_ratio_percent": 20.58021243721133,
+          "orbit_rmse": 0.001497065598234066,
+          "players": 51,
+          "total_calls": 51104
+        },
+        {
+          "budget_multiplier": 2000,
+          "dataset": "Voting",
+          "greedy_gain_vs_iid_linear_percent": 15.125547079988067,
+          "greedy_over_iid_linear_factor": 0.8487445292001193,
+          "greedy_rmse": 0.0017070803810720376,
+          "greedy_to_orbit_ratio": 1.9630323812591841,
+          "iid_linear_over_iid_ratio_factor": 1.5676610402309559,
+          "iid_linear_rmse": 0.002011300600288803,
+          "iid_ratio_over_orbit_factor": 1.4753610382972882,
+          "iid_ratio_rmse": 0.001282994568770101,
+          "inner_calls": 102000,
+          "linear_to_ratio_family_ratio": 1.5676610402309559,
+          "orbit_gain_vs_iid_ratio_percent": 32.21998046294496,
+          "orbit_rmse": 0.0008696139693717296,
+          "players": 51,
+          "total_calls": 102104
+        },
+        {
+          "budget_multiplier": 5000,
+          "dataset": "Voting",
+          "greedy_gain_vs_iid_linear_percent": 16.918828919672947,
+          "greedy_over_iid_linear_factor": 0.8308117108032705,
+          "greedy_rmse": 0.0010318183824729458,
+          "greedy_to_orbit_ratio": 1.8032677289979613,
+          "iid_linear_over_iid_ratio_factor": 1.7291901107834264,
+          "iid_linear_rmse": 0.0012419401039440476,
+          "iid_ratio_over_orbit_factor": 1.2552055706305945,
+          "iid_ratio_rmse": 0.0007182206838907808,
+          "inner_calls": 255000,
+          "linear_to_ratio_family_ratio": 1.7291901107834264,
+          "orbit_gain_vs_iid_ratio_percent": 20.331774858390993,
+          "orbit_rmse": 0.0005721936714557112,
+          "players": 51,
+          "total_calls": 255104
+        },
+        {
+          "budget_multiplier": 10000,
+          "dataset": "Voting",
+          "greedy_gain_vs_iid_linear_percent": 21.252206442329523,
+          "greedy_over_iid_linear_factor": 0.7874779355767048,
+          "greedy_rmse": 0.000766569268850517,
+          "greedy_to_orbit_ratio": 1.9135003865580897,
+          "iid_linear_over_iid_ratio_factor": 1.54613257724407,
+          "iid_linear_rmse": 0.0009734485681673411,
+          "iid_ratio_over_orbit_factor": 1.5716050993634914,
+          "iid_ratio_rmse": 0.0006296022621180914,
+          "inner_calls": 510000,
+          "linear_to_ratio_family_ratio": 1.54613257724407,
+          "orbit_gain_vs_iid_ratio_percent": 36.37078421258588,
+          "orbit_rmse": 0.00040061098196556103,
+          "players": 51,
+          "total_calls": 510104
+        }
+      ],
+      "lambda_scales": [
+        {
+          "dataset": "Synthetic",
+          "lambda0_equivalent_of_raw_0_1": 0.008395050828433738,
+          "players": 8,
+          "raw_lambda_for_lambda0_1": 11.911780171872643
+        },
+        {
+          "dataset": "Voting",
+          "lambda0_equivalent_of_raw_0_1": 0.00024884739498647,
+          "players": 51,
+          "raw_lambda_for_lambda0_1": 401.8527097920277
+        },
+        {
+          "dataset": "Airport",
+          "lambda0_equivalent_of_raw_0_1": 6.854659464087512e-05,
+          "players": 100,
+          "raw_lambda_for_lambda0_1": 1458.8616768478948
+        },
+        {
+          "dataset": "Wine",
+          "lambda0_equivalent_of_raw_0_1": 3.482299699907001e-05,
+          "players": 142,
+          "raw_lambda_for_lambda0_1": 2871.665526165672
+        },
+        {
+          "dataset": "Cancer",
+          "lambda0_equivalent_of_raw_0_1": 3.590539426842078e-06,
+          "players": 455,
+          "raw_lambda_for_lambda0_1": 27850.968367711586
+        }
+      ],
+      "sensitivity": [
+        {
+          "candidate_pool": 1,
+          "configuration": "k1_lambda0.1",
+          "dataset": "Airport",
+          "endpoint_rmse": 0.15036488623447808,
+          "frame_frobenius": 1.009816768019504,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.015808167113463997,
+          "slice_mean_direction_rms": 0.10311931467622347
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda0",
+          "dataset": "Airport",
+          "endpoint_rmse": 0.12995653158945195,
+          "frame_frobenius": 0.364835015893251,
+          "mean_balance": 0.0,
+          "oracle_size_rmse": 0.015830514353707973,
+          "slice_mean_direction_rms": 0.10270572069828
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda0.1",
+          "dataset": "Airport",
+          "endpoint_rmse": 0.1293828219850457,
+          "frame_frobenius": 0.3635325791650847,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.015755677330635768,
+          "slice_mean_direction_rms": 0.1025039900188144
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda1",
+          "dataset": "Airport",
+          "endpoint_rmse": 0.1232047735799725,
+          "frame_frobenius": 0.3637913765456884,
+          "mean_balance": 1.0,
+          "oracle_size_rmse": 0.015547898021668265,
+          "slice_mean_direction_rms": 0.10280221714141712
+        },
+        {
+          "candidate_pool": 16,
+          "configuration": "k16_lambda0.1",
+          "dataset": "Airport",
+          "endpoint_rmse": 0.12404483209709707,
+          "frame_frobenius": 0.21238998791614508,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.015823917490310226,
+          "slice_mean_direction_rms": 0.10318392705853562
+        },
+        {
+          "candidate_pool": 1,
+          "configuration": "k1_lambda0.1",
+          "dataset": "Voting",
+          "endpoint_rmse": 0.008702862646517383,
+          "frame_frobenius": 0.6820193221752889,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.005771177880752565,
+          "slice_mean_direction_rms": 0.10056717377184594
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda0",
+          "dataset": "Voting",
+          "endpoint_rmse": 0.008012205212019737,
+          "frame_frobenius": 0.17287056051847996,
+          "mean_balance": 0.0,
+          "oracle_size_rmse": 0.005434389363106456,
+          "slice_mean_direction_rms": 0.09936119257418204
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda0.1",
+          "dataset": "Voting",
+          "endpoint_rmse": 0.007503800914562677,
+          "frame_frobenius": 0.1722491897097912,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.0051103452549045286,
+          "slice_mean_direction_rms": 0.09853333871399016
+        },
+        {
+          "candidate_pool": 4,
+          "configuration": "k4_lambda1",
+          "dataset": "Voting",
+          "endpoint_rmse": 0.008384743165570559,
+          "frame_frobenius": 0.17388470363602015,
+          "mean_balance": 1.0,
+          "oracle_size_rmse": 0.005651234698193916,
+          "slice_mean_direction_rms": 0.09871845853339171
+        },
+        {
+          "candidate_pool": 16,
+          "configuration": "k16_lambda0.1",
+          "dataset": "Voting",
+          "endpoint_rmse": 0.00788423791138307,
+          "frame_frobenius": 0.10120647058679277,
+          "mean_balance": 0.1,
+          "oracle_size_rmse": 0.005537604779835791,
+          "slice_mean_direction_rms": 0.09947194352689064
+        }
+      ],
+      "size_profiles": [
+        {
+          "dataset": "Airport",
+          "maximum_absolute_mismatch": 8.566870099418635,
+          "ofa_weighted_mean_absolute_mismatch": 4.75806686210743,
+          "ofa_weighted_rms_mismatch": 5.5750684925070795
+        },
+        {
+          "dataset": "Voting",
+          "maximum_absolute_mismatch": 0.3507144899343724,
+          "ofa_weighted_mean_absolute_mismatch": 0.18750388490954417,
+          "ofa_weighted_rms_mismatch": 0.21431206283169074
+        }
+      ],
+      "synthetic_results": [
+        {
+          "candidate_pool": 24,
+          "game": "additive",
+          "greedy_reduction_vs_orbit_percent": 66.97839199544819,
+          "inner_calls": 40,
+          "method": "INSIDE-Greedy",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.05745095697342623,
+          "total_calls": 58
+        },
+        {
+          "candidate_pool": 24,
+          "game": "additive",
+          "greedy_reduction_vs_orbit_percent": 66.97839199544819,
+          "inner_calls": 40,
+          "method": "INSIDE-Orbit",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.17397988906387302,
+          "total_calls": 58
+        },
+        {
+          "candidate_pool": 24,
+          "game": "degree3",
+          "greedy_reduction_vs_orbit_percent": 46.39002321279905,
+          "inner_calls": 40,
+          "method": "INSIDE-Greedy",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.10593272110728945,
+          "total_calls": 58
+        },
+        {
+          "candidate_pool": 24,
+          "game": "degree3",
+          "greedy_reduction_vs_orbit_percent": 46.39002321279905,
+          "inner_calls": 40,
+          "method": "INSIDE-Orbit",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.19759889381742882,
+          "total_calls": 58
+        },
+        {
+          "candidate_pool": 24,
+          "game": "pairwise",
+          "greedy_reduction_vs_orbit_percent": 47.56804733601388,
+          "inner_calls": 40,
+          "method": "INSIDE-Greedy",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.10023287175390297,
+          "total_calls": 58
+        },
+        {
+          "candidate_pool": 24,
+          "game": "pairwise",
+          "greedy_reduction_vs_orbit_percent": 47.56804733601388,
+          "inner_calls": 40,
+          "method": "INSIDE-Orbit",
+          "players": 8,
+          "repeats": 100,
+          "rmse": 0.19116753556033367,
+          "total_calls": 58
+        }
+      ]
+    },
+    "generatedAt": "2026-08-24T14:28:35.304530+00:00",
+    "status": "ready",
+    "version": 1
+  },
+  "sources": [
+    {
+      "id": "formal_transform",
+      "label": "Formal comparison transformation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Read all formal Wine, Airport, and Voting budget summaries and compute matched RMSE ratios.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "formal_transform",
+        "input_files": [
+          "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+          "results/airport_inside_comparison_3repeats_50k_1m.json",
+          "results/voting_inside_comparison_3repeats_25k_510k.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "greedy_to_orbit_ratio = INSIDE-Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+          "matched gain = 1 - method RMSE / estimator-matched IID RMSE"
+        ],
+        "sql": "SELECT * FROM artifact.formal_gap",
+        "tables_used": [
+          "artifact.formal_gap"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _formal_rows\nrows = _formal_rows()",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "debug_transform",
+      "label": "Paired-ablation transformation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Read paired same-coalition ablations and express before/after changes as RMSE reductions.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "debug_transform",
+        "input_files": [
+          "results/inside_greedy_gap_debug.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "RMSE reduction (%) = 100 * (1 - after RMSE / before RMSE)",
+          "Every paired change reuses the identical realized coalition rows"
+        ],
+        "sql": "SELECT * FROM artifact.ablation_effects",
+        "tables_used": [
+          "artifact.ablation_effects"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _ablation_rows, _read, DEBUG_REPORT\nrows = _ablation_rows(_read(DEBUG_REPORT))",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "synthetic_transform",
+      "label": "Exact synthetic comparison transformation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Read exact n=8 synthetic results for the true row-Greedy and cyclic-Orbit methods.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "synthetic_transform",
+        "input_files": [
+          "results/synthetic_n8_t40.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "RMSE is aggregate coordinate RMSE over 100 independent repeats"
+        ],
+        "sql": "SELECT * FROM artifact.synthetic_results",
+        "tables_used": [
+          "artifact.synthetic_results"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _synthetic_rows\nrows = _synthetic_rows()",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "audit_transform",
+      "label": "Code-audit checklist",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Assemble reviewed formula, implementation, invariant, and comparison checks.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "audit_transform",
+        "input_files": [
+          "frame_ofa/design.py",
+          "frame_ofa/estimator.py",
+          "experiments/run_analytic_inside_comparison.py",
+          "results/inside_greedy_gap_debug.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "PASS denotes exact identity or validated implementation behavior"
+        ],
+        "sql": "SELECT * FROM artifact.audit_checks",
+        "tables_used": [
+          "artifact.audit_checks"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _audit_rows, _read, DEBUG_REPORT\nrows = _audit_rows(_read(DEBUG_REPORT)['invariants'])",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "size_profile_transform",
+      "label": "Exact size-profile mismatch transformation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Read exact fixed-size means and summarize mismatch from the endpoint-linear baseline.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "size_profile_transform",
+        "input_files": [
+          "results/inside_greedy_gap_debug.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "q*-weighted RMS mismatch = sqrt(sum_s q_s * (mu_s - ell_s)^2)"
+        ],
+        "sql": "SELECT * FROM artifact.size_profiles",
+        "tables_used": [
+          "artifact.size_profiles"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _size_profile_rows, _read, DEBUG_REPORT\nrows = _size_profile_rows(_read(DEBUG_REPORT))",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "sensitivity_transform",
+      "label": "Greedy K and lambda sensitivity transformation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Read the fixed-budget Greedy candidate-pool and raw-lambda sweep.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "sensitivity_transform",
+        "input_files": [
+          "results/inside_greedy_gap_debug.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "Aggregate RMSE = sqrt(mean over repeats of coordinate MSE)"
+        ],
+        "sql": "SELECT * FROM artifact.sensitivity",
+        "tables_used": [
+          "artifact.sensitivity"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _sensitivity_rows, _read, DEBUG_REPORT\nrows = _sensitivity_rows(_read(DEBUG_REPORT))",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "lambda_transform",
+      "label": "Lambda-scale calculation",
+      "path": "experiments/build_inside_greedy_gap_report.py",
+      "query": {
+        "description": "Compute the raw first-moment penalty corresponding to a dimensionless lambda0 under inner q*.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T14:28:35.304530+00:00",
+        "filters": [
+          "Use only completed stored experiment reports",
+          "Preserve every formal budget point"
+        ],
+        "id": "lambda_transform",
+        "input_files": [
+          "frame_ofa/design.py"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "lambda_eff = lambda0 * (1 - 1/(n-1)) * E_q*[s(n-s)]"
+        ],
+        "sql": "SELECT * FROM artifact.lambda_scales",
+        "tables_used": [
+          "artifact.lambda_scales"
+        ],
+        "transformation_code": "from experiments.build_inside_greedy_gap_report import _lambda_scale_rows\nrows = _lambda_scale_rows()",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "debug_results",
+      "label": "Paired INSIDE gap ablation",
+      "path": "results/inside_greedy_gap_debug.json"
+    },
+    {
+      "id": "synthetic_results",
+      "label": "Exact n=8 synthetic benchmark",
+      "path": "results/synthetic_n8_t40.json"
+    },
+    {
+      "id": "formal_wine",
+      "label": "Formal Wine INSIDE comparison",
+      "path": "results/wine_inside_comparison_3repeats_71k_1p42m.json"
+    },
+    {
+      "id": "formal_airport",
+      "label": "Formal Airport INSIDE comparison",
+      "path": "results/airport_inside_comparison_3repeats_50k_1m.json"
+    },
+    {
+      "id": "formal_voting",
+      "label": "Formal Voting INSIDE comparison",
+      "path": "results/voting_inside_comparison_3repeats_25k_510k.json"
+    },
+    {
+      "id": "design_code",
+      "label": "Coalition-design implementation",
+      "path": "frame_ofa/design.py"
+    },
+    {
+      "id": "estimator_code",
+      "label": "OFA estimator implementation",
+      "path": "frame_ofa/estimator.py"
+    },
+    {
+      "id": "debug_code",
+      "label": "Reproducible paired diagnostic",
+      "path": "experiments/debug_inside_greedy_gap.py"
+    }
+  ],
+  "surface": "report"
+}

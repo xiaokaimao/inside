@@ -1,4 +1,9 @@
-"""Plot the full-training-set Iris Shapley comparison."""
+"""Plot a full-training-set data-Shapley comparison.
+
+The historical module name is retained for compatibility.  Dataset-specific
+labels and call accounting are read from the experiment report, so the same
+plotter can also render Wine and future full-training-set experiments.
+"""
 
 from __future__ import annotations
 
@@ -12,6 +17,12 @@ import numpy as np
 
 
 METHODS = {
+    "official_cc_basic": {
+        "label": "CC (official basic)",
+        "color": "#4B5563",
+        "marker": "X",
+        "linestyle": ":",
+    },
     "official_ofa_fixed_ratio": {
         "label": "OFA ratio (IID)",
         "color": "#2F6B9A",
@@ -39,10 +50,66 @@ METHODS = {
 }
 
 
+def _dataset_display_name(report: dict) -> str:
+    raw_name = report.get("dataset", {}).get("dataset", "dataset")
+    return str(raw_name).replace("_", " ").replace("-", " ").title()
+
+
+def _model_display_name(configuration: dict) -> str:
+    explicit = configuration.get("model_label")
+    if explicit:
+        return str(explicit)
+    model = str(configuration.get("model", "classifier"))
+    lowered = model.lower()
+    if "svc" in lowered and ("rbf" in lowered or "kernel='rbf'" in lowered):
+        return "RBF-SVM"
+    if "linearsvc" in lowered or "linear_svm" in lowered:
+        return "linear SVM"
+    if "logistic" in lowered or lowered == "lr":
+        return "logistic regression"
+    return model
+
+
+def _plot_context(report: dict) -> dict[str, object]:
+    configuration = report["configuration"]
+    num_players = int(configuration["num_players"])
+    n_test = configuration.get("n_test")
+    if n_test is None:
+        n_test = len(report.get("dataset", {}).get("test_labels", []))
+    boundary_calls = int(
+        report.get("boundary", {}).get(
+            "utility_calls", 2 * num_players + 2
+        )
+    )
+    return {
+        "dataset": _dataset_display_name(report),
+        "num_players": num_players,
+        "n_test": int(n_test),
+        "model": _model_display_name(configuration),
+        "boundary_calls": boundary_calls,
+    }
+
+
+def _default_output(input_path: Path) -> Path:
+    stem = input_path.stem
+    if "_frame_ofa" in stem:
+        stem = stem.replace("_frame_ofa", "_rmse", 1)
+    else:
+        stem = f"{stem}_rmse"
+    return input_path.with_name(f"{stem}.png")
+
+
 def _calls_label(value: float, _: int) -> str:
     if value >= 1_000_000:
         return f"{value / 1_000_000:.2f}M"
     return f"{value / 1000:.1f}k"
+
+
+def _relative_change_label(reduction: float) -> str:
+    """Describe a signed RMSE reduction without a misleading minus sign."""
+    percent = 100.0 * float(reduction)
+    direction = "lower" if percent >= 0.0 else "higher"
+    return f"{abs(percent):.1f}% {direction}"
 
 
 def _series(
@@ -68,6 +135,13 @@ def _series(
     return calls, rmse, intervals[:, 0], intervals[:, 1]
 
 
+def _has_method(report: dict, method: str) -> bool:
+    rows = report.get("results_by_inner_budget", {}).values()
+    return bool(rows) and all(
+        method in row.get("methods", {}) for row in rows
+    )
+
+
 def plot_results(report: dict, output: Path) -> None:
     if report.get("status") != "complete":
         raise ValueError("the experiment report is not complete")
@@ -83,11 +157,14 @@ def plot_results(report: dict, output: Path) -> None:
         == "orbit_coupled"
         else METHODS["frame_coupled_linear"]["label"]
     )
+    ratio_methods = ["official_ofa_fixed_ratio", "frame_orbit_ratio"]
+    if _has_method(report, "official_cc_basic"):
+        ratio_methods.insert(0, "official_cc_basic")
     panels = [
         (
             axes[0],
-            "Ratio estimators",
-            ["official_ofa_fixed_ratio", "frame_orbit_ratio"],
+            "Stratified-mean / ratio estimators",
+            ratio_methods,
         ),
         (
             axes[1],
@@ -174,10 +251,10 @@ def plot_results(report: dict, output: Path) -> None:
         report["results_by_inner_budget"].values(),
         key=lambda row: row["total_utility_calls_per_estimate"],
     )
-    final_ratio_gain = 100 * ratio_rows[-1][
+    final_ratio_gain = ratio_rows[-1][
         "orbit_rmse_reduction_vs_official_ratio"
     ]
-    final_linear_gain = 100 * ratio_rows[-1][
+    final_linear_gain = ratio_rows[-1][
         "frame_coupled_rmse_reduction_vs_iid_linear"
     ]
     ratio_calls, ratio_rmse, _, _ = _series(
@@ -191,13 +268,13 @@ def plot_results(report: dict, output: Path) -> None:
             axes[0],
             ratio_calls[-1],
             ratio_rmse[-1],
-            f"{final_ratio_gain:.1f}% lower",
+            _relative_change_label(final_ratio_gain),
         ),
         (
             axes[1],
             linear_calls[-1],
             linear_rmse[-1],
-            f"{final_linear_gain:.1f}% lower",
+            _relative_change_label(final_linear_gain),
         ),
     ):
         axis.annotate(
@@ -217,9 +294,10 @@ def plot_results(report: dict, output: Path) -> None:
         )
 
     configuration = report["configuration"]
+    context = _plot_context(report)
     gt_se = report["ground_truth"]["rmse_standard_error"]
     figure.suptitle(
-        "Iris data Shapley RMSE vs. total utility calls",
+        f"{context['dataset']} data Shapley RMSE vs. total utility calls",
         x=0.075,
         y=0.975,
         ha="left",
@@ -231,8 +309,9 @@ def plot_results(report: dict, output: Path) -> None:
         0.075,
         0.925,
         (
-            "120 training points as players · 30 fixed test points · "
-            "RBF-SVM accuracy · "
+            f"{context['num_players']} training points as players · "
+            f"{context['n_test']} fixed test points · "
+            f"{context['model']} accuracy · "
             f"{configuration['repeats']} repeats per budget · "
             f"{_calls_label(tick_calls[0], 0)}–"
             f"{_calls_label(tick_calls[-1], 0)} total calls"
@@ -242,13 +321,22 @@ def plot_results(report: dict, output: Path) -> None:
         fontsize=10.5,
         color="#4B5563",
     )
+    cc_call_note = (
+        f"OFA totals include {context['boundary_calls']} exact boundary "
+        "calls; CC uses each total entirely as two-call complement pairs. "
+        if _has_method(report, "official_cc_basic")
+        else (
+            "Total calls include "
+            f"{context['boundary_calls']} exact boundary evaluations. "
+        )
+    )
     figure.text(
         0.075,
         0.02,
         (
             "Shaded bands: 95% repeat bootstrap intervals. "
             "Both axes use logarithmic scales. "
-            "Total calls include 242 exact boundary evaluations. "
+            f"{cc_call_note}"
             f"Ground-truth SE-RMSE: {gt_se:.2e}."
         ),
         ha="left",
@@ -281,8 +369,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(
-            "results/iris_full_train_rbf_svm_rmse.png"
+        default=None,
+        help=(
+            "PNG output path; defaults to a dataset-specific name derived "
+            "from --input"
         ),
     )
     return parser.parse_args()
@@ -291,8 +381,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     report = json.loads(args.input.read_text(encoding="utf-8"))
-    plot_results(report, args.output)
-    print(f"Saved {args.output} and {args.output.with_suffix('.pdf')}")
+    output = args.output or _default_output(args.input)
+    plot_results(report, output)
+    print(f"Saved {output} and {output.with_suffix('.pdf')}")
 
 
 if __name__ == "__main__":

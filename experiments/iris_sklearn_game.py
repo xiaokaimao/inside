@@ -1,11 +1,11 @@
-"""Fast scikit-learn alternatives for the Iris data-valuation game."""
+"""Deterministic sklearn classification-accuracy data-valuation game."""
 
 from __future__ import annotations
 
 import numpy as np
 
 
-class IrisSklearnGame:
+class SklearnClassificationGame:
     """Accuracy utility for LR, linear SVM, or RBF SVM.
 
     Empty coalitions use the best constant-label accuracy on the performance
@@ -89,3 +89,7 @@ class IrisSklearnGame:
         self.estimator.fit(self.X_valued[mask], labels)
         predictions = self.estimator.predict(self.X_performance)
         return float(np.mean(predictions == self.y_performance))
+
+
+# Public backwards-compatible name used by the original Iris experiment.
+IrisSklearnGame = SklearnClassificationGame

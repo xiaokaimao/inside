@@ -13,6 +13,13 @@ import numpy as np
 _WORKER_GAME: Any = None
 _THREADPOOL_LIMITER: Any = None
 
+# ``Executor.map`` eagerly materializes and submits its whole input on the
+# Python versions used by the experiments.  Keeping only a few chunks queued
+# per worker avoids creating millions of NumPy row views and futures for a
+# multi-million-coalition design while still leaving enough work in flight to
+# keep every process busy.
+_PENDING_CHUNKS_PER_WORKER = 4
+
 
 def _initialize_game_worker(
     game_func: Callable[..., Any],
@@ -146,12 +153,26 @@ class GameEvaluator:
 
         if self._executor is None:
             raise RuntimeError("GameEvaluator must be used as a context")
-        values = self._executor.map(
-            _evaluate_worker,
-            rows,
-            chunksize=self.chunksize,
+        values = np.empty(len(rows), dtype=np.float64)
+        batch_rows = max(
+            self.chunksize,
+            self.n_jobs
+            * self.chunksize
+            * _PENDING_CHUNKS_PER_WORKER,
         )
-        return np.fromiter(values, dtype=np.float64, count=len(rows))
+        for start in range(0, len(rows), batch_rows):
+            stop = min(start + batch_rows, len(rows))
+            batch_values = self._executor.map(
+                _evaluate_worker,
+                rows[start:stop],
+                chunksize=self.chunksize,
+            )
+            values[start:stop] = np.fromiter(
+                batch_values,
+                dtype=np.float64,
+                count=stop - start,
+            )
+        return values
 
     def run_game_tasks(
         self,

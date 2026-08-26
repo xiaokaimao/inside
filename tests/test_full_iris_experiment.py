@@ -2,13 +2,20 @@ from __future__ import annotations
 
 import itertools
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 
-from experiments.iris_data_valuation import ground_truth_summary
+from experiments.iris_data_valuation import (
+    ground_truth_summary,
+    missing_stratum_fraction,
+)
 from experiments.iris_full_train_data_valuation import (
     _antithetic_pair_task,
     _permutation_path_contribution,
+    parse_args,
+    streaming_ground_truth,
     summarize_pair_moments,
 )
 from experiments.iris_game import load_iris_train_test_split
@@ -26,6 +33,78 @@ class TableGame:
 
 
 class FullIrisExperimentTests(unittest.TestCase):
+    def test_digits_cli_records_subsample_in_default_artifacts(self) -> None:
+        with patch(
+            "sys.argv",
+            [
+                "full_train_data_valuation",
+                "--dataset",
+                "digits",
+                "--samples-per-class",
+                "100",
+                "--budget-multipliers",
+                "800",
+                "1000",
+                "2000",
+                "5000",
+                "10000",
+            ],
+        ):
+            args = parse_args()
+
+        self.assertEqual(args.samples_per_class, 100)
+        self.assertEqual(
+            args.ground_truth_cache,
+            Path(
+                "results/"
+                "digits_100_per_class_full_train_rbf_svm_gt.npz"
+            ),
+        )
+        self.assertEqual(
+            args.ground_truth_progress_cache,
+            Path(
+                "results/"
+                "digits_100_per_class_full_train_rbf_svm_gt.partial.npz"
+            ),
+        )
+        self.assertEqual(
+            args.output,
+            Path(
+                "results/"
+                "digits_100_per_class_full_train_rbf_svm_frame_ofa.json"
+            ),
+        )
+
+    def test_missing_stratum_fraction_counts_in_and_out_once(self) -> None:
+        class Design:
+            coalitions = np.asarray(
+                [
+                    [True, True, False, False],
+                    [False, True, True, False],
+                ],
+                dtype=bool,
+            )
+            sizes = np.asarray([2, 2], dtype=np.int64)
+
+        # Player 1 is always included and player 3 is never included.
+        self.assertEqual(missing_stratum_fraction(Design()), 2 / 8)
+
+    def test_ground_truth_report_fraction_is_validated(self) -> None:
+        with self.assertRaises(ValueError):
+            streaming_ground_truth(
+                None,  # type: ignore[arg-type]
+                num_players=4,
+                num_pairs=2,
+                seed=1,
+                block_pairs=1,
+                task_pairs=1,
+                empty_utility=0.0,
+                full_utility=1.0,
+                singletons=np.zeros(4),
+                leave_one_out=np.ones(4),
+                report_fraction=0.0,
+            )
+
     def test_full_split_uses_all_training_rows_without_leakage(self) -> None:
         game_args, metadata = load_iris_train_test_split(
             test_size=0.2,

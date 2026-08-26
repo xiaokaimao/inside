@@ -1,0 +1,31 @@
+{
+  "caveats": [
+    "The airport game's large fixed-size mean component strongly favors exactly balanced batches; the main comparison does not isolate cyclic balance from candidate-pool frame search.",
+    "The first two Batch-balanced points are not monotone; use their bootstrap intervals rather than interpreting one orbit as a stable low-budget ranking."
+  ],
+  "checks": {
+    "aggregate_rmse_recomputation": "passed",
+    "analytic_ground_truth": "passed",
+    "attached_configuration": "passed",
+    "fixed_size_profile": "passed",
+    "ground_truth_efficiency": "passed",
+    "logical_and_physical_call_accounting": "passed",
+    "per_estimate_efficiency": "passed",
+    "repeat_completeness": "passed"
+  },
+  "maximum_discrepancies": {
+    "aggregate_rmse_absolute": 2.220446049250313e-16,
+    "fixed_size_profile_absolute": 0.0,
+    "ground_truth_efficiency": 3.552713678800501e-15,
+    "sample_estimate_efficiency": 1.1533884958225826e-11,
+    "stored_truth_absolute": 0.0
+  },
+  "status": "ready_to_share",
+  "validated_shape": {
+    "budget_points": 8,
+    "methods": 3,
+    "players": 100,
+    "raw_method_budget_rows": 720,
+    "repeats": 30
+  }
+}

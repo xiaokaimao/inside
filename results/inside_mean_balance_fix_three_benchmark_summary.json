@@ -1,0 +1,662 @@
+{
+  "datasets": {
+    "airport": {
+      "legacy_report": "/home/maoxiaokai/python_project/frame/results/airport_inside_comparison_3repeats_50k_1m.json",
+      "normalized_report": "/home/maoxiaokai/python_project/frame/results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+      "rows": [
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              50202,
+              50202,
+              50202
+            ],
+            "legacy_greedy": [
+              50202,
+              50202,
+              50202
+            ],
+            "normalized_greedy": [
+              50202,
+              50202,
+              50202
+            ]
+          },
+          "budget_index": 0,
+          "dataset": "airport",
+          "inside_orbit_rmse": 0.004739567011499814,
+          "legacy_frobenius_discrepancy": 0.07300349257107754,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.05334577045746104,
+          "legacy_slice_mean_direction_rms": 0.04591734373197661,
+          "normalized_frobenius_discrepancy": 0.10125798784158019,
+          "normalized_lambda0_1_greedy_rmse": 0.020824271785834278,
+          "normalized_slice_mean_direction_rms": 0.01596412479573057,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.387029363601934,
+          "normalized_to_legacy_rmse_ratio": 0.3903640646157685,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.3476709125186881,
+          "normalized_to_orbit_rmse_ratio": 4.393707639391416,
+          "normalized_vs_legacy_improvement_percent": 60.963593538423154,
+          "total_utility_calls": 50202
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              100202,
+              100202,
+              100202
+            ],
+            "legacy_greedy": [
+              100202,
+              100202,
+              100202
+            ],
+            "normalized_greedy": [
+              100202,
+              100202,
+              100202
+            ]
+          },
+          "budget_index": 1,
+          "dataset": "airport",
+          "inside_orbit_rmse": 0.0035887695312649148,
+          "legacy_frobenius_discrepancy": 0.036716107572254554,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.0398462811030107,
+          "legacy_slice_mean_direction_rms": 0.03239726547674419,
+          "normalized_frobenius_discrepancy": 0.05048061042307656,
+          "normalized_lambda0_1_greedy_rmse": 0.009952918200516829,
+          "normalized_slice_mean_direction_rms": 0.007993665855988156,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3748900349454118,
+          "normalized_to_legacy_rmse_ratio": 0.2497828636701759,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2467389064588266,
+          "normalized_to_orbit_rmse_ratio": 2.773351176164488,
+          "normalized_vs_legacy_improvement_percent": 75.02171363298241,
+          "total_utility_calls": 100202
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              200202,
+              200202,
+              200202
+            ],
+            "legacy_greedy": [
+              200202,
+              200202,
+              200202
+            ],
+            "normalized_greedy": [
+              200202,
+              200202,
+              200202
+            ]
+          },
+          "budget_index": 2,
+          "dataset": "airport",
+          "inside_orbit_rmse": 0.0021412571090201693,
+          "legacy_frobenius_discrepancy": 0.018289837715003806,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.02856943626250499,
+          "legacy_slice_mean_direction_rms": 0.022963409716743318,
+          "normalized_frobenius_discrepancy": 0.02561103070919683,
+          "normalized_lambda0_1_greedy_rmse": 0.0052885249533780486,
+          "normalized_slice_mean_direction_rms": 0.00399425093033726,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4002874770281415,
+          "normalized_to_legacy_rmse_ratio": 0.1851112813282493,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.17393980160641956,
+          "normalized_to_orbit_rmse_ratio": 2.469822484698279,
+          "normalized_vs_legacy_improvement_percent": 81.48887186717508,
+          "total_utility_calls": 200202
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              500202,
+              500202,
+              500202
+            ],
+            "legacy_greedy": [
+              500202,
+              500202,
+              500202
+            ],
+            "normalized_greedy": [
+              500202,
+              500202,
+              500202
+            ]
+          },
+          "budget_index": 3,
+          "dataset": "airport",
+          "inside_orbit_rmse": 0.0011459402907172897,
+          "legacy_frobenius_discrepancy": 0.007302444490654091,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.017786687671508913,
+          "legacy_slice_mean_direction_rms": 0.01443491450088386,
+          "normalized_frobenius_discrepancy": 0.010211226980234023,
+          "normalized_lambda0_1_greedy_rmse": 0.0024856005512884313,
+          "normalized_slice_mean_direction_rms": 0.001601031757756107,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3983299692729863,
+          "normalized_to_legacy_rmse_ratio": 0.13974499340143684,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.11091383725605541,
+          "normalized_to_orbit_rmse_ratio": 2.169048921155041,
+          "normalized_vs_legacy_improvement_percent": 86.02550065985632,
+          "total_utility_calls": 500202
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              1000202,
+              1000202,
+              1000202
+            ],
+            "legacy_greedy": [
+              1000202,
+              1000202,
+              1000202
+            ],
+            "normalized_greedy": [
+              1000202,
+              1000202,
+              1000202
+            ]
+          },
+          "budget_index": 4,
+          "dataset": "airport",
+          "inside_orbit_rmse": 0.0007645018893985256,
+          "legacy_frobenius_discrepancy": 0.0036463082352238604,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.012573158776036831,
+          "legacy_slice_mean_direction_rms": 0.010183161614557545,
+          "normalized_frobenius_discrepancy": 0.005130254729780665,
+          "normalized_lambda0_1_greedy_rmse": 0.0014258341709741588,
+          "normalized_slice_mean_direction_rms": 0.0007968257892762348,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4069723124945028,
+          "normalized_to_legacy_rmse_ratio": 0.1134030195889719,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.07824935117764568,
+          "normalized_to_orbit_rmse_ratio": 1.8650498981708712,
+          "normalized_vs_legacy_improvement_percent": 88.65969804110281,
+          "total_utility_calls": 1000202
+        }
+      ],
+      "summary": {
+        "best_budget_point": {
+          "dataset": "airport",
+          "normalized_to_legacy_rmse_ratio": 0.1134030195889719,
+          "normalized_vs_legacy_improvement_percent": 88.65969804110281,
+          "total_utility_calls": 1000202
+        },
+        "budget_point_count": 5,
+        "improved_budget_point_count": 5,
+        "normalized_to_legacy_geometric_mean_rmse_ratio": 0.1955623498210532,
+        "normalized_to_orbit_geometric_mean_rmse_ratio": 2.612716649200228,
+        "normalized_vs_legacy_geometric_mean_improvement_percent": 80.44376501789468,
+        "tied_budget_point_count": 0,
+        "worsened_budget_point_count": 0,
+        "worst_budget_point": {
+          "dataset": "airport",
+          "normalized_to_legacy_rmse_ratio": 0.3903640646157685,
+          "normalized_vs_legacy_improvement_percent": 60.963593538423154,
+          "total_utility_calls": 50202
+        }
+      },
+      "validation": {
+        "legacy_status": "ready_to_share",
+        "legacy_total_actual_utility_calls": 39661442,
+        "normalized_status": "ready_to_share",
+        "normalized_total_actual_utility_calls": 39661442
+      }
+    },
+    "voting": {
+      "legacy_report": "/home/maoxiaokai/python_project/frame/results/voting_inside_comparison_3repeats_25k_510k.json",
+      "normalized_report": "/home/maoxiaokai/python_project/frame/results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+      "rows": [
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              25604,
+              25604,
+              25604
+            ],
+            "legacy_greedy": [
+              25604,
+              25604,
+              25604
+            ],
+            "normalized_greedy": [
+              25604,
+              25604,
+              25604
+            ]
+          },
+          "budget_index": 0,
+          "dataset": "voting",
+          "inside_orbit_rmse": 0.0021663748952967577,
+          "legacy_frobenius_discrepancy": 0.03495305326399597,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.003966185991546338,
+          "legacy_slice_mean_direction_rms": 0.04376117716541054,
+          "normalized_frobenius_discrepancy": 0.047832859373319124,
+          "normalized_lambda0_1_greedy_rmse": 0.0022811042574163304,
+          "normalized_slice_mean_direction_rms": 0.010389963685787762,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3684887272091402,
+          "normalized_to_legacy_rmse_ratio": 0.5751379946069984,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2374242275639728,
+          "normalized_to_orbit_rmse_ratio": 1.0529591449608524,
+          "normalized_vs_legacy_improvement_percent": 42.48620053930016,
+          "total_utility_calls": 25604
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              51104,
+              51104,
+              51104
+            ],
+            "legacy_greedy": [
+              51104,
+              51104,
+              51104
+            ],
+            "normalized_greedy": [
+              51104,
+              51104,
+              51104
+            ]
+          },
+          "budget_index": 1,
+          "dataset": "voting",
+          "inside_orbit_rmse": 0.001497065598234066,
+          "legacy_frobenius_discrepancy": 0.01722336788730285,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.002032784898725978,
+          "legacy_slice_mean_direction_rms": 0.03121705218441109,
+          "normalized_frobenius_discrepancy": 0.024626227258308615,
+          "normalized_lambda0_1_greedy_rmse": 0.0017660145053075566,
+          "normalized_slice_mean_direction_rms": 0.0053060265047698155,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4298148549949508,
+          "normalized_to_legacy_rmse_ratio": 0.8687660491842417,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.1699720548059786,
+          "normalized_to_orbit_rmse_ratio": 1.179650716301772,
+          "normalized_vs_legacy_improvement_percent": 13.12339508157583,
+          "total_utility_calls": 51104
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              102104,
+              102104,
+              102104
+            ],
+            "legacy_greedy": [
+              102104,
+              102104,
+              102104
+            ],
+            "normalized_greedy": [
+              102104,
+              102104,
+              102104
+            ]
+          },
+          "budget_index": 2,
+          "dataset": "voting",
+          "inside_orbit_rmse": 0.0008696139693717296,
+          "legacy_frobenius_discrepancy": 0.008548663069470384,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.0017070803810720376,
+          "legacy_slice_mean_direction_rms": 0.022119742778282308,
+          "normalized_frobenius_discrepancy": 0.01208778758575581,
+          "normalized_lambda0_1_greedy_rmse": 0.0012416945100994497,
+          "normalized_slice_mean_direction_rms": 0.0026397878286008474,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4139974271444393,
+          "normalized_to_legacy_rmse_ratio": 0.7273790524847296,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.11934080134026939,
+          "normalized_to_orbit_rmse_ratio": 1.4278686334771478,
+          "normalized_vs_legacy_improvement_percent": 27.262094751527044,
+          "total_utility_calls": 102104
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              255104,
+              255104,
+              255104
+            ],
+            "legacy_greedy": [
+              255104,
+              255104,
+              255104
+            ],
+            "normalized_greedy": [
+              255104,
+              255104,
+              255104
+            ]
+          },
+          "budget_index": 3,
+          "dataset": "voting",
+          "inside_orbit_rmse": 0.0005721936714557112,
+          "legacy_frobenius_discrepancy": 0.0034566529981875263,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.0010318183824729458,
+          "legacy_slice_mean_direction_rms": 0.01360062098572938,
+          "normalized_frobenius_discrepancy": 0.00487841510168697,
+          "normalized_lambda0_1_greedy_rmse": 0.0007238198180510958,
+          "normalized_slice_mean_direction_rms": 0.00106110436569686,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.411311781727855,
+          "normalized_to_legacy_rmse_ratio": 0.7014992467146459,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.07801881743563303,
+          "normalized_to_orbit_rmse_ratio": 1.2649909535169,
+          "normalized_vs_legacy_improvement_percent": 29.850075328535407,
+          "total_utility_calls": 255104
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              510104,
+              510104,
+              510104
+            ],
+            "legacy_greedy": [
+              510104,
+              510104,
+              510104
+            ],
+            "normalized_greedy": [
+              510104,
+              510104,
+              510104
+            ]
+          },
+          "budget_index": 4,
+          "dataset": "voting",
+          "inside_orbit_rmse": 0.00040061098196556103,
+          "legacy_frobenius_discrepancy": 0.0017497290224361695,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.000766569268850517,
+          "legacy_slice_mean_direction_rms": 0.009396516752919888,
+          "normalized_frobenius_discrepancy": 0.0024744389734912223,
+          "normalized_lambda0_1_greedy_rmse": 0.0005355981779444844,
+          "normalized_slice_mean_direction_rms": 0.0005216865860434078,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4141841060886275,
+          "normalized_to_legacy_rmse_ratio": 0.6986950817212155,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.05551914605817076,
+          "normalized_to_orbit_rmse_ratio": 1.336953308959782,
+          "normalized_vs_legacy_improvement_percent": 30.130491827878448,
+          "total_utility_calls": 510104
+        }
+      ],
+      "summary": {
+        "best_budget_point": {
+          "dataset": "voting",
+          "normalized_to_legacy_rmse_ratio": 0.5751379946069984,
+          "normalized_vs_legacy_improvement_percent": 42.48620053930016,
+          "total_utility_calls": 25604
+        },
+        "budget_point_count": 5,
+        "improved_budget_point_count": 5,
+        "normalized_to_legacy_geometric_mean_rmse_ratio": 0.708190533021205,
+        "normalized_to_orbit_geometric_mean_rmse_ratio": 1.2456940039720552,
+        "normalized_vs_legacy_geometric_mean_improvement_percent": 29.180946697879495,
+        "tied_budget_point_count": 0,
+        "worsened_budget_point_count": 0,
+        "worst_budget_point": {
+          "dataset": "voting",
+          "normalized_to_legacy_rmse_ratio": 0.8687660491842417,
+          "normalized_vs_legacy_improvement_percent": 13.12339508157583,
+          "total_utility_calls": 51104
+        }
+      },
+      "validation": {
+        "legacy_status": "ready_to_share",
+        "legacy_total_actual_utility_calls": 21548126,
+        "normalized_status": "ready_to_share",
+        "normalized_total_actual_utility_calls": 21548126
+      }
+    },
+    "wine": {
+      "legacy_report": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_3repeats_71k_1p42m.json",
+      "normalized_report": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+      "rows": [
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              71286,
+              71286,
+              71286
+            ],
+            "legacy_greedy": [
+              71286,
+              71286,
+              71286
+            ],
+            "normalized_greedy": [
+              71286,
+              71286,
+              71286
+            ]
+          },
+          "budget_index": 0,
+          "dataset": "wine",
+          "inside_orbit_rmse": 0.0006353593658663042,
+          "legacy_frobenius_discrepancy": 0.1055385015819027,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.002813820562828758,
+          "legacy_slice_mean_direction_rms": 0.04658693226664804,
+          "normalized_frobenius_discrepancy": 0.14687267852925268,
+          "normalized_lambda0_1_greedy_rmse": 0.0011820287527089903,
+          "normalized_slice_mean_direction_rms": 0.019452432886622326,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.391650216061413,
+          "normalized_to_legacy_rmse_ratio": 0.42007964840540035,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.4175512732901814,
+          "normalized_to_orbit_rmse_ratio": 1.860409740080418,
+          "normalized_vs_legacy_improvement_percent": 57.99203515945997,
+          "total_utility_calls": 71286
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              142286,
+              142286,
+              142286
+            ],
+            "legacy_greedy": [
+              142286,
+              142286,
+              142286
+            ],
+            "normalized_greedy": [
+              142286,
+              142286,
+              142286
+            ]
+          },
+          "budget_index": 1,
+          "dataset": "wine",
+          "inside_orbit_rmse": 0.0004123874449317491,
+          "legacy_frobenius_discrepancy": 0.0533611626789175,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.0018711834485940814,
+          "legacy_slice_mean_direction_rms": 0.03280446377764917,
+          "normalized_frobenius_discrepancy": 0.07382707272795534,
+          "normalized_lambda0_1_greedy_rmse": 0.0007157712176042555,
+          "normalized_slice_mean_direction_rms": 0.009855317550544222,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3835356844112343,
+          "normalized_to_legacy_rmse_ratio": 0.3825232732483029,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.300426113267518,
+          "normalized_to_orbit_rmse_ratio": 1.7356765498103779,
+          "normalized_vs_legacy_improvement_percent": 61.74767267516972,
+          "total_utility_calls": 142286
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              284286,
+              284286,
+              284286
+            ],
+            "legacy_greedy": [
+              284286,
+              284286,
+              284286
+            ],
+            "normalized_greedy": [
+              284286,
+              284286,
+              284286
+            ]
+          },
+          "budget_index": 2,
+          "dataset": "wine",
+          "inside_orbit_rmse": 0.0002743887084824147,
+          "legacy_frobenius_discrepancy": 0.026493447623072933,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.0013971341200072875,
+          "legacy_slice_mean_direction_rms": 0.023113534245738,
+          "normalized_frobenius_discrepancy": 0.03727032976737759,
+          "normalized_lambda0_1_greedy_rmse": 0.0004074146575132755,
+          "normalized_slice_mean_direction_rms": 0.004928230643588514,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4067753769773306,
+          "normalized_to_legacy_rmse_ratio": 0.29160740667556695,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2132183936559702,
+          "normalized_to_orbit_rmse_ratio": 1.4848083937804835,
+          "normalized_vs_legacy_improvement_percent": 70.8392593324433,
+          "total_utility_calls": 284286
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              710286,
+              710286,
+              710286
+            ],
+            "legacy_greedy": [
+              710286,
+              710286,
+              710286
+            ],
+            "normalized_greedy": [
+              710286,
+              710286,
+              710286
+            ]
+          },
+          "budget_index": 3,
+          "dataset": "wine",
+          "inside_orbit_rmse": 0.00017557094056054747,
+          "legacy_frobenius_discrepancy": 0.010625778610602479,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.000903401206396081,
+          "legacy_slice_mean_direction_rms": 0.014734337322627952,
+          "normalized_frobenius_discrepancy": 0.0147894889409755,
+          "normalized_lambda0_1_greedy_rmse": 0.00022290835474448903,
+          "normalized_slice_mean_direction_rms": 0.0019586459648277535,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.391849904177228,
+          "normalized_to_legacy_rmse_ratio": 0.24674347694722762,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.1329307129286231,
+          "normalized_to_orbit_rmse_ratio": 1.2696198700810444,
+          "normalized_vs_legacy_improvement_percent": 75.32565230527723,
+          "total_utility_calls": 710286
+        },
+        {
+          "actual_utility_calls_by_repeat": {
+            "inside_orbit": [
+              1420286,
+              1420286,
+              1420286
+            ],
+            "legacy_greedy": [
+              1420286,
+              1420286,
+              1420286
+            ],
+            "normalized_greedy": [
+              1420286,
+              1420286,
+              1420286
+            ]
+          },
+          "budget_index": 4,
+          "dataset": "wine",
+          "inside_orbit_rmse": 0.00013244603951226917,
+          "legacy_frobenius_discrepancy": 0.00532345487107447,
+          "legacy_raw_lambda_0p1_greedy_rmse": 0.000615707303084792,
+          "legacy_slice_mean_direction_rms": 0.010358297137107855,
+          "normalized_frobenius_discrepancy": 0.007425734693996946,
+          "normalized_lambda0_1_greedy_rmse": 0.00015676596789164954,
+          "normalized_slice_mean_direction_rms": 0.000979550048592571,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3949089217127444,
+          "normalized_to_legacy_rmse_ratio": 0.2546111879885572,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.09456670682707134,
+          "normalized_to_orbit_rmse_ratio": 1.183621408906889,
+          "normalized_vs_legacy_improvement_percent": 74.53888120114428,
+          "total_utility_calls": 1420286
+        }
+      ],
+      "summary": {
+        "best_budget_point": {
+          "dataset": "wine",
+          "normalized_to_legacy_rmse_ratio": 0.24674347694722762,
+          "normalized_vs_legacy_improvement_percent": 75.32565230527723,
+          "total_utility_calls": 710286
+        },
+        "budget_point_count": 5,
+        "improved_budget_point_count": 5,
+        "normalized_to_legacy_geometric_mean_rmse_ratio": 0.31173261584829914,
+        "normalized_to_orbit_geometric_mean_rmse_ratio": 1.4843177038009456,
+        "normalized_vs_legacy_geometric_mean_improvement_percent": 68.82673841517008,
+        "tied_budget_point_count": 0,
+        "worsened_budget_point_count": 0,
+        "worst_budget_point": {
+          "dataset": "wine",
+          "normalized_to_legacy_rmse_ratio": 0.42007964840540035,
+          "normalized_vs_legacy_improvement_percent": 57.99203515945997,
+          "total_utility_calls": 71286
+        }
+      },
+      "validation": {
+        "legacy_status": "ready_to_share",
+        "legacy_total_actual_utility_calls": 58070349,
+        "normalized_status": "ready_to_share",
+        "normalized_total_actual_utility_calls": 58070349
+      }
+    }
+  },
+  "experiment": "inside_greedy_normalized_mean_balance_three_dataset_summary",
+  "method_identity": {
+    "legacy_greedy": {
+      "mean_balance_mode": "raw",
+      "method_key": "inside_greedy",
+      "raw_lambda": 0.1
+    },
+    "normalized_greedy": {
+      "lambda0": 1.0,
+      "mean_balance_mode": "normalized",
+      "method_key": "inside_greedy"
+    },
+    "orbit_reference": {
+      "method_key": "inside_orbit"
+    }
+  },
+  "status": "ready_to_share",
+  "summary": {
+    "best_budget_point": {
+      "dataset": "airport",
+      "normalized_to_legacy_rmse_ratio": 0.1134030195889719,
+      "normalized_vs_legacy_improvement_percent": 88.65969804110281,
+      "total_utility_calls": 1000202
+    },
+    "budget_point_count": 15,
+    "improved_budget_point_count": 15,
+    "normalized_to_legacy_geometric_mean_rmse_ratio": 0.3508104614581484,
+    "normalized_to_orbit_geometric_mean_rmse_ratio": 1.6904805749975589,
+    "normalized_vs_legacy_geometric_mean_improvement_percent": 64.91895385418516,
+    "tied_budget_point_count": 0,
+    "worsened_budget_point_count": 0,
+    "worst_budget_point": {
+      "dataset": "voting",
+      "normalized_to_legacy_rmse_ratio": 0.8687660491842417,
+      "normalized_vs_legacy_improvement_percent": 13.12339508157583,
+      "total_utility_calls": 51104
+    }
+  },
+  "validated_design": {
+    "budget_points_per_dataset": 5,
+    "datasets": [
+      "wine",
+      "airport",
+      "voting"
+    ],
+    "normalized_and_legacy_total_actual_utility_calls_audited": 238559834,
+    "repeats_per_budget_method": 3,
+    "total_budget_points": 15
+  }
+}

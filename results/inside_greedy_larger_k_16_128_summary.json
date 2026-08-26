@@ -1,0 +1,761 @@
+{
+  "aggregation": {
+    "coverage_policy": "retain every failure; suppress RMSE aggregates containing a failure",
+    "cross_run_design_time_calibration": "per-dataset-budget K64 overlap bridge to the base-report clock",
+    "dataset_ratio": "geometric mean over selected budgets",
+    "design_time_is_descriptive_only": true,
+    "joint_ratio": "equal-weight geometric mean over dataset-budget cells",
+    "rmse_within_budget": "sqrt(mean repeat-level squared RMSE)"
+  },
+  "experiment": "inside_greedy_fixed_lambda0_larger_k",
+  "fixed_lambda0": 0.0,
+  "protocol": {
+    "base_seed": 20260911,
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "extension_pair_merged": true,
+    "k_values": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "raw_cells_audited": {
+      "base": {
+        "airport": 80,
+        "voting": 80
+      },
+      "extension": {
+        "airport": 64,
+        "voting": 64
+      }
+    },
+    "repeats": 8,
+    "stage": "screening"
+  },
+  "reference": {
+    "candidate_pool": 16,
+    "choice": "k16",
+    "configuration_id": "lambda0=0|K=16",
+    "label": "$K=16$",
+    "lambda0": 0.0
+  },
+  "rows": [
+    {
+      "candidate_pool": 16,
+      "configuration_id": "lambda0=0|K=16",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005290899380567259,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 35.34815857978538,
+              "candidate_mean_design_seconds_on_base_clock": 35.34815857978538,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.0,
+              "inside_orbit_aggregate_rmse": 0.005361105669244937,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 35.34815857978538,
+              "reference_mean_design_seconds_on_base_clock": 35.34815857978538,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.00595279258175362,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 27.813332715071738,
+              "rmse_ratio_to_inside_orbit": 0.9869045131715216,
+              "rmse_ratio_to_reference": 1.0,
+              "rmse_ratio_to_registered_default": 0.8888096314299304
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0019042898448586106,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 138.24906392861158,
+              "candidate_mean_design_seconds_on_base_clock": 138.24906392861158,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.0,
+              "inside_orbit_aggregate_rmse": 0.002105680395789515,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 138.24906392861158,
+              "reference_mean_design_seconds_on_base_clock": 138.24906392861158,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0024176838448222407,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 84.05617143260315,
+              "rmse_ratio_to_inside_orbit": 0.9043584433166583,
+              "rmse_ratio_to_reference": 1.0,
+              "rmse_ratio_to_registered_default": 0.7876504816528742
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.9447303473658405,
+          "rmse_ratio_to_reference": 1.0,
+          "rmse_ratio_to_registered_default": 0.8367026558422641
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019979561039735016,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 19.53152565425262,
+              "candidate_mean_design_seconds_on_base_clock": 19.53152565425262,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.0,
+              "inside_orbit_aggregate_rmse": 0.002268915871307638,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 19.53152565425262,
+              "reference_mean_design_seconds_on_base_clock": 19.53152565425262,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0022455624956649275,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 13.30468671163544,
+              "rmse_ratio_to_inside_orbit": 0.8805774287356125,
+              "rmse_ratio_to_reference": 1.0,
+              "rmse_ratio_to_registered_default": 0.8897352479971359
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009444069858828281,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 69.14637657487765,
+              "candidate_mean_design_seconds_on_base_clock": 69.14637657487765,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.0,
+              "inside_orbit_aggregate_rmse": 0.001000259723764246,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 69.14637657487765,
+              "reference_mean_design_seconds_on_base_clock": 69.14637657487765,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0010098241382708356,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 45.42227194039151,
+              "rmse_ratio_to_inside_orbit": 0.9441617646352598,
+              "rmse_ratio_to_reference": 1.0,
+              "rmse_ratio_to_registered_default": 0.9352192625341438
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.9118155180808208,
+          "rmse_ratio_to_reference": 1.0,
+          "rmse_ratio_to_registered_default": 0.9121938075225653
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 1.0,
+        "joint": 1.0,
+        "voting": 1.0
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_inside_orbit": {
+        "airport": 0.9447303473658405,
+        "joint": 0.9281270339398899,
+        "voting": 0.9118155180808208
+      },
+      "rmse_ratio_to_reference": {
+        "airport": 1.0,
+        "joint": 1.0,
+        "voting": 1.0
+      },
+      "rmse_ratio_to_registered_default": {
+        "airport": 0.8367026558422641,
+        "joint": 0.8736332075859968,
+        "voting": 0.9121938075225653
+      },
+      "selection_eligible": true,
+      "source_report_set": "base"
+    },
+    {
+      "candidate_pool": 32,
+      "configuration_id": "lambda0=0|K=32",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005129076396306293,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 56.42519233142957,
+              "candidate_mean_design_seconds_on_base_clock": 56.42519233142957,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.5962696388857314,
+              "inside_orbit_aggregate_rmse": 0.005361105669244937,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 35.34815857978538,
+              "reference_mean_design_seconds_on_base_clock": 35.34815857978538,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.00595279258175362,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 27.813332715071738,
+              "rmse_ratio_to_inside_orbit": 0.9567198844317271,
+              "rmse_ratio_to_reference": 0.9694148437493786,
+              "rmse_ratio_to_registered_default": 0.8616252499755888
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017659574483288646,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 195.6272874926217,
+              "candidate_mean_design_seconds_on_base_clock": 195.6272874926217,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.415035168655021,
+              "inside_orbit_aggregate_rmse": 0.002105680395789515,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 138.24906392861158,
+              "reference_mean_design_seconds_on_base_clock": 138.24906392861158,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0024176838448222407,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 84.05617143260315,
+              "rmse_ratio_to_inside_orbit": 0.8386635748996121,
+              "rmse_ratio_to_reference": 0.9273574887230379,
+              "rmse_ratio_to_registered_default": 0.7304335726571006
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.50292304449681,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.8957489148500577,
+          "rmse_ratio_to_reference": 0.948153001909639,
+          "rmse_ratio_to_registered_default": 0.7933221348426103
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0020198585169892186,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 31.208520121406764,
+              "candidate_mean_design_seconds_on_base_clock": 31.208520121406764,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.5978536789117497,
+              "inside_orbit_aggregate_rmse": 0.002268915871307638,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 19.53152565425262,
+              "reference_mean_design_seconds_on_base_clock": 19.53152565425262,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0022455624956649275,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 13.30468671163544,
+              "rmse_ratio_to_inside_orbit": 0.890230679123911,
+              "rmse_ratio_to_reference": 1.0109624095204883,
+              "rmse_ratio_to_registered_default": 0.8994888901504937
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009756043106998164,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 97.60676312725991,
+              "candidate_mean_design_seconds_on_base_clock": 97.60676312725991,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 1.4115962102737647,
+              "inside_orbit_aggregate_rmse": 0.001000259723764246,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 69.14637657487765,
+              "reference_mean_design_seconds_on_base_clock": 69.14637657487765,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0010098241382708356,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 45.42227194039151,
+              "rmse_ratio_to_inside_orbit": 0.975350988869526,
+              "rmse_ratio_to_reference": 1.033033771756596,
+              "rmse_ratio_to_registered_default": 0.9661130821950689
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 1.5018402703762537,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.9318193887258926,
+          "rmse_ratio_to_reference": 1.021938506472423,
+          "rmse_ratio_to_registered_default": 0.9322059772730034
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 1.50292304449681,
+        "joint": 1.502381559891425,
+        "voting": 1.5018402703762537
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_inside_orbit": {
+        "airport": 0.8957489148500577,
+        "joint": 0.9136061549089205,
+        "voting": 0.9318193887258926
+      },
+      "rmse_ratio_to_reference": {
+        "airport": 0.948153001909639,
+        "joint": 0.984354642737505,
+        "voting": 1.021938506472423
+      },
+      "rmse_ratio_to_registered_default": {
+        "airport": 0.7933221348426103,
+        "joint": 0.8599649039369344,
+        "voting": 0.9322059772730034
+      },
+      "selection_eligible": true,
+      "source_report_set": "base"
+    },
+    {
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0|K=64",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0047697306949054325,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 90.59098096983507,
+              "candidate_mean_design_seconds_on_base_clock": 90.59098096983507,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 2.562820373382661,
+              "inside_orbit_aggregate_rmse": 0.005361105669244937,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 35.34815857978538,
+              "reference_mean_design_seconds_on_base_clock": 35.34815857978538,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.00595279258175362,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 27.813332715071738,
+              "rmse_ratio_to_inside_orbit": 0.8896916026609872,
+              "rmse_ratio_to_reference": 0.9014971466711299,
+              "rmse_ratio_to_registered_default": 0.8012593466679009
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017959053220160523,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 318.6610018238425,
+              "candidate_mean_design_seconds_on_base_clock": 318.6610018238425,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 2.3049776451896355,
+              "inside_orbit_aggregate_rmse": 0.002105680395789515,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 138.24906392861158,
+              "reference_mean_design_seconds_on_base_clock": 138.24906392861158,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0024176838448222407,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 84.05617143260315,
+              "rmse_ratio_to_inside_orbit": 0.8528859961877957,
+              "rmse_ratio_to_reference": 0.9430840199378338,
+              "rmse_ratio_to_registered_default": 0.7428205825431635
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 2.4304821886373884,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.8710944316406991,
+          "rmse_ratio_to_reference": 0.922056155038887,
+          "rmse_ratio_to_registered_default": 0.7714868337567432
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0018776754067784793,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 46.275151640642434,
+              "candidate_mean_design_seconds_on_base_clock": 46.275151640642434,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 2.3692543255353375,
+              "inside_orbit_aggregate_rmse": 0.002268915871307638,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 19.53152565425262,
+              "reference_mean_design_seconds_on_base_clock": 19.53152565425262,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0022455624956649275,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 13.30468671163544,
+              "rmse_ratio_to_inside_orbit": 0.8275650192778298,
+              "rmse_ratio_to_reference": 0.9397981282192286,
+              "rmse_ratio_to_registered_default": 0.8361715206783794
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009154166706089351,
+              "candidate_design_time_scaling": "same-report",
+              "candidate_mean_design_seconds": 144.18497957661748,
+              "candidate_mean_design_seconds_on_base_clock": 144.18497957661748,
+              "candidate_source": "base",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "same-report",
+              "design_time_ratio_to_reference": 2.0852138133439513,
+              "inside_orbit_aggregate_rmse": 0.001000259723764246,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 69.14637657487765,
+              "reference_mean_design_seconds_on_base_clock": 69.14637657487765,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0010098241382708356,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 45.42227194039151,
+              "rmse_ratio_to_inside_orbit": 0.9151789768801009,
+              "rmse_ratio_to_reference": 0.9693031545644561,
+              "rmse_ratio_to_registered_default": 0.9065109813837898
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 2.222701474991905,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.8702701348687344,
+          "rmse_ratio_to_reference": 0.9544366350558163,
+          "rmse_ratio_to_registered_default": 0.8706311881705902
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 2.4304821886373884,
+        "joint": 2.3242711428802534,
+        "voting": 2.222701474991905
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_inside_orbit": {
+        "airport": 0.8710944316406991,
+        "joint": 0.8706821857069058,
+        "voting": 0.8702701348687344
+      },
+      "rmse_ratio_to_reference": {
+        "airport": 0.922056155038887,
+        "joint": 0.9381066964625183,
+        "voting": 0.9544366350558163
+      },
+      "rmse_ratio_to_registered_default": {
+        "airport": 0.7714868337567432,
+        "joint": 0.819561162288453,
+        "voting": 0.8706311881705902
+      },
+      "selection_eligible": true,
+      "source_report_set": "base"
+    },
+    {
+      "candidate_pool": 128,
+      "configuration_id": "lambda0=0|K=128",
+      "coverage_failures": 0,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.004882395986086783,
+              "candidate_design_time_scaling": "K64-overlap-bridge-to-base-clock",
+              "candidate_mean_design_seconds": 133.07091930462047,
+              "candidate_mean_design_seconds_on_base_clock": 150.43670653199285,
+              "candidate_source": "extension",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "K64-overlap-bridge",
+              "design_time_ratio_to_reference": 4.255856954823763,
+              "inside_orbit_aggregate_rmse": 0.005361105669244937,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.005290899380567259,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 35.34815857978538,
+              "reference_mean_design_seconds_on_base_clock": 35.34815857978538,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.00595279258175362,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 20.334167297463864,
+              "rmse_ratio_to_inside_orbit": 0.9107069114670937,
+              "rmse_ratio_to_reference": 0.9227913129512815,
+              "rmse_ratio_to_registered_default": 0.8201858067509701
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017657591381209042,
+              "candidate_design_time_scaling": "K64-overlap-bridge-to-base-clock",
+              "candidate_mean_design_seconds": 534.0454391315579,
+              "candidate_mean_design_seconds_on_base_clock": 533.1146042678865,
+              "candidate_source": "extension",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "K64-overlap-bridge",
+              "design_time_ratio_to_reference": 3.856189612561672,
+              "inside_orbit_aggregate_rmse": 0.002105680395789515,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019042898448586106,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 138.24906392861158,
+              "reference_mean_design_seconds_on_base_clock": 138.24906392861158,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0024176838448222407,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 80.21144628059119,
+              "rmse_ratio_to_inside_orbit": 0.8385693962159159,
+              "rmse_ratio_to_reference": 0.9272533500550217,
+              "rmse_ratio_to_registered_default": 0.730351547785079
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 4.051097552730586,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.8738941268132098,
+          "rmse_ratio_to_reference": 0.9250196410540414,
+          "rmse_ratio_to_registered_default": 0.7739663903761743
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0018944041178746865,
+              "candidate_design_time_scaling": "K64-overlap-bridge-to-base-clock",
+              "candidate_mean_design_seconds": 60.994131822139025,
+              "candidate_mean_design_seconds_on_base_clock": 81.27110821891341,
+              "candidate_source": "extension",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "K64-overlap-bridge",
+              "design_time_ratio_to_reference": 4.161022014233597,
+              "inside_orbit_aggregate_rmse": 0.002268915871307638,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0019979561039735016,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 19.53152565425262,
+              "reference_mean_design_seconds_on_base_clock": 19.53152565425262,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0022455624956649275,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 10.604567387606949,
+              "rmse_ratio_to_inside_orbit": 0.8349380167995784,
+              "rmse_ratio_to_reference": 0.9481710404483499,
+              "rmse_ratio_to_registered_default": 0.8436211958170149
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0008697791666169419,
+              "candidate_design_time_scaling": "K64-overlap-bridge-to-base-clock",
+              "candidate_mean_design_seconds": 225.56848299922422,
+              "candidate_mean_design_seconds_on_base_clock": 242.18963464121518,
+              "candidate_source": "extension",
+              "coverage_failures": 0,
+              "design_time_ratio_method": "K64-overlap-bridge",
+              "design_time_ratio_to_reference": 3.502564366174002,
+              "inside_orbit_aggregate_rmse": 0.001000259723764246,
+              "inside_orbit_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009444069858828281,
+              "reference_coverage_failures": 0,
+              "reference_design_time_scaling": "same-report",
+              "reference_mean_design_seconds": 69.14637657487765,
+              "reference_mean_design_seconds_on_base_clock": 69.14637657487765,
+              "reference_source": "base",
+              "registered_default_aggregate_rmse": 0.0010098241382708356,
+              "registered_default_coverage_failures": 0,
+              "registered_default_mean_design_seconds": 37.73142091091722,
+              "rmse_ratio_to_inside_orbit": 0.8695533229546915,
+              "rmse_ratio_to_reference": 0.9209791748881184,
+              "rmse_ratio_to_registered_default": 0.8613174647481703
+            }
+          ],
+          "coverage_failures": 0,
+          "design_time_ratio_to_reference": 3.8176232702979176,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_inside_orbit": 0.8520699073252578,
+          "rmse_ratio_to_reference": 0.9344762075542266,
+          "rmse_ratio_to_registered_default": 0.8524234098081369
+        }
+      },
+      "design_time_ratio_to_reference": {
+        "airport": 4.051097552730586,
+        "joint": 3.9326281654322774,
+        "voting": 3.8176232702979176
+      },
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "rmse_ratio_to_inside_orbit": {
+        "airport": 0.8738941268132098,
+        "joint": 0.8629130243806838,
+        "voting": 0.8520699073252578
+      },
+      "rmse_ratio_to_reference": {
+        "airport": 0.9250196410540414,
+        "joint": 0.9297359012565626,
+        "voting": 0.9344762075542266
+      },
+      "rmse_ratio_to_registered_default": {
+        "airport": 0.7739663903761743,
+        "joint": 0.8122481576226284,
+        "voting": 0.8524234098081369
+      },
+      "selection_eligible": true,
+      "source_report_set": "extension"
+    }
+  ],
+  "source_validation": {
+    "all_greedy_hyperparameters_share_relabels": true,
+    "all_greedy_hyperparameters_share_size_schedules": true,
+    "all_rmse_and_aggregates_independently_recomputed_from_raw_cells": true,
+    "coverage_failures_retained": true,
+    "overlap_merge_audit": {
+      "datasets": {
+        "airport": {
+          "allowed_elapsed_timing_differences": [
+            "design_seconds",
+            "utility_seconds"
+          ],
+          "deterministic_raw_cell_fields_exact": true,
+          "estimate_rmse_seed_budget_coverage_and_hashes_exact": true,
+          "extension_over_base_timing_geometric_mean": {
+            "design_seconds": 0.9167695463157034,
+            "utility_seconds": 0.9355156808078579
+          },
+          "inside_orbit_compared": true,
+          "overlapping_greedy_configurations": [
+            {
+              "candidate_pool": 4,
+              "configuration_id": "lambda0=1|K=4",
+              "lambda0": 1.0
+            },
+            {
+              "candidate_pool": 64,
+              "configuration_id": "lambda0=0|K=64",
+              "lambda0": 0.0
+            }
+          ],
+          "raw_cells_compared": 48
+        },
+        "voting": {
+          "allowed_elapsed_timing_differences": [
+            "design_seconds",
+            "utility_seconds"
+          ],
+          "deterministic_raw_cell_fields_exact": true,
+          "estimate_rmse_seed_budget_coverage_and_hashes_exact": true,
+          "extension_over_base_timing_geometric_mean": {
+            "design_seconds": 0.8768985788636886,
+            "utility_seconds": 0.9136342705066146
+          },
+          "inside_orbit_compared": true,
+          "overlapping_greedy_configurations": [
+            {
+              "candidate_pool": 4,
+              "configuration_id": "lambda0=1|K=4",
+              "lambda0": 1.0
+            },
+            {
+              "candidate_pool": 64,
+              "configuration_id": "lambda0=0|K=64",
+              "lambda0": 0.0
+            }
+          ],
+          "raw_cells_compared": 48
+        }
+      },
+      "merge_anchor": {
+        "candidate_pool": 64,
+        "lambda0": 0.0
+      },
+      "passed": true
+    },
+    "sources": {
+      "base": {
+        "airport": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_airport.json",
+          "sha256": "6432f3d6e447ccf9987a3a3ac92ec58a401fc0e0e3c81b4a069a41ffd638ff2c"
+        },
+        "voting": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_voting.json",
+          "sha256": "b519da8a27a6cb556a2f917aad08ce615876e02cf0e5172c6707c7bee2e60dfa"
+        }
+      },
+      "extension": {
+        "airport": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k128_screen_airport.json",
+          "sha256": "cd967366e94912411fcba3f42628afa4fcf1a512db6fe7d0341a6998e3f11859"
+        },
+        "voting": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k128_screen_voting.json",
+          "sha256": "930452fd650c03fb49da1a1904fe7c2e35b161dd737b90148eb829d1ae40c38c"
+        }
+      }
+    }
+  },
+  "status": "validated_larger_k_summary"
+}

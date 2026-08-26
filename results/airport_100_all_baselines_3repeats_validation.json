@@ -1,0 +1,44 @@
+{
+  "call_accounting": {
+    "total_actual_utility_calls": 50765442,
+    "total_unused_utility_calls_reported": 4764858
+  },
+  "caveats": [
+    "Efficiency residuals are recomputed and reported but are not a pass/fail condition because several source baselines deliberately omit efficiency projection.",
+    "TMC-Shapley is plotted at observed physical calls; truncation savings remain unused and are not reassigned to additional permutations.",
+    "Three repeats support the requested runtime-saving comparison but provide a coarse uncertainty estimate."
+  ],
+  "checks": {
+    "actual_calls_do_not_exceed_target": "passed",
+    "airport_counts_and_fingerprint": "passed",
+    "all_estimates_shape_3_by_100_and_finite": "passed",
+    "baseline_diagnostic_call_accounting": "passed",
+    "five_budget_points": "passed",
+    "independent_exact_ground_truth": "passed",
+    "per_repeat_summary_records_complete": "passed",
+    "ratio_and_cc_exact_call_use": "passed",
+    "rmse_independent_recomputation": "passed",
+    "three_repeats_per_method_budget": "passed",
+    "tmc_actual_plus_unused_call_accounting": "passed",
+    "wine_main_method_set_exactly_10": "passed"
+  },
+  "maximum_discrepancies": {
+    "aggregate_rmse_absolute": 0.0,
+    "sample_estimate_efficiency_residual": 0.28999999999999915,
+    "secondary_summary_metric_absolute": 0.0,
+    "stored_efficiency_error_absolute": 0.0,
+    "stored_truth_absolute": 0.0,
+    "stored_truth_sum_absolute": 0.0
+  },
+  "status": "ready_to_share",
+  "validated_report": "airport_game_wine_style_all_baselines",
+  "validated_shape": {
+    "budget_points": 5,
+    "methods": 10,
+    "per_repeat_estimates_checked": 150,
+    "players": 100,
+    "repeats": 3,
+    "scalar_player_estimates_checked": 15000,
+    "summary_method_budget_cells": 50
+  }
+}

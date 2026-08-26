@@ -12,6 +12,8 @@ from .estimator import (
     boundary_coalitions,
     boundary_from_utilities,
     estimate_coupled,
+    estimate_official_ratio_ofa,
+    estimate_ratio_ofa,
     estimate_stratified,
 )
 from .parallel import evaluate_game_coalitions
@@ -25,9 +27,10 @@ def estimate_upstream_game(
     nue_avg: int,
     mode: str = "coupled",
     seed: int = 0,
-    candidate_pool: int = 32,
+    candidate_pool: int | None = None,
     baseline: str = "linear",
-    mean_balance: float = 0.1,
+    mean_balance: float | None = None,
+    mean_balance_mode: str = "normalized",
     n_jobs: int = 1,
     chunksize: int = 16,
     start_method: str = "spawn",
@@ -36,14 +39,18 @@ def estimate_upstream_game(
     """Run Frame-OFA against an official-style ``game.evaluate`` object.
 
     In the upstream code, ``nue_avg`` is the average number of sampled inner
-    utility evaluations per player.  Thus coupled/stratified modes receive
-    ``nue_avg * num_players`` rows.  Orbit mode receives ``nue_avg`` complete
-    n-row orbits and has the same sampled-query count.
+    utility evaluations per player.  Thus non-orbit modes receive
+    ``nue_avg * num_players`` rows.  ``orbit`` and ``inside_orbit`` receive
+    ``nue_avg`` complete n-row orbits and have the same sampled-query count.
+    Omitted design hyperparameters are resolved by :class:`FrameOFAEstimator`
+    according to the selected mode.
     """
     if nue_avg < 1:
         raise ValueError("nue_avg must be positive")
     design_budget = (
-        nue_avg if mode == "orbit" else nue_avg * num_players
+        nue_avg
+        if mode in {"orbit", "inside_orbit"}
+        else nue_avg * num_players
     )
     estimator = FrameOFAEstimator(
         num_players=num_players,
@@ -53,6 +60,7 @@ def estimate_upstream_game(
         candidate_pool=candidate_pool,
         baseline=baseline,
         mean_balance=mean_balance,
+        mean_balance_mode=mean_balance_mode,
     )
     design = estimator.design()
     boundary_rows = boundary_coalitions(num_players)
@@ -71,7 +79,13 @@ def estimate_upstream_game(
         all_utilities[:boundary_count], num_players
     )
     utilities = all_utilities[boundary_count:]
-    if mode in {"stratified", "orbit"}:
+    if mode == "inside_greedy":
+        values = estimate_official_ratio_ofa(
+            design, utilities, boundary, missing="raise"
+        )
+    elif mode == "inside_orbit":
+        values = estimate_ratio_ofa(design, utilities, boundary)
+    elif mode in {"stratified", "orbit"}:
         values = estimate_stratified(
             design, utilities, boundary, baseline=baseline
         )

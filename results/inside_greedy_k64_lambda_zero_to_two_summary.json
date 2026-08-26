@@ -1,0 +1,784 @@
+{
+  "aggregation": {
+    "cell_ratio": "candidate aggregate RMSE / lambda0=0 aggregate RMSE",
+    "coverage_policy": "retain every failure and suppress any aggregate containing one",
+    "interpretation": "less than 1 is better than lambda0=0",
+    "joint_ratio": "equal-weight geometric mean over Airport/Voting x selected budgets",
+    "number_of_equal_weight_cells": 4,
+    "within_budget_rmse": "sqrt(mean repeat-level squared RMSE)"
+  },
+  "descriptive_screening_minimum": {
+    "candidate_pool": 64,
+    "joint_equal_cell_rmse_ratio_to_lambda0_zero": 0.9941224718074767,
+    "lambda0": 0.0625,
+    "not_a_holdout_claim": true
+  },
+  "experiment": "inside_greedy_k64_lambda_lower_upper_merged",
+  "fixed_candidate_pool": 64,
+  "protocol": {
+    "base_seed": 20260911,
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "lower_lambda0_values": [
+      0.0,
+      0.0078125,
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25
+    ],
+    "merged_lambda0_values": [
+      0.0,
+      0.0078125,
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25,
+      0.5,
+      1.0,
+      2.0
+    ],
+    "repeats": 8,
+    "source_experiment": "inside_greedy_per_size_ratio_hyperparameter_sweep",
+    "stage": "screening",
+    "upper_lambda0_values": [
+      0.25,
+      0.5,
+      1.0,
+      2.0
+    ]
+  },
+  "reference_lambda0": 0.0,
+  "rows": [
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0047697306949054325,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017959053220160523,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0018776754067784793,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009154166706089351,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.0,
+      "lambda0": 0.0,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.0078125|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.004735065714188693,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9927322981245533
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.001782189297942207,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9923626129363835
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 0.9925474383188053
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019027164548264626,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0133361964254226
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.000978819185401154,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0692608260564487
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.040923003138439
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.016447470483436,
+      "lambda0": 0.0078125,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.015625|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005070436577621879,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.063044624938182
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0018256206760797662,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0165461696111886
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0395354450939476
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019702333352348005,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0492938918634092
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.000931632584919086,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0177142440495037
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0333834428437156
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.0364548794854787,
+      "lambda0": 0.015625,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.03125|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.004968443173934737,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0416611527442314
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017476454007041807,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9731278031640912
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0068115162290152
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0020608296067213356,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0975430573791736
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0008674474685491525,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9475985050306398
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0198186899538872
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.013294232447398,
+      "lambda0": 0.03125,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.0625|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005091236279922,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.067405395730197
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.001730790031116852,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9637423587418835
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0142503605199427
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0018761796529931322,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9992034013014457
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0008698295065879596,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.950200640337202
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 0.9743940228386789
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 0.9941224718074767,
+      "lambda0": 0.0625,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.125|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0050105751048677575,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.050494341372265
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017932262624176093,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9985082400694512
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.024171497360934
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019338759490173235,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0299309145957594
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009463700624724502,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0338134456770651
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0318703540792191
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.0280137185950735,
+      "lambda0": 0.125,
+      "reference_coverage_failures": 0,
+      "source_range": "lower"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.25|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005146859438727009,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0790670937091666
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.00174308756307483,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9705898978672606
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.023392212338506
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019149032055355095,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0198265358446068
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.000875817580750886,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9567420048930201
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 0.9877807876989066
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.0054288466264811,
+      "lambda0": 0.25,
+      "reference_coverage_failures": 0,
+      "source_range": "both_exact_duplicate"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=0.5|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005076042422182466,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0642199207607688
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0018205199722588893,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0137059843528973
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0386559114272433
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0019916392127479372,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0606940931100468
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.000923951875574519,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.009323846986429
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0346902157330058
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.036671167278716,
+      "lambda0": 0.5,
+      "reference_coverage_failures": 0,
+      "source_range": "upper"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=1|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.005312519578352297,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.1137986436061516
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0017850315361607335,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9939452343494857
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0521667424117034
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.002008667368431463,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.069762836100477
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009547847272860715,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0430056147556814
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0562995051166877
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.0542310986257801,
+      "lambda0": 1.0,
+      "reference_coverage_failures": 0,
+      "source_range": "upper"
+    },
+    {
+      "candidate_coverage_failures": 0,
+      "candidate_pool": 64,
+      "configuration_id": "lambda0=2|K=64",
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.00561788209176608,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0047697306949054325,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.1778195565142833
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0018771617457443506,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0017959053220160523,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.0452453827783534
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.1095541686608197
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "candidate_aggregate_rmse": 0.0021615259633477792,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0018776754067784793,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 1.151171259710059
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "candidate_aggregate_rmse": 0.0009109995239469553,
+              "candidate_coverage_failures": 0,
+              "reference_aggregate_rmse": 0.0009154166706089351,
+              "reference_coverage_failures": 0,
+              "rmse_ratio_to_lambda0_zero": 0.9951747146367331
+            }
+          ],
+          "candidate_coverage_failures": 0,
+          "reference_coverage_failures": 0,
+          "rmse_ratio_to_lambda0_zero": 1.0703347746756462
+        }
+      },
+      "joint_equal_cell_rmse_ratio_to_lambda0_zero": 1.089768053809618,
+      "lambda0": 2.0,
+      "reference_coverage_failures": 0,
+      "source_range": "upper"
+    }
+  ],
+  "source_validation": {
+    "all_reports_independently_recomputed_from_raw_cells": true,
+    "independent_validator_calls": 4,
+    "quarter_lambda_overlap": {
+      "airport": {
+        "candidate_pool": 64,
+        "cells_checked": 16,
+        "design_hashes_exactly_equal": true,
+        "deterministic_cells_sha256": "b7a643c15bf0d9e92f1c29420f62c19b74a8766a51449dba8fecf530cbd64ca9",
+        "estimates_exactly_equal": true,
+        "exact_fields": [
+          "dataset",
+          "method",
+          "lambda0",
+          "candidate_pool",
+          "repeat",
+          "budget_index",
+          "base_seed",
+          "seed",
+          "inner_calls",
+          "total_calls",
+          "truth",
+          "status",
+          "coverage_failure",
+          "failure_reason",
+          "estimate",
+          "rmse",
+          "planned_total_utility_calls",
+          "actual_utility_calls",
+          "diagnostics"
+        ],
+        "explicit_hash_fields": [
+          "size_schedule_sha256",
+          "relabel_permutation_sha256"
+        ],
+        "lambda0": 0.25,
+        "passed": true,
+        "physical_calls_exactly_equal": true,
+        "timing_fields_intentionally_excluded": [
+          "design_seconds",
+          "utility_seconds"
+        ]
+      },
+      "voting": {
+        "candidate_pool": 64,
+        "cells_checked": 16,
+        "design_hashes_exactly_equal": true,
+        "deterministic_cells_sha256": "82591e1fb3f331a79de3dedda5436161450c3af67348e05c30ce45d889a7c559",
+        "estimates_exactly_equal": true,
+        "exact_fields": [
+          "dataset",
+          "method",
+          "lambda0",
+          "candidate_pool",
+          "repeat",
+          "budget_index",
+          "base_seed",
+          "seed",
+          "inner_calls",
+          "total_calls",
+          "truth",
+          "status",
+          "coverage_failure",
+          "failure_reason",
+          "estimate",
+          "rmse",
+          "planned_total_utility_calls",
+          "actual_utility_calls",
+          "diagnostics"
+        ],
+        "explicit_hash_fields": [
+          "size_schedule_sha256",
+          "relabel_permutation_sha256"
+        ],
+        "lambda0": 0.25,
+        "passed": true,
+        "physical_calls_exactly_equal": true,
+        "timing_fields_intentionally_excluded": [
+          "design_seconds",
+          "utility_seconds"
+        ]
+      }
+    },
+    "raw_protocols_exactly_equal_between_ranges_within_each_dataset_except_lambda_grid": true,
+    "sources": {
+      "lower": {
+        "airport": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_fine_screen_airport.json",
+          "raw_cells_audited": 144,
+          "sha256": "47ba08e9e7727471f52fa8fcc5cd52404a93370f8b5d3d5c86868d20b4802151"
+        },
+        "voting": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_fine_screen_voting.json",
+          "raw_cells_audited": 144,
+          "sha256": "4700c72912072a514636f4bb215cc6b9fec064727644c27241c2a1afa84e1c7c"
+        }
+      },
+      "upper": {
+        "airport": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_quarter_to_two_screen_airport.json",
+          "raw_cells_audited": 96,
+          "sha256": "8912c7c8497eb0486dd3796ed2c62e41b4e42bbb5b922ad13b2a4198168f25dd"
+        },
+        "voting": {
+          "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_quarter_to_two_screen_voting.json",
+          "raw_cells_audited": 96,
+          "sha256": "3464ba9acc9cbe3279829c26726199c8f68c20619691e03b63f1ad6b8e937aa4"
+        }
+      }
+    }
+  },
+  "status": "validated_merged_k64_lambda_summary"
+}

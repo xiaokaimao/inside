@@ -1,0 +1,1280 @@
+{
+  "manifest": {
+    "blocks": [
+      {
+        "body": "# Normalized Mean-Balance Audit for INSIDE-Greedy",
+        "id": "title",
+        "type": "markdown"
+      },
+      {
+        "body": "## Technical summary\n\nAcross 15 matched Wine, Airport, and Voting budget points, normalized `lambda0=1` improves Greedy RMSE at 15 points and yields a 64.9% geometric-mean RMSE reduction (new/old ratio 0.351). Its geometric-mean RMSE ratio to INSIDE-Orbit is 1.690, with Greedy lower at 0/15 points. These are descriptive three-repeat results, not a universal dominance guarantee.",
+        "id": "technical_summary",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "cardIds": [
+          "overall_new_old_ratio",
+          "improved_points",
+          "overall_new_orbit_ratio"
+        ],
+        "id": "headline_metrics",
+        "type": "metric-strip"
+      },
+      {
+        "body": "## The normalized penalty changes Greedy RMSE across matched budgets\n\nThe best point is Airport at 1,000,202 calls (new/old 0.113); the worst is U.S. Electoral Voting at 51,104 calls (new/old 0.869). Read the line chart against 1: values below 1 favor normalized scaling, while values above 1 favor the legacy raw coefficient.",
+        "id": "key_finding",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "chartId": "new_old_ratio_chart",
+        "id": "ratio_chart_block",
+        "type": "chart"
+      },
+      {
+        "body": "## First-moment balance improves with a possible frame trade-off\n\nAcross the 15 points, the geometric-mean normalized/legacy ratio is 0.157 for `slice_mean_direction_rms` and 1.398 for frame Frobenius discrepancy. Slice-mean RMS is lower at 15/15 points; frame Frobenius is higher at 15/15. This directly audits the intended effect of normalization while exposing any second-moment coverage cost; it does not assume that either diagnostic alone determines RMSE.",
+        "id": "mechanism",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "body": "## Exact values and call-accounting evidence\n\nThe table retains every matched point, all three RMSE values, both headline ratios, and the old/new design diagnostics. The source summary separately verified that Greedy and Orbit used each target call budget in all three repeats.",
+        "id": "exact_table_context",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "id": "exact_table_block",
+        "tableId": "exact_results_table",
+        "type": "table"
+      },
+      {
+        "body": "## Scope, formulas, and definitions\n\nFor estimates `phi_hat^(r)` and reference `phi*`, aggregate RMSE is `sqrt[(1/(3n)) sum_r sum_i (phi_hat_i^(r)-phi_i*)^2]`; lower is better. The before/after ratio is `R_old = RMSE_normalized / RMSE_legacy`, and improvement is `1-R_old`. The Orbit ratio replaces the denominator with INSIDE-Orbit RMSE. Ratios are aggregated with `exp(mean(log R))`, so each dataset-budget point has equal multiplicative weight. Normalized Greedy uses `lambda_eff = lambda0 * (1-1/(n-1)) * mean_t[w_t^2]` with `lambda0=1`; legacy Greedy uses the unnormalized raw coefficient `0.1`. Slice-mean RMS measures first-moment imbalance across fixed-size slices; frame Frobenius measures second-moment deviation from the target frame operator.",
+        "id": "definitions",
+        "type": "markdown"
+      },
+      {
+        "body": "## Validation and comparison methodology\n\nThe upstream summary reruns the strict common validator for every normalized and legacy report, then enforces identical ground truth, five matching total-call budgets, the common eight-method identity, three retained estimate vectors per method-budget, finite recomputed RMSE, and physical call accounting. This report recomputes every displayed ratio from the three stored RMSE values and averages each design diagnostic over the same three repeats. Airport and Voting use exact analytic Shapley truth; Wine uses its audited high-budget Monte Carlo reference.",
+        "id": "methodology",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "body": "## Limitations, uncertainty, and robustness\n\nThree repeats give only coarse uncertainty, and this report does not attach a confidence interval to ratios or their geometric mean. Wine's reference has Monte Carlo error, although its uncertainty metadata and larger call budget were audited. The normalized and legacy runs are matched by dataset and budget, but the result is descriptive unless their random designs are analyzed as paired observations. A lower slice-mean diagnostic can coincide with a higher frame discrepancy, and no dependent coalition design universally dominates for arbitrary cooperative games.",
+        "id": "limitations",
+        "type": "markdown"
+      },
+      {
+        "body": "## Recommended next steps\n\n1. Based on this three-dataset evidence, retain normalized `lambda0=1` as the default candidate; keep raw mode only for exact legacy reproduction.\n2. Increase repeats before making a general performance claim and report paired RMSE differences or bootstrap intervals at each budget.\n3. Continue reporting INSIDE-Orbit because normalization fixes coefficient scale, not the entire Greedy-versus-Orbit design difference.\n4. If tuning `lambda0`, select it on separate games or held-out budgets and retain both slice-mean and frame-discrepancy diagnostics.",
+        "id": "next_steps",
+        "sourceId": "mean_balance_transform",
+        "type": "markdown"
+      },
+      {
+        "body": "## Further questions\n\nDoes the RMSE gain persist with 20 or more repeats and independent Wine truth replications? Which normalized `lambda0` best balances first- and second-moment coverage without dataset-specific tuning? Can partial-orbit or constrained Greedy designs enforce slice means exactly while preserving Greedy's frame advantage?",
+        "id": "further_questions",
+        "type": "markdown"
+      }
+    ],
+    "cards": [
+      {
+        "dataset": "mean_balance_results",
+        "description": "Geometric mean of normalized-to-legacy Greedy RMSE ratios over all 15 matched points; lower than 1 favors normalization.",
+        "filter": {
+          "row_order": 1
+        },
+        "id": "overall_new_old_ratio",
+        "metrics": [
+          {
+            "field": "overall_geometric_mean_new_old_ratio",
+            "format": "number",
+            "label": "Geometric RMSE ratio"
+          },
+          {
+            "field": "overall_geometric_mean_improvement_rate",
+            "format": "percent",
+            "label": "RMSE improvement",
+            "signed": true
+          }
+        ],
+        "source": {
+          "id": "mean_balance_transform",
+          "label": "Validated mean-balance before/after transformation",
+          "path": "experiments/build_mean_balance_fix_report.py",
+          "query": {
+            "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T15:27:55.384422+00:00",
+            "filters": [
+              "Datasets: Wine, Airport, and U.S. Electoral Voting",
+              "Five matched utility-call budgets per dataset",
+              "Exactly three repeats per method-budget point",
+              "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+            ],
+            "id": "mean_balance_transform",
+            "input_files": [
+              "results/inside_mean_balance_fix_three_benchmark_summary.json",
+              "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+              "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+              "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+              "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+              "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+            ],
+            "sql": "SELECT * FROM artifact.mean_balance_results",
+            "tables_used": [
+              "artifact.mean_balance_results"
+            ],
+            "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "mean_balance_transform"
+      },
+      {
+        "dataset": "mean_balance_results",
+        "description": "Matched budget points where normalized Greedy has lower RMSE than the legacy raw-lambda implementation.",
+        "filter": {
+          "row_order": 1
+        },
+        "id": "improved_points",
+        "metrics": [
+          {
+            "field": "overall_improved_point_count",
+            "format": "number",
+            "label": "Improved budget points"
+          },
+          {
+            "field": "overall_total_point_count",
+            "format": "number",
+            "label": "Total points"
+          }
+        ],
+        "source": {
+          "id": "mean_balance_transform",
+          "label": "Validated mean-balance before/after transformation",
+          "path": "experiments/build_mean_balance_fix_report.py",
+          "query": {
+            "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T15:27:55.384422+00:00",
+            "filters": [
+              "Datasets: Wine, Airport, and U.S. Electoral Voting",
+              "Five matched utility-call budgets per dataset",
+              "Exactly three repeats per method-budget point",
+              "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+            ],
+            "id": "mean_balance_transform",
+            "input_files": [
+              "results/inside_mean_balance_fix_three_benchmark_summary.json",
+              "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+              "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+              "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+              "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+              "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+            ],
+            "sql": "SELECT * FROM artifact.mean_balance_results",
+            "tables_used": [
+              "artifact.mean_balance_results"
+            ],
+            "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "mean_balance_transform"
+      },
+      {
+        "dataset": "mean_balance_results",
+        "description": "Geometric mean of normalized Greedy RMSE divided by the INSIDE-Orbit RMSE at the same 15 budgets.",
+        "filter": {
+          "row_order": 1
+        },
+        "id": "overall_new_orbit_ratio",
+        "metrics": [
+          {
+            "field": "overall_geometric_mean_new_orbit_ratio",
+            "format": "number",
+            "label": "Greedy / Orbit ratio"
+          },
+          {
+            "field": "overall_new_beats_orbit_point_count",
+            "format": "number",
+            "label": "Greedy wins"
+          }
+        ],
+        "source": {
+          "id": "mean_balance_transform",
+          "label": "Validated mean-balance before/after transformation",
+          "path": "experiments/build_mean_balance_fix_report.py",
+          "query": {
+            "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T15:27:55.384422+00:00",
+            "filters": [
+              "Datasets: Wine, Airport, and U.S. Electoral Voting",
+              "Five matched utility-call budgets per dataset",
+              "Exactly three repeats per method-budget point",
+              "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+            ],
+            "id": "mean_balance_transform",
+            "input_files": [
+              "results/inside_mean_balance_fix_three_benchmark_summary.json",
+              "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+              "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+              "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+              "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+              "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+            ],
+            "sql": "SELECT * FROM artifact.mean_balance_results",
+            "tables_used": [
+              "artifact.mean_balance_results"
+            ],
+            "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "mean_balance_transform"
+      }
+    ],
+    "charts": [
+      {
+        "dataset": "mean_balance_results",
+        "encodings": {
+          "color": {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "nominal"
+          },
+          "tooltip": [
+            {
+              "field": "normalized_vs_legacy_improvement_rate",
+              "format": "percent",
+              "label": "RMSE improvement",
+              "type": "quantitative"
+            },
+            {
+              "field": "normalized_to_orbit_rmse_ratio",
+              "format": "number",
+              "label": "Normalized Greedy / Orbit",
+              "type": "quantitative"
+            },
+            {
+              "field": "normalized_to_legacy_slice_mean_direction_rms_ratio",
+              "format": "number",
+              "label": "Slice-mean RMS ratio",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "total_utility_calls",
+            "format": "number",
+            "label": "Total utility calls",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "normalized_to_legacy_rmse_ratio",
+            "format": "number",
+            "label": "Normalized / legacy RMSE",
+            "type": "quantitative"
+          }
+        },
+        "id": "new_old_ratio_chart",
+        "intent": "trend",
+        "question": "Does normalized mean balancing improve Greedy across budgets?",
+        "rationale": "A ratio makes the three datasets comparable despite different RMSE scales.",
+        "source": {
+          "id": "mean_balance_transform",
+          "label": "Validated mean-balance before/after transformation",
+          "path": "experiments/build_mean_balance_fix_report.py",
+          "query": {
+            "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T15:27:55.384422+00:00",
+            "filters": [
+              "Datasets: Wine, Airport, and U.S. Electoral Voting",
+              "Five matched utility-call budgets per dataset",
+              "Exactly three repeats per method-budget point",
+              "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+            ],
+            "id": "mean_balance_transform",
+            "input_files": [
+              "results/inside_mean_balance_fix_three_benchmark_summary.json",
+              "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+              "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+              "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+              "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+              "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+            ],
+            "sql": "SELECT * FROM artifact.mean_balance_results",
+            "tables_used": [
+              "artifact.mean_balance_results"
+            ],
+            "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "mean_balance_transform",
+        "subtitle": "Fifteen matched budget points; values below 1 favor normalization.",
+        "title": "Normalized-to-legacy Greedy RMSE ratio",
+        "type": "line"
+      }
+    ],
+    "description": "Strict before/after audit of normalized versus raw mean balancing for INSIDE-Greedy on Wine, Airport, and Voting.",
+    "generatedAt": "2026-08-24T15:27:55.384422+00:00",
+    "sources": [
+      {
+        "id": "mean_balance_transform",
+        "label": "Validated mean-balance before/after transformation",
+        "path": "experiments/build_mean_balance_fix_report.py",
+        "query": {
+          "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+          "engine": "artifact_snapshot_sql",
+          "executed_at": "2026-08-24T15:27:55.384422+00:00",
+          "filters": [
+            "Datasets: Wine, Airport, and U.S. Electoral Voting",
+            "Five matched utility-call budgets per dataset",
+            "Exactly three repeats per method-budget point",
+            "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+          ],
+          "id": "mean_balance_transform",
+          "input_files": [
+            "results/inside_mean_balance_fix_three_benchmark_summary.json",
+            "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+            "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+            "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+            "results/airport_inside_comparison_3repeats_50k_1m.json",
+            "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+            "results/voting_inside_comparison_3repeats_25k_510k.json"
+          ],
+          "language": "sql",
+          "metric_definitions": [
+            "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+            "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+            "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+            "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+            "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+            "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+          ],
+          "sql": "SELECT * FROM artifact.mean_balance_results",
+          "tables_used": [
+            "artifact.mean_balance_results"
+          ],
+          "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+          "transformation_language": "python"
+        }
+      },
+      {
+        "id": "combined_summary_input",
+        "label": "Strictly validated three-dataset combined summary",
+        "path": "results/inside_mean_balance_fix_three_benchmark_summary.json"
+      },
+      {
+        "id": "wine_normalized_input",
+        "label": "Wine normalized report",
+        "path": "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json"
+      },
+      {
+        "id": "wine_legacy_input",
+        "label": "Wine legacy report",
+        "path": "results/wine_inside_comparison_3repeats_71k_1p42m.json"
+      },
+      {
+        "id": "airport_normalized_input",
+        "label": "Airport normalized report",
+        "path": "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json"
+      },
+      {
+        "id": "airport_legacy_input",
+        "label": "Airport legacy report",
+        "path": "results/airport_inside_comparison_3repeats_50k_1m.json"
+      },
+      {
+        "id": "voting_normalized_input",
+        "label": "U.S. Electoral Voting normalized report",
+        "path": "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json"
+      },
+      {
+        "id": "voting_legacy_input",
+        "label": "U.S. Electoral Voting legacy report",
+        "path": "results/voting_inside_comparison_3repeats_25k_510k.json"
+      }
+    ],
+    "surface": "report",
+    "tables": [
+      {
+        "columns": [
+          {
+            "field": "row_order",
+            "format": "number",
+            "label": "#"
+          },
+          {
+            "field": "dataset",
+            "label": "Dataset",
+            "type": "text"
+          },
+          {
+            "field": "total_utility_calls",
+            "format": "number",
+            "label": "Total calls"
+          },
+          {
+            "field": "legacy_greedy_rmse",
+            "format": "number",
+            "label": "Legacy RMSE"
+          },
+          {
+            "field": "normalized_greedy_rmse",
+            "format": "number",
+            "label": "Normalized RMSE"
+          },
+          {
+            "field": "normalized_to_legacy_rmse_ratio",
+            "format": "number",
+            "label": "New / old"
+          },
+          {
+            "field": "normalized_vs_legacy_improvement_rate",
+            "format": "percent",
+            "label": "Improvement"
+          },
+          {
+            "field": "inside_orbit_rmse",
+            "format": "number",
+            "label": "Orbit RMSE"
+          },
+          {
+            "field": "normalized_to_orbit_rmse_ratio",
+            "format": "number",
+            "label": "New / Orbit"
+          },
+          {
+            "field": "legacy_slice_mean_direction_rms",
+            "format": "number",
+            "label": "Old slice RMS"
+          },
+          {
+            "field": "normalized_slice_mean_direction_rms",
+            "format": "number",
+            "label": "New slice RMS"
+          },
+          {
+            "field": "normalized_to_legacy_slice_mean_direction_rms_ratio",
+            "format": "number",
+            "label": "Slice RMS ratio"
+          },
+          {
+            "field": "legacy_frobenius_discrepancy",
+            "format": "number",
+            "label": "Old frame Frobenius"
+          },
+          {
+            "field": "normalized_frobenius_discrepancy",
+            "format": "number",
+            "label": "New frame Frobenius"
+          },
+          {
+            "field": "normalized_to_legacy_frobenius_discrepancy_ratio",
+            "format": "number",
+            "label": "Frame ratio"
+          }
+        ],
+        "dataset": "mean_balance_results",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "row_order"
+        },
+        "id": "exact_results_table",
+        "source": {
+          "id": "mean_balance_transform",
+          "label": "Validated mean-balance before/after transformation",
+          "path": "experiments/build_mean_balance_fix_report.py",
+          "query": {
+            "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+            "engine": "artifact_snapshot_sql",
+            "executed_at": "2026-08-24T15:27:55.384422+00:00",
+            "filters": [
+              "Datasets: Wine, Airport, and U.S. Electoral Voting",
+              "Five matched utility-call budgets per dataset",
+              "Exactly three repeats per method-budget point",
+              "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+            ],
+            "id": "mean_balance_transform",
+            "input_files": [
+              "results/inside_mean_balance_fix_three_benchmark_summary.json",
+              "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+              "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+              "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+              "results/airport_inside_comparison_3repeats_50k_1m.json",
+              "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+              "results/voting_inside_comparison_3repeats_25k_510k.json"
+            ],
+            "language": "sql",
+            "metric_definitions": [
+              "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+              "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+              "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+              "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+              "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+              "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+            ],
+            "sql": "SELECT * FROM artifact.mean_balance_results",
+            "tables_used": [
+              "artifact.mean_balance_results"
+            ],
+            "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+            "transformation_language": "python"
+          }
+        },
+        "sourceId": "mean_balance_transform",
+        "subtitle": "All 15 validated points; lower RMSE and diagnostic ratios are better.",
+        "title": "Exact matched-budget results and design diagnostics"
+      }
+    ],
+    "title": "Normalized Mean-Balance Audit for INSIDE-Greedy",
+    "version": 1
+  },
+  "snapshot": {
+    "datasets": {
+      "mean_balance_results": [
+        {
+          "budget_index": 1,
+          "dataset": "Wine",
+          "dataset_key": "wine",
+          "dataset_order": 1,
+          "inside_orbit_rmse": 0.0006353593658663042,
+          "legacy_calls_repeat_1": 71286,
+          "legacy_calls_repeat_2": 71286,
+          "legacy_calls_repeat_3": 71286,
+          "legacy_frobenius_discrepancy": 0.1055385015819027,
+          "legacy_greedy_rmse": 0.002813820562828758,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.04658693226664804,
+          "normalized_calls_repeat_1": 71286,
+          "normalized_calls_repeat_2": 71286,
+          "normalized_calls_repeat_3": 71286,
+          "normalized_frobenius_discrepancy": 0.14687267852925268,
+          "normalized_greedy_rmse": 0.0011820287527089903,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.019452432886622326,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.391650216061413,
+          "normalized_to_legacy_rmse_ratio": 0.42007964840540035,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.4175512732901814,
+          "normalized_to_orbit_rmse_ratio": 1.860409740080418,
+          "normalized_vs_legacy_improvement_rate": 0.5799203515945996,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 71286,
+          "orbit_calls_repeat_2": 71286,
+          "orbit_calls_repeat_3": 71286,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 1,
+          "total_utility_calls": 71286
+        },
+        {
+          "budget_index": 2,
+          "dataset": "Wine",
+          "dataset_key": "wine",
+          "dataset_order": 1,
+          "inside_orbit_rmse": 0.0004123874449317491,
+          "legacy_calls_repeat_1": 142286,
+          "legacy_calls_repeat_2": 142286,
+          "legacy_calls_repeat_3": 142286,
+          "legacy_frobenius_discrepancy": 0.0533611626789175,
+          "legacy_greedy_rmse": 0.0018711834485940814,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.03280446377764917,
+          "normalized_calls_repeat_1": 142286,
+          "normalized_calls_repeat_2": 142286,
+          "normalized_calls_repeat_3": 142286,
+          "normalized_frobenius_discrepancy": 0.07382707272795534,
+          "normalized_greedy_rmse": 0.0007157712176042555,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.009855317550544222,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3835356844112343,
+          "normalized_to_legacy_rmse_ratio": 0.3825232732483029,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.300426113267518,
+          "normalized_to_orbit_rmse_ratio": 1.7356765498103779,
+          "normalized_vs_legacy_improvement_rate": 0.6174767267516972,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 142286,
+          "orbit_calls_repeat_2": 142286,
+          "orbit_calls_repeat_3": 142286,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 2,
+          "total_utility_calls": 142286
+        },
+        {
+          "budget_index": 3,
+          "dataset": "Wine",
+          "dataset_key": "wine",
+          "dataset_order": 1,
+          "inside_orbit_rmse": 0.0002743887084824147,
+          "legacy_calls_repeat_1": 284286,
+          "legacy_calls_repeat_2": 284286,
+          "legacy_calls_repeat_3": 284286,
+          "legacy_frobenius_discrepancy": 0.026493447623072933,
+          "legacy_greedy_rmse": 0.0013971341200072875,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.023113534245738,
+          "normalized_calls_repeat_1": 284286,
+          "normalized_calls_repeat_2": 284286,
+          "normalized_calls_repeat_3": 284286,
+          "normalized_frobenius_discrepancy": 0.03727032976737759,
+          "normalized_greedy_rmse": 0.0004074146575132755,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.004928230643588514,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4067753769773306,
+          "normalized_to_legacy_rmse_ratio": 0.29160740667556695,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2132183936559702,
+          "normalized_to_orbit_rmse_ratio": 1.4848083937804835,
+          "normalized_vs_legacy_improvement_rate": 0.708392593324433,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 284286,
+          "orbit_calls_repeat_2": 284286,
+          "orbit_calls_repeat_3": 284286,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 3,
+          "total_utility_calls": 284286
+        },
+        {
+          "budget_index": 4,
+          "dataset": "Wine",
+          "dataset_key": "wine",
+          "dataset_order": 1,
+          "inside_orbit_rmse": 0.00017557094056054747,
+          "legacy_calls_repeat_1": 710286,
+          "legacy_calls_repeat_2": 710286,
+          "legacy_calls_repeat_3": 710286,
+          "legacy_frobenius_discrepancy": 0.010625778610602479,
+          "legacy_greedy_rmse": 0.000903401206396081,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.014734337322627952,
+          "normalized_calls_repeat_1": 710286,
+          "normalized_calls_repeat_2": 710286,
+          "normalized_calls_repeat_3": 710286,
+          "normalized_frobenius_discrepancy": 0.0147894889409755,
+          "normalized_greedy_rmse": 0.00022290835474448903,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.0019586459648277535,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.391849904177228,
+          "normalized_to_legacy_rmse_ratio": 0.24674347694722762,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.1329307129286231,
+          "normalized_to_orbit_rmse_ratio": 1.2696198700810444,
+          "normalized_vs_legacy_improvement_rate": 0.7532565230527724,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 710286,
+          "orbit_calls_repeat_2": 710286,
+          "orbit_calls_repeat_3": 710286,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 4,
+          "total_utility_calls": 710286
+        },
+        {
+          "budget_index": 5,
+          "dataset": "Wine",
+          "dataset_key": "wine",
+          "dataset_order": 1,
+          "inside_orbit_rmse": 0.00013244603951226917,
+          "legacy_calls_repeat_1": 1420286,
+          "legacy_calls_repeat_2": 1420286,
+          "legacy_calls_repeat_3": 1420286,
+          "legacy_frobenius_discrepancy": 0.00532345487107447,
+          "legacy_greedy_rmse": 0.000615707303084792,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.010358297137107855,
+          "normalized_calls_repeat_1": 1420286,
+          "normalized_calls_repeat_2": 1420286,
+          "normalized_calls_repeat_3": 1420286,
+          "normalized_frobenius_discrepancy": 0.007425734693996946,
+          "normalized_greedy_rmse": 0.00015676596789164954,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.000979550048592571,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3949089217127444,
+          "normalized_to_legacy_rmse_ratio": 0.2546111879885572,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.09456670682707134,
+          "normalized_to_orbit_rmse_ratio": 1.183621408906889,
+          "normalized_vs_legacy_improvement_rate": 0.7453888120114428,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 1420286,
+          "orbit_calls_repeat_2": 1420286,
+          "orbit_calls_repeat_3": 1420286,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 5,
+          "total_utility_calls": 1420286
+        },
+        {
+          "budget_index": 1,
+          "dataset": "Airport",
+          "dataset_key": "airport",
+          "dataset_order": 2,
+          "inside_orbit_rmse": 0.004739567011499814,
+          "legacy_calls_repeat_1": 50202,
+          "legacy_calls_repeat_2": 50202,
+          "legacy_calls_repeat_3": 50202,
+          "legacy_frobenius_discrepancy": 0.07300349257107754,
+          "legacy_greedy_rmse": 0.05334577045746104,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.04591734373197661,
+          "normalized_calls_repeat_1": 50202,
+          "normalized_calls_repeat_2": 50202,
+          "normalized_calls_repeat_3": 50202,
+          "normalized_frobenius_discrepancy": 0.10125798784158019,
+          "normalized_greedy_rmse": 0.020824271785834278,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.01596412479573057,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.387029363601934,
+          "normalized_to_legacy_rmse_ratio": 0.3903640646157685,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.3476709125186881,
+          "normalized_to_orbit_rmse_ratio": 4.393707639391416,
+          "normalized_vs_legacy_improvement_rate": 0.6096359353842316,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 50202,
+          "orbit_calls_repeat_2": 50202,
+          "orbit_calls_repeat_3": 50202,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 6,
+          "total_utility_calls": 50202
+        },
+        {
+          "budget_index": 2,
+          "dataset": "Airport",
+          "dataset_key": "airport",
+          "dataset_order": 2,
+          "inside_orbit_rmse": 0.0035887695312649148,
+          "legacy_calls_repeat_1": 100202,
+          "legacy_calls_repeat_2": 100202,
+          "legacy_calls_repeat_3": 100202,
+          "legacy_frobenius_discrepancy": 0.036716107572254554,
+          "legacy_greedy_rmse": 0.0398462811030107,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.03239726547674419,
+          "normalized_calls_repeat_1": 100202,
+          "normalized_calls_repeat_2": 100202,
+          "normalized_calls_repeat_3": 100202,
+          "normalized_frobenius_discrepancy": 0.05048061042307656,
+          "normalized_greedy_rmse": 0.009952918200516829,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.007993665855988156,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3748900349454118,
+          "normalized_to_legacy_rmse_ratio": 0.2497828636701759,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2467389064588266,
+          "normalized_to_orbit_rmse_ratio": 2.773351176164488,
+          "normalized_vs_legacy_improvement_rate": 0.7502171363298241,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 100202,
+          "orbit_calls_repeat_2": 100202,
+          "orbit_calls_repeat_3": 100202,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 7,
+          "total_utility_calls": 100202
+        },
+        {
+          "budget_index": 3,
+          "dataset": "Airport",
+          "dataset_key": "airport",
+          "dataset_order": 2,
+          "inside_orbit_rmse": 0.0021412571090201693,
+          "legacy_calls_repeat_1": 200202,
+          "legacy_calls_repeat_2": 200202,
+          "legacy_calls_repeat_3": 200202,
+          "legacy_frobenius_discrepancy": 0.018289837715003806,
+          "legacy_greedy_rmse": 0.02856943626250499,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.022963409716743318,
+          "normalized_calls_repeat_1": 200202,
+          "normalized_calls_repeat_2": 200202,
+          "normalized_calls_repeat_3": 200202,
+          "normalized_frobenius_discrepancy": 0.02561103070919683,
+          "normalized_greedy_rmse": 0.0052885249533780486,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.00399425093033726,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4002874770281415,
+          "normalized_to_legacy_rmse_ratio": 0.1851112813282493,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.17393980160641956,
+          "normalized_to_orbit_rmse_ratio": 2.469822484698279,
+          "normalized_vs_legacy_improvement_rate": 0.8148887186717507,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 200202,
+          "orbit_calls_repeat_2": 200202,
+          "orbit_calls_repeat_3": 200202,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 8,
+          "total_utility_calls": 200202
+        },
+        {
+          "budget_index": 4,
+          "dataset": "Airport",
+          "dataset_key": "airport",
+          "dataset_order": 2,
+          "inside_orbit_rmse": 0.0011459402907172897,
+          "legacy_calls_repeat_1": 500202,
+          "legacy_calls_repeat_2": 500202,
+          "legacy_calls_repeat_3": 500202,
+          "legacy_frobenius_discrepancy": 0.007302444490654091,
+          "legacy_greedy_rmse": 0.017786687671508913,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.01443491450088386,
+          "normalized_calls_repeat_1": 500202,
+          "normalized_calls_repeat_2": 500202,
+          "normalized_calls_repeat_3": 500202,
+          "normalized_frobenius_discrepancy": 0.010211226980234023,
+          "normalized_greedy_rmse": 0.0024856005512884313,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.001601031757756107,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3983299692729863,
+          "normalized_to_legacy_rmse_ratio": 0.13974499340143684,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.11091383725605541,
+          "normalized_to_orbit_rmse_ratio": 2.169048921155041,
+          "normalized_vs_legacy_improvement_rate": 0.8602550065985631,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 500202,
+          "orbit_calls_repeat_2": 500202,
+          "orbit_calls_repeat_3": 500202,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 9,
+          "total_utility_calls": 500202
+        },
+        {
+          "budget_index": 5,
+          "dataset": "Airport",
+          "dataset_key": "airport",
+          "dataset_order": 2,
+          "inside_orbit_rmse": 0.0007645018893985256,
+          "legacy_calls_repeat_1": 1000202,
+          "legacy_calls_repeat_2": 1000202,
+          "legacy_calls_repeat_3": 1000202,
+          "legacy_frobenius_discrepancy": 0.0036463082352238604,
+          "legacy_greedy_rmse": 0.012573158776036831,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.010183161614557545,
+          "normalized_calls_repeat_1": 1000202,
+          "normalized_calls_repeat_2": 1000202,
+          "normalized_calls_repeat_3": 1000202,
+          "normalized_frobenius_discrepancy": 0.005130254729780665,
+          "normalized_greedy_rmse": 0.0014258341709741588,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.0007968257892762348,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4069723124945028,
+          "normalized_to_legacy_rmse_ratio": 0.1134030195889719,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.07824935117764568,
+          "normalized_to_orbit_rmse_ratio": 1.8650498981708712,
+          "normalized_vs_legacy_improvement_rate": 0.8865969804110281,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 1000202,
+          "orbit_calls_repeat_2": 1000202,
+          "orbit_calls_repeat_3": 1000202,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 10,
+          "total_utility_calls": 1000202
+        },
+        {
+          "budget_index": 1,
+          "dataset": "U.S. Electoral Voting",
+          "dataset_key": "voting",
+          "dataset_order": 3,
+          "inside_orbit_rmse": 0.0021663748952967577,
+          "legacy_calls_repeat_1": 25604,
+          "legacy_calls_repeat_2": 25604,
+          "legacy_calls_repeat_3": 25604,
+          "legacy_frobenius_discrepancy": 0.03495305326399597,
+          "legacy_greedy_rmse": 0.003966185991546338,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.04376117716541054,
+          "normalized_calls_repeat_1": 25604,
+          "normalized_calls_repeat_2": 25604,
+          "normalized_calls_repeat_3": 25604,
+          "normalized_frobenius_discrepancy": 0.047832859373319124,
+          "normalized_greedy_rmse": 0.0022811042574163304,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.010389963685787762,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.3684887272091402,
+          "normalized_to_legacy_rmse_ratio": 0.5751379946069984,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.2374242275639728,
+          "normalized_to_orbit_rmse_ratio": 1.0529591449608524,
+          "normalized_vs_legacy_improvement_rate": 0.42486200539300156,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 25604,
+          "orbit_calls_repeat_2": 25604,
+          "orbit_calls_repeat_3": 25604,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 11,
+          "total_utility_calls": 25604
+        },
+        {
+          "budget_index": 2,
+          "dataset": "U.S. Electoral Voting",
+          "dataset_key": "voting",
+          "dataset_order": 3,
+          "inside_orbit_rmse": 0.001497065598234066,
+          "legacy_calls_repeat_1": 51104,
+          "legacy_calls_repeat_2": 51104,
+          "legacy_calls_repeat_3": 51104,
+          "legacy_frobenius_discrepancy": 0.01722336788730285,
+          "legacy_greedy_rmse": 0.002032784898725978,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.03121705218441109,
+          "normalized_calls_repeat_1": 51104,
+          "normalized_calls_repeat_2": 51104,
+          "normalized_calls_repeat_3": 51104,
+          "normalized_frobenius_discrepancy": 0.024626227258308615,
+          "normalized_greedy_rmse": 0.0017660145053075566,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.0053060265047698155,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4298148549949508,
+          "normalized_to_legacy_rmse_ratio": 0.8687660491842417,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.1699720548059786,
+          "normalized_to_orbit_rmse_ratio": 1.179650716301772,
+          "normalized_vs_legacy_improvement_rate": 0.13123395081575828,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 51104,
+          "orbit_calls_repeat_2": 51104,
+          "orbit_calls_repeat_3": 51104,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 12,
+          "total_utility_calls": 51104
+        },
+        {
+          "budget_index": 3,
+          "dataset": "U.S. Electoral Voting",
+          "dataset_key": "voting",
+          "dataset_order": 3,
+          "inside_orbit_rmse": 0.0008696139693717296,
+          "legacy_calls_repeat_1": 102104,
+          "legacy_calls_repeat_2": 102104,
+          "legacy_calls_repeat_3": 102104,
+          "legacy_frobenius_discrepancy": 0.008548663069470384,
+          "legacy_greedy_rmse": 0.0017070803810720376,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.022119742778282308,
+          "normalized_calls_repeat_1": 102104,
+          "normalized_calls_repeat_2": 102104,
+          "normalized_calls_repeat_3": 102104,
+          "normalized_frobenius_discrepancy": 0.01208778758575581,
+          "normalized_greedy_rmse": 0.0012416945100994497,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.0026397878286008474,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4139974271444393,
+          "normalized_to_legacy_rmse_ratio": 0.7273790524847296,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.11934080134026939,
+          "normalized_to_orbit_rmse_ratio": 1.4278686334771478,
+          "normalized_vs_legacy_improvement_rate": 0.27262094751527044,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 102104,
+          "orbit_calls_repeat_2": 102104,
+          "orbit_calls_repeat_3": 102104,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 13,
+          "total_utility_calls": 102104
+        },
+        {
+          "budget_index": 4,
+          "dataset": "U.S. Electoral Voting",
+          "dataset_key": "voting",
+          "dataset_order": 3,
+          "inside_orbit_rmse": 0.0005721936714557112,
+          "legacy_calls_repeat_1": 255104,
+          "legacy_calls_repeat_2": 255104,
+          "legacy_calls_repeat_3": 255104,
+          "legacy_frobenius_discrepancy": 0.0034566529981875263,
+          "legacy_greedy_rmse": 0.0010318183824729458,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.01360062098572938,
+          "normalized_calls_repeat_1": 255104,
+          "normalized_calls_repeat_2": 255104,
+          "normalized_calls_repeat_3": 255104,
+          "normalized_frobenius_discrepancy": 0.00487841510168697,
+          "normalized_greedy_rmse": 0.0007238198180510958,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.00106110436569686,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.411311781727855,
+          "normalized_to_legacy_rmse_ratio": 0.7014992467146459,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.07801881743563303,
+          "normalized_to_orbit_rmse_ratio": 1.2649909535169,
+          "normalized_vs_legacy_improvement_rate": 0.2985007532853541,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 255104,
+          "orbit_calls_repeat_2": 255104,
+          "orbit_calls_repeat_3": 255104,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 14,
+          "total_utility_calls": 255104
+        },
+        {
+          "budget_index": 5,
+          "dataset": "U.S. Electoral Voting",
+          "dataset_key": "voting",
+          "dataset_order": 3,
+          "inside_orbit_rmse": 0.00040061098196556103,
+          "legacy_calls_repeat_1": 510104,
+          "legacy_calls_repeat_2": 510104,
+          "legacy_calls_repeat_3": 510104,
+          "legacy_frobenius_discrepancy": 0.0017497290224361695,
+          "legacy_greedy_rmse": 0.000766569268850517,
+          "legacy_mean_balance_mode": "raw",
+          "legacy_raw_lambda": 0.1,
+          "legacy_slice_mean_direction_rms": 0.009396516752919888,
+          "normalized_calls_repeat_1": 510104,
+          "normalized_calls_repeat_2": 510104,
+          "normalized_calls_repeat_3": 510104,
+          "normalized_frobenius_discrepancy": 0.0024744389734912223,
+          "normalized_greedy_rmse": 0.0005355981779444844,
+          "normalized_lambda0": 1.0,
+          "normalized_mean_balance_mode": "normalized",
+          "normalized_slice_mean_direction_rms": 0.0005216865860434078,
+          "normalized_to_legacy_frobenius_discrepancy_ratio": 1.4141841060886275,
+          "normalized_to_legacy_rmse_ratio": 0.6986950817212155,
+          "normalized_to_legacy_slice_mean_direction_rms_ratio": 0.05551914605817076,
+          "normalized_to_orbit_rmse_ratio": 1.336953308959782,
+          "normalized_vs_legacy_improvement_rate": 0.3013049182787845,
+          "normalized_vs_legacy_outcome": "improved",
+          "orbit_calls_repeat_1": 510104,
+          "orbit_calls_repeat_2": 510104,
+          "orbit_calls_repeat_3": 510104,
+          "overall_geometric_mean_improvement_rate": 0.6491895385418516,
+          "overall_geometric_mean_new_old_ratio": 0.3508104614581484,
+          "overall_geometric_mean_new_orbit_ratio": 1.6904805749975589,
+          "overall_improved_point_count": 15,
+          "overall_new_beats_orbit_point_count": 0,
+          "overall_total_point_count": 15,
+          "repeats": 3,
+          "row_order": 15,
+          "total_utility_calls": 510104
+        }
+      ]
+    },
+    "generatedAt": "2026-08-24T15:27:55.384422+00:00",
+    "status": "ready",
+    "version": 1
+  },
+  "sources": [
+    {
+      "id": "mean_balance_transform",
+      "label": "Validated mean-balance before/after transformation",
+      "path": "experiments/build_mean_balance_fix_report.py",
+      "query": {
+        "description": "Read all 15 matched Wine, Airport, and Voting budget points from the strictly validated before/after summary.",
+        "engine": "artifact_snapshot_sql",
+        "executed_at": "2026-08-24T15:27:55.384422+00:00",
+        "filters": [
+          "Datasets: Wine, Airport, and U.S. Electoral Voting",
+          "Five matched utility-call budgets per dataset",
+          "Exactly three repeats per method-budget point",
+          "Normalized Greedy uses lambda0=1; legacy Greedy uses raw lambda=0.1"
+        ],
+        "id": "mean_balance_transform",
+        "input_files": [
+          "results/inside_mean_balance_fix_three_benchmark_summary.json",
+          "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+          "results/wine_inside_comparison_3repeats_71k_1p42m.json",
+          "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json",
+          "results/airport_inside_comparison_3repeats_50k_1m.json",
+          "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json",
+          "results/voting_inside_comparison_3repeats_25k_510k.json"
+        ],
+        "language": "sql",
+        "metric_definitions": [
+          "Aggregate RMSE = sqrt(mean over three repeats and all player coordinates of squared Shapley error)",
+          "Normalized/legacy ratio = normalized Greedy aggregate RMSE / legacy Greedy aggregate RMSE",
+          "RMSE improvement rate = 1 - normalized/legacy ratio; positive values favor normalization",
+          "Normalized/Orbit ratio = normalized Greedy aggregate RMSE / INSIDE-Orbit aggregate RMSE",
+          "Geometric-mean ratio = exp(mean of log pointwise RMSE ratios across the stated points)",
+          "Slice-mean RMS ratio and frame-Frobenius ratio use the three-repeat mean design diagnostic at each point"
+        ],
+        "sql": "SELECT * FROM artifact.mean_balance_results",
+        "tables_used": [
+          "artifact.mean_balance_results"
+        ],
+        "transformation_code": "from pathlib import Path\nfrom experiments.build_mean_balance_fix_report import _read, _result_rows, _validate_summary\nsummary = _read(Path('results/inside_mean_balance_fix_three_benchmark_summary.json'))\nrows = _result_rows(summary, _validate_summary(summary))",
+        "transformation_language": "python"
+      }
+    },
+    {
+      "id": "combined_summary_input",
+      "label": "Strictly validated three-dataset combined summary",
+      "path": "results/inside_mean_balance_fix_three_benchmark_summary.json"
+    },
+    {
+      "id": "wine_normalized_input",
+      "label": "Wine normalized report",
+      "path": "results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json"
+    },
+    {
+      "id": "wine_legacy_input",
+      "label": "Wine legacy report",
+      "path": "results/wine_inside_comparison_3repeats_71k_1p42m.json"
+    },
+    {
+      "id": "airport_normalized_input",
+      "label": "Airport normalized report",
+      "path": "results/airport_inside_comparison_normalized_mean_balance_3repeats_50k_1m.json"
+    },
+    {
+      "id": "airport_legacy_input",
+      "label": "Airport legacy report",
+      "path": "results/airport_inside_comparison_3repeats_50k_1m.json"
+    },
+    {
+      "id": "voting_normalized_input",
+      "label": "U.S. Electoral Voting normalized report",
+      "path": "results/voting_inside_comparison_normalized_mean_balance_3repeats_25k_510k.json"
+    },
+    {
+      "id": "voting_legacy_input",
+      "label": "U.S. Electoral Voting legacy report",
+      "path": "results/voting_inside_comparison_3repeats_25k_510k.json"
+    }
+  ],
+  "surface": "report"
+}

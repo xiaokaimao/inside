@@ -28,6 +28,9 @@ from frame_ofa import (
     inner_frame_target,
     inner_size_distribution,
     orbit_coupled_frame_design,
+    paired_frame_scope_designs,
+    per_size_frame_coupled_design,
+    shapley_boundary_vector,
     stratified_frame_design,
 )
 from frame_ofa.geometry import (
@@ -42,6 +45,7 @@ from frame_ofa.design import (
     _cyclic_orbit_signatures,
     _minimum_one_counts,
     _random_relabel,
+    _resolve_mean_balance,
     _sample_iid_coalitions,
     _sample_uniform_coalition,
     _systematic_sizes,
@@ -324,6 +328,20 @@ class DesignAndEstimatorTests(unittest.TestCase):
             first.coalitions, second.coalitions
         )
 
+    def test_iid_design_can_skip_expensive_diagnostics(self) -> None:
+        with_diagnostics = iid_ofa_design(10, 257, seed=937)
+        without_diagnostics = iid_ofa_design(
+            10, 257, seed=937, compute_diagnostics=False
+        )
+        np.testing.assert_array_equal(
+            with_diagnostics.sizes, without_diagnostics.sizes
+        )
+        np.testing.assert_array_equal(
+            with_diagnostics.coalitions, without_diagnostics.coalitions
+        )
+        self.assertTrue(with_diagnostics.diagnostics)
+        self.assertEqual(without_diagnostics.diagnostics, {})
+
     def test_coupled_design_preserves_row_sizes(self) -> None:
         design = frame_coupled_design(
             num_players=8,
@@ -340,6 +358,199 @@ class DesignAndEstimatorTests(unittest.TestCase):
             rows = design.coalitions[design.sizes == size]
             if len(rows) <= math.comb(8, int(size)):
                 self.assertEqual(len(rows), len(np.unique(rows, axis=0)))
+
+    def test_per_size_coupled_is_a_design_only_scope_ablation(self) -> None:
+        parameters = {
+            "num_players": 8,
+            "num_samples": 31,
+            "seed": 1701,
+            "candidate_pool": 8,
+            "mean_balance": 1.0,
+        }
+        global_design = frame_coupled_design(**parameters)
+        per_size_design = per_size_frame_coupled_design(**parameters)
+
+        # Both designs use the same randomized-systematic outer allocation;
+        # only the operator used to score within-size candidates changes.
+        np.testing.assert_array_equal(
+            global_design.sizes, per_size_design.sizes
+        )
+        self.assertEqual(global_design.method, "frame_coupled")
+        self.assertEqual(
+            per_size_design.method, "frame_coupled_per_size"
+        )
+        self.assertEqual(
+            global_design.diagnostics["second_moment_scope"],
+            "global_weighted",
+        )
+        self.assertEqual(
+            per_size_design.diagnostics["second_moment_scope"],
+            "per_size",
+        )
+        self.assertEqual(
+            per_size_design.diagnostics[
+                "mean_balance_mean_weight_squared"
+            ],
+            1.0,
+        )
+        np.testing.assert_array_equal(
+            per_size_design.coalitions.sum(axis=1),
+            per_size_design.sizes,
+        )
+
+        coefficients = np.linspace(-0.3, 0.5, 8)
+        game = AdditiveGame(coefficients, constant=1.7)
+        boundary = evaluate_boundary(game, 8)
+        utilities = np.asarray(
+            [game(row) for row in per_size_design.coalitions]
+        )
+        estimate = estimate_coupled(
+            per_size_design, utilities, boundary, baseline="linear"
+        )
+        self.assertEqual(estimate.shape, (8,))
+        self.assertTrue(np.isfinite(estimate).all())
+        self.assertAlmostEqual(
+            float(estimate.sum()), float(coefficients.sum()), places=12
+        )
+
+    def test_paired_scope_design_preserves_global_and_controls_relabel(self) -> None:
+        parameters = {
+            "num_players": 8,
+            "num_samples": 47,
+            "seed": 20260827,
+            "candidate_pool": 8,
+            "mean_balance": 1.0,
+        }
+        paired_global, paired_per_size = paired_frame_scope_designs(
+            **parameters
+        )
+        relabel_seed = paired_global.diagnostics["relabel_seed"]
+        explicit_global = frame_coupled_design(
+            **parameters, relabel_seed=relabel_seed
+        )
+
+        # The paired helper is exactly the corresponding standalone design
+        # when that API is given the derived independent relabel substream.
+        np.testing.assert_array_equal(
+            paired_global.sizes, explicit_global.sizes
+        )
+        np.testing.assert_array_equal(
+            paired_global.coalitions, explicit_global.coalitions
+        )
+        np.testing.assert_array_equal(
+            paired_global.sizes, paired_per_size.sizes
+        )
+        self.assertEqual(
+            paired_global.diagnostics["relabel_permutation_sha256"],
+            paired_per_size.diagnostics["relabel_permutation_sha256"],
+        )
+        self.assertEqual(
+            paired_global.diagnostics["second_moment_scope"],
+            "global_weighted",
+        )
+        self.assertEqual(
+            paired_per_size.diagnostics["second_moment_scope"],
+            "per_size",
+        )
+        self.assertTrue(
+            paired_global.diagnostics["paired_scope_ablation"]
+        )
+
+    def test_normalized_mean_balance_uses_realized_radial_scale(self) -> None:
+        schedule = np.asarray([2, 3, 4, 6], dtype=np.int64)
+        effective, diagnostics = _resolve_mean_balance(
+            num_players=8,
+            sampled_sizes=schedule,
+            mean_balance=1.25,
+            mean_balance_mode="normalized",
+            radial_weights=True,
+        )
+        expected_mean_weight_squared = float(
+            np.mean(schedule * (8 - schedule))
+        )
+        expected_correction = 1.0 - 1.0 / 7.0
+        expected_factor = (
+            expected_correction * expected_mean_weight_squared
+        )
+        self.assertAlmostEqual(effective, 1.25 * expected_factor)
+        self.assertEqual(diagnostics["mean_balance_mode"], "normalized")
+        self.assertAlmostEqual(
+            diagnostics["mean_balance_lambda0"], 1.25
+        )
+        self.assertAlmostEqual(
+            diagnostics["mean_balance_effective_raw"], effective
+        )
+        self.assertAlmostEqual(
+            diagnostics["mean_balance_normalization_factor"],
+            expected_factor,
+        )
+        self.assertAlmostEqual(
+            diagnostics["mean_balance_mean_weight_squared"],
+            expected_mean_weight_squared,
+        )
+        self.assertAlmostEqual(
+            diagnostics["mean_balance_dimension_correction"],
+            expected_correction,
+        )
+
+    def test_raw_mean_balance_mode_reproduces_legacy_design(self) -> None:
+        normalized = frame_coupled_design(
+            num_players=8,
+            num_samples=31,
+            seed=701,
+            candidate_pool=8,
+            mean_balance=1.0,
+        )
+        effective = normalized.diagnostics[
+            "mean_balance_effective_raw"
+        ]
+        raw = frame_coupled_design(
+            num_players=8,
+            num_samples=31,
+            seed=701,
+            candidate_pool=8,
+            mean_balance=float(effective),
+            mean_balance_mode="raw",
+        )
+        np.testing.assert_array_equal(normalized.sizes, raw.sizes)
+        np.testing.assert_array_equal(
+            normalized.coalitions, raw.coalitions
+        )
+        self.assertEqual(raw.diagnostics["mean_balance_mode"], "raw")
+        self.assertAlmostEqual(
+            raw.diagnostics["mean_balance_lambda0"], 1.0
+        )
+        self.assertAlmostEqual(
+            raw.diagnostics["mean_balance_effective_raw"], effective
+        )
+
+    def test_stratified_mean_balance_uses_unweighted_scale(self) -> None:
+        design = stratified_frame_design(
+            num_players=8,
+            num_samples=17,
+            seed=703,
+            candidate_pool=4,
+            mean_balance=1.5,
+        )
+        correction = 1.0 - 1.0 / 7.0
+        self.assertEqual(
+            design.diagnostics["mean_balance_mean_weight_squared"], 1.0
+        )
+        self.assertAlmostEqual(
+            design.diagnostics["mean_balance_effective_raw"],
+            1.5 * correction,
+        )
+
+    def test_mean_balance_rejects_invalid_mode_and_nonfinite_value(self) -> None:
+        schedule = np.asarray([2, 3], dtype=np.int64)
+        with self.assertRaisesRegex(ValueError, "mean_balance_mode"):
+            _resolve_mean_balance(
+                8, schedule, 1.0, "legacy", radial_weights=True
+            )
+        with self.assertRaisesRegex(ValueError, "finite and nonnegative"):
+            _resolve_mean_balance(
+                8, schedule, np.nan, "normalized", radial_weights=True
+            )
 
     def test_systematic_size_counts_are_floor_or_ceiling(self) -> None:
         num_players = 9
@@ -855,6 +1066,148 @@ class DesignAndEstimatorTests(unittest.TestCase):
         np.testing.assert_allclose(ratio, linear, atol=3e-14)
         np.testing.assert_allclose(official_ratio, linear, atol=3e-14)
 
+    def test_inside_greedy_mode_is_per_size_official_ratio(self) -> None:
+        num_players = 5
+        rng = np.random.default_rng(1207)
+        table = rng.normal(size=1 << num_players)
+
+        def utility(row: np.ndarray) -> float:
+            mask = sum(
+                int(take) << player
+                for player, take in enumerate(row)
+            )
+            return float(table[mask])
+
+        estimator = FrameOFAEstimator(
+            num_players,
+            20,
+            mode="inside_greedy",
+            seed=43,
+            candidate_pool=8,
+        )
+        result = estimator.estimate(utility)
+        manual = estimate_official_ratio_ofa(
+            result.design,
+            result.utilities,
+            result.boundary,
+            missing="raise",
+        )
+        np.testing.assert_allclose(result.values, manual, atol=2e-15)
+        self.assertEqual(result.design.method, "frame_coupled_per_size")
+        self.assertEqual(
+            result.design.diagnostics["second_moment_scope"], "per_size"
+        )
+        self.assertEqual(
+            result.design.diagnostics["inside_algorithm"], "INSIDE-Greedy"
+        )
+        self.assertEqual(
+            result.design.diagnostics["inside_estimator"],
+            "ofa_conditional_mean_ratio_missing_raise",
+        )
+        self.assertTrue(
+            result.design.diagnostics["ratio_coverage"][
+                "all_player_size_strata_covered"
+            ]
+        )
+
+    def test_inside_orbit_mode_is_strict_balanced_ratio(self) -> None:
+        num_players = 6
+        rng = np.random.default_rng(1213)
+        table = rng.normal(size=1 << num_players)
+
+        def utility(row: np.ndarray) -> float:
+            mask = sum(
+                int(take) << player
+                for player, take in enumerate(row)
+            )
+            return float(table[mask])
+
+        result = FrameOFAEstimator(
+            num_players,
+            7,
+            mode="inside_orbit",
+            seed=47,
+            candidate_pool=8,
+        ).estimate(utility)
+        manual = estimate_ratio_ofa(
+            result.design, result.utilities, result.boundary
+        )
+        np.testing.assert_allclose(result.values, manual, atol=2e-15)
+        self.assertEqual(result.design.method, "cyclic_orbit_frame")
+        self.assertEqual(
+            result.design.diagnostics["inside_algorithm"], "INSIDE-Orbit"
+        )
+        coverage = result.design.diagnostics["ratio_coverage"]
+        self.assertEqual(
+            coverage["exactly_1_balanced_size_count"],
+            coverage["total_inner_size_count"],
+        )
+
+    def test_inside_greedy_rejects_missing_ratio_strata_before_utility(
+        self,
+    ) -> None:
+        calls = 0
+
+        def utility(_: np.ndarray) -> float:
+            nonlocal calls
+            calls += 1
+            return 0.0
+
+        estimator = FrameOFAEstimator(
+            5,
+            2,
+            mode="inside_greedy",
+            seed=53,
+            candidate_pool=4,
+        )
+        with self.assertRaisesRegex(ValueError, "missing in/out"):
+            estimator.estimate(utility)
+        self.assertEqual(calls, 0)
+
+    def test_covered_unbalanced_ratio_is_unbiased_under_random_relabeling(
+        self,
+    ) -> None:
+        num_players = 5
+        rng = np.random.default_rng(1217)
+        table = rng.normal(size=1 << num_players)
+
+        def utility(row: np.ndarray) -> float:
+            mask = sum(
+                int(take) << player
+                for player, take in enumerate(row)
+            )
+            return float(table[mask])
+
+        truth = exact_shapley_table(table, num_players)
+        boundary = evaluate_boundary(utility, num_players)
+        pairs = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 2))
+        size_two = np.zeros((len(pairs), num_players), dtype=bool)
+        for row, pair in zip(size_two, pairs, strict=True):
+            row[list(pair)] = True
+        base = np.concatenate((size_two, ~size_two), axis=0)
+        sizes = base.sum(axis=1)
+        self.assertFalse(
+            np.all(size_two.sum(axis=0) == size_two.sum(axis=0)[0])
+        )
+
+        estimates = []
+        for permutation in permutations(range(num_players)):
+            relabeled = _random_relabel(
+                base, self._fixed_permutation_rng(permutation)
+            )
+            design = CoalitionDesign(
+                relabeled, sizes, method="custom", seed=0
+            )
+            utilities = np.asarray([utility(row) for row in relabeled])
+            estimates.append(
+                estimate_official_ratio_ofa(
+                    design, utilities, boundary, missing="raise"
+                )
+            )
+        np.testing.assert_allclose(
+            np.mean(estimates, axis=0), truth, atol=2e-14
+        )
+
     def test_ratio_estimator_rejects_unbalanced_design(self) -> None:
         num_players = 4
         rows = np.array(
@@ -887,6 +1240,47 @@ class DesignAndEstimatorTests(unittest.TestCase):
             estimate_ratio_ofa(
                 wrong_width, np.zeros(3, dtype=float), boundary
             )
+
+    def test_vectorized_official_ratio_matches_playerwise_formula(self) -> None:
+        num_players = 7
+        design = iid_ofa_design(
+            num_players, 73, seed=81, compute_diagnostics=False
+        )
+        rng = np.random.default_rng(902)
+        utilities = rng.normal(size=len(design.coalitions))
+        boundary = evaluate_boundary(
+            AdditiveGame(
+                np.arange(num_players, dtype=float), constant=0.0
+            ),
+            num_players,
+        )
+
+        reference = shapley_boundary_vector(boundary)
+        expected_sizes, _, _ = inner_size_distribution(num_players)
+        for size in expected_sizes:
+            take = design.sizes == size
+            rows = design.coalitions[take]
+            slice_utilities = utilities[take]
+            for player in range(num_players):
+                included = rows[:, player]
+                positive = (
+                    float(slice_utilities[included].mean())
+                    if np.any(included)
+                    else 0.0
+                )
+                negative = (
+                    float(slice_utilities[~included].mean())
+                    if np.any(~included)
+                    else 0.0
+                )
+                reference[player] += (
+                    positive - negative
+                ) / num_players
+
+        actual = estimate_official_ratio_ofa(
+            design, utilities, boundary, missing="zero"
+        )
+        np.testing.assert_allclose(actual, reference, atol=2e-15)
 
     def test_estimators_reject_incompatible_design_schemes(self) -> None:
         num_players = 5
@@ -965,6 +1359,69 @@ class DesignAndEstimatorTests(unittest.TestCase):
             batch_result.utility_evaluations,
             serial_result.utility_evaluations,
         )
+
+    def test_parallel_game_evaluator_submits_bounded_ordered_batches(
+        self,
+    ) -> None:
+        class RecordingExecutor:
+            def __init__(self) -> None:
+                self.batch_lengths: list[int] = []
+
+            def map(self, function, rows, *, chunksize):
+                del function, chunksize
+                block = np.asarray(rows, dtype=bool)
+                self.batch_lengths.append(len(block))
+                # An order-sensitive scalar lets the assertion detect any
+                # reordering across or within outer submission batches.
+                weights = 1 << np.arange(block.shape[1])
+                return iter(block.astype(np.int64) @ weights)
+
+        num_players = 9
+        num_rows = 113
+        chunksize = 3
+        n_jobs = 2
+        rng = np.random.default_rng(204)
+        rows = rng.integers(
+            0, 2, size=(num_rows, num_players), dtype=np.int8
+        ).astype(bool)
+        evaluator = GameEvaluator(
+            OfficialStyleAdditiveGame,
+            {"coefficients": np.ones(num_players)},
+            n_jobs=n_jobs,
+            chunksize=chunksize,
+        )
+        executor = RecordingExecutor()
+        evaluator._executor = executor  # type: ignore[assignment]
+
+        actual = evaluator.evaluate(rows)
+        expected = rows.astype(np.int64) @ (
+            1 << np.arange(num_players)
+        )
+        np.testing.assert_array_equal(actual, expected)
+        self.assertEqual(sum(executor.batch_lengths), num_rows)
+        self.assertGreater(len(executor.batch_lengths), 1)
+        self.assertLessEqual(
+            max(executor.batch_lengths),
+            4 * n_jobs * chunksize,
+        )
+
+    def test_parallel_game_evaluator_batches_match_serial_order(self) -> None:
+        num_players = 9
+        rng = np.random.default_rng(205)
+        rows = rng.integers(
+            0, 2, size=(113, num_players), dtype=np.int8
+        ).astype(bool)
+        coefficients = np.arange(1, num_players + 1, dtype=np.float64)
+        expected = rows @ coefficients
+        with GameEvaluator(
+            OfficialStyleAdditiveGame,
+            {"coefficients": coefficients},
+            n_jobs=2,
+            chunksize=3,
+            start_method="spawn",
+        ) as evaluator:
+            actual = evaluator.evaluate(rows)
+        np.testing.assert_array_equal(actual, expected)
 
     def test_invalid_configuration_fails_before_utility_use(self) -> None:
         calls = 0

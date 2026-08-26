@@ -1,0 +1,183 @@
+{
+  "experiment": "inside_greedy_joint_hyperparameter_selection",
+  "holdout_validation": null,
+  "locked_configuration": {
+    "candidate_pool": 64,
+    "configuration_id": "lambda0=0|K=64",
+    "joint_geometric_mean_rmse_ratio_to_default": 0.819561162288453,
+    "joint_geometric_mean_rmse_ratio_to_orbit": 0.8706821857069058,
+    "lambda0": 0.0,
+    "mean_design_seconds": 149.92802850273438,
+    "worst_cell_rmse_ratio_to_default": 0.9065109813837898,
+    "worst_cell_rmse_ratio_to_orbit": 0.9151789768801009
+  },
+  "plots": {
+    "screening_heatmaps": [
+      "results/inside_greedy_larger_k_screen_heatmap.png",
+      "results/inside_greedy_larger_k_screen_heatmap.pdf"
+    ]
+  },
+  "ranking": [
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8012593466679009,
+        "airport:budget_index=1": 0.7428205825431635,
+        "voting:budget_index=0": 0.8361715206783794,
+        "voting:budget_index=1": 0.9065109813837898
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.8896916026609872,
+        "airport:budget_index=1": 0.8528859961877957,
+        "voting:budget_index=0": 0.8275650192778298,
+        "voting:budget_index=1": 0.9151789768801009
+      },
+      "configuration_id": "lambda0=0|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7714868337567432,
+        "voting": 0.8706311881705902
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.819561162288453,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8706821857069058,
+      "lambda0": 0.0,
+      "mean_design_seconds": 149.92802850273438,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9065109813837898,
+      "worst_cell_rmse_ratio_to_orbit": 0.9151789768801009
+    },
+    {
+      "candidate_pool": 32,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8616252499755888,
+        "airport:budget_index=1": 0.7304335726571006,
+        "voting:budget_index=0": 0.8994888901504937,
+        "voting:budget_index=1": 0.9661130821950689
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9567198844317271,
+        "airport:budget_index=1": 0.8386635748996121,
+        "voting:budget_index=0": 0.890230679123911,
+        "voting:budget_index=1": 0.975350988869526
+      },
+      "configuration_id": "lambda0=0|K=32",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7933221348426103,
+        "voting": 0.9322059772730034
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8599649039369344,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9136061549089205,
+      "lambda0": 0.0,
+      "mean_design_seconds": 95.21694076817948,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9661130821950689,
+      "worst_cell_rmse_ratio_to_orbit": 0.975350988869526
+    },
+    {
+      "candidate_pool": 16,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8888096314299304,
+        "airport:budget_index=1": 0.7876504816528742,
+        "voting:budget_index=0": 0.8897352479971359,
+        "voting:budget_index=1": 0.9352192625341438
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9869045131715216,
+        "airport:budget_index=1": 0.9043584433166583,
+        "voting:budget_index=0": 0.8805774287356125,
+        "voting:budget_index=1": 0.9441617646352598
+      },
+      "configuration_id": "lambda0=0|K=16",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8367026558422641,
+        "voting": 0.9121938075225653
+      },
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8736332075859968,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9281270339398899,
+      "lambda0": 0.0,
+      "mean_design_seconds": 65.5687811843818,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9352192625341438,
+      "worst_cell_rmse_ratio_to_orbit": 0.9869045131715216
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0,
+        "airport:budget_index=1": 1.0,
+        "voting:budget_index=0": 1.0,
+        "voting:budget_index=1": 1.0
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1103665827560563,
+        "airport:budget_index=1": 1.1481722723242345,
+        "voting:budget_index=0": 0.9897072536103989,
+        "voting:budget_index=1": 1.0095619310458648
+      },
+      "configuration_id": "lambda0=1|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0,
+        "voting": 1.0
+      },
+      "is_registered_default": true,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0623760931712627,
+      "lambda0": 1.0,
+      "mean_design_seconds": 42.64911569992546,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0,
+      "worst_cell_rmse_ratio_to_orbit": 1.1481722723242345
+    }
+  ],
+  "screening_contract": {
+    "all_rmse_and_aggregates_independently_recomputed": true,
+    "base_seed": 20260911,
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "greedy_size_schedules_and_relabels_paired_across_hyperparameters": true,
+    "orbit_is_equal-call_but_independently_randomized": true,
+    "repeats": 8
+  },
+  "screening_sources": {
+    "airport": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_airport.json",
+      "sha256": "6432f3d6e447ccf9987a3a3ac92ec58a401fc0e0e3c81b4a069a41ffd638ff2c"
+    },
+    "voting": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_larger_k_screen_voting.json",
+      "sha256": "b519da8a27a6cb556a2f917aad08ce615876e02cf0e5172c6707c7bee2e60dfa"
+    }
+  },
+  "selection_rule": {
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "cell_count": 4,
+    "coverage_policy": "eliminate any configuration with a coverage failure",
+    "datasets": [
+      "airport",
+      "voting"
+    ],
+    "design_time_is_descriptive_not_a_selection_tie_break": true,
+    "primary": "minimize the equal-weight mean log aggregate-RMSE ratio to the registered default across 2 datasets x 2 budgets",
+    "tie_breaks": [
+      "lower worst dataset-budget RMSE ratio to default",
+      "smaller candidate pool K",
+      "smaller lambda0"
+    ]
+  },
+  "status": "configuration_locked"
+}

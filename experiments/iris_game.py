@@ -6,6 +6,8 @@ from typing import Any
 
 import numpy as np
 
+from .sklearn_data import load_sklearn_train_test_split
+
 
 def load_iris_train_test_split(
     *,
@@ -18,64 +20,11 @@ def load_iris_train_test_split(
     training partition only.  With the standard Iris data and
     ``test_size=0.2``, this produces 120 valued players and 30 test examples.
     """
-    from sklearn.datasets import load_iris
-    from sklearn.model_selection import train_test_split
-
-    iris = load_iris()
-    data = np.asarray(iris.data, dtype=np.float64)
-    target = np.asarray(iris.target, dtype=np.int64)
-    original_indices = np.arange(len(target), dtype=np.int64)
-    (
-        train_indices,
-        test_indices,
-    ) = train_test_split(
-        original_indices,
+    return load_sklearn_train_test_split(
+        "iris",
         test_size=test_size,
-        random_state=dataset_seed,
-        stratify=target,
+        dataset_seed=dataset_seed,
     )
-    data_train = data[train_indices]
-    data_test = data[test_indices]
-    label_train = target[train_indices]
-    label_test = target[test_indices]
-
-    data_mean = data_train.mean(axis=0, keepdims=True)
-    data_std = data_train.std(axis=0, keepdims=True)
-    if np.any(data_std == 0):
-        raise ValueError("a training feature has zero variance")
-    data_train = (data_train - data_mean) / data_std
-    data_test = (data_test - data_mean) / data_std
-
-    num_classes = len(np.unique(target))
-    game_args: dict[str, np.ndarray | int | float] = {
-        "X_valued": data_train,
-        "y_valued": label_train,
-        "X_performance": data_test,
-        "y_performance": label_test,
-        "num_classes": num_classes,
-        "learning_rate": 1.0,
-        "game_seed": dataset_seed,
-    }
-    metadata: dict[str, Any] = {
-        "dataset": "iris",
-        "split": "stratified_train_test",
-        "dataset_seed": dataset_seed,
-        "test_size": float(test_size),
-        "train_original_indices": train_indices.tolist(),
-        "test_original_indices": test_indices.tolist(),
-        "train_labels": label_train.tolist(),
-        "test_labels": label_test.tolist(),
-        "train_class_counts": np.bincount(
-            label_train, minlength=num_classes
-        ).tolist(),
-        "test_class_counts": np.bincount(
-            label_test, minlength=num_classes
-        ).tolist(),
-        "standardization_fitted_on": "training partition only",
-        "standardization_mean": data_mean.ravel().tolist(),
-        "standardization_std": data_std.ravel().tolist(),
-    }
-    return game_args, metadata
 
 
 def load_official_iris_split(

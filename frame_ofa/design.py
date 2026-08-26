@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import hashlib
 from itertools import combinations
 from math import comb
 from typing import Any
@@ -164,9 +165,28 @@ def _random_relabel(
 ) -> np.ndarray:
     """Apply one independent uniform player permutation to a whole design."""
     permutation = rng.permutation(coalitions.shape[1])
+    return _relabel_with_permutation(coalitions, permutation)
+
+
+def _relabel_with_permutation(
+    coalitions: np.ndarray, permutation: np.ndarray
+) -> np.ndarray:
+    """Apply a supplied old-to-new player-label permutation."""
+    permutation = np.asarray(permutation, dtype=np.int64)
+    if permutation.shape != (coalitions.shape[1],) or not np.array_equal(
+        np.sort(permutation), np.arange(coalitions.shape[1])
+    ):
+        raise ValueError("permutation must contain each player label once")
     relabeled = np.empty_like(coalitions)
     relabeled[:, permutation] = coalitions
     return relabeled
+
+
+def _permutation_sha256(permutation: np.ndarray) -> str:
+    encoded = np.ascontiguousarray(
+        np.asarray(permutation, dtype="<i8")
+    )
+    return hashlib.sha256(encoded.tobytes(order="C")).hexdigest()
 
 
 def _greedy_frame_rows(
@@ -177,20 +197,33 @@ def _greedy_frame_rows(
     *,
     radial_weights: bool,
     mean_balance: float,
+    second_moment_scope: str = "global",
 ) -> np.ndarray:
-    """Greedily minimize the weighted frame potential.
+    """Greedily minimize a global or fixed-slice frame potential.
 
-    Conditional on the size sequence, the target cross-term with the
-    efficiency projector and the self-outer-product terms are constants.
-    Selecting the candidate minimizing u^T A u therefore greedily minimizes
-    the exact Frobenius frame-discrepancy increment.
+    For ``second_moment_scope="global"``, one operator accumulates all rows
+    and the optional radial weight gives the coupled-linear OFA objective.
+    For ``"per_size"``, each fixed-size slice has its own unweighted
+    operator.  Conditional on the size sequence, target cross-terms with the
+    efficiency projector and self-outer-product terms are constants, so the
+    corresponding ``u^T A u`` score is the exact candidate-dependent part of
+    the Frobenius-discrepancy increment.
     """
     if candidate_pool < 1:
         raise ValueError("candidate_pool must be positive")
 
     if mean_balance < 0:
         raise ValueError("mean_balance must be nonnegative")
+    if second_moment_scope not in {"global", "per_size"}:
+        raise ValueError(
+            "second_moment_scope must be 'global' or 'per_size'"
+        )
+    if second_moment_scope == "per_size" and radial_weights:
+        raise ValueError(
+            "per-size second moments must use unweighted slice operators"
+        )
     operator_sum = np.zeros((num_players, num_players), dtype=np.float64)
+    operator_sums: dict[int, np.ndarray] = {}
     direction_sums: dict[int, np.ndarray] = {}
     used_by_size: dict[int, set[tuple[int, ...]]] = {}
     coalitions = np.zeros((len(sampled_sizes), num_players), dtype=bool)
@@ -206,10 +239,23 @@ def _greedy_frame_rows(
         )
         directions = centered_directions(candidates)
         weight = (
-            np.sqrt(size * (num_players - size)) if radial_weights else 1.0
+            np.sqrt(size * (num_players - size))
+            if radial_weights
+            else 1.0
+        )
+        active_operator = (
+            operator_sum
+            if second_moment_scope == "global"
+            else operator_sums.setdefault(
+                size, np.zeros_like(operator_sum)
+            )
         )
         scores = weight * np.einsum(
-            "bi,ij,bj->b", directions, operator_sum, directions, optimize=True
+            "bi,ij,bj->b",
+            directions,
+            active_operator,
+            directions,
+            optimize=True,
         )
         direction_sum = direction_sums.setdefault(
             size, np.zeros(num_players, dtype=np.float64)
@@ -225,9 +271,81 @@ def _greedy_frame_rows(
         coalitions[row_index] = coalition
         used.add(tuple(np.flatnonzero(coalition).tolist()))
 
-        operator_sum += weight * np.outer(direction, direction)
+        active_operator += weight * np.outer(direction, direction)
         direction_sum += direction
     return coalitions
+
+
+def _resolve_mean_balance(
+    num_players: int,
+    sampled_sizes: np.ndarray,
+    mean_balance: float,
+    mean_balance_mode: str,
+    *,
+    radial_weights: bool,
+) -> tuple[float, dict[str, float | str]]:
+    r"""Convert a dimensionless first-moment weight to the raw objective scale.
+
+    The greedy objective combines a second-moment frame term with the
+    fixed-slice first-moment penalty.  Their unnormalized magnitudes depend on
+    both dimension and, for the global radial design, the realized size
+    schedule.  In ``"normalized"`` mode, ``mean_balance`` denotes the
+    dimensionless :math:`\lambda_0` and is converted as
+
+    .. math::
+
+       \lambda_{\mathrm{eff}}
+       = \lambda_0\left(1-\frac{1}{n-1}\right)
+         \frac{1}{T}\sum_t w_t^2,
+
+    where :math:`w_t^2=s_t(n-s_t)` for a radial design and one for an
+    unweighted stratified design.  ``"raw"`` retains the legacy behavior in
+    which ``mean_balance`` is used directly as
+    :math:`\lambda_{\mathrm{eff}}`.
+    """
+    schedule = np.asarray(sampled_sizes, dtype=np.int64)
+    if num_players < 4:
+        raise ValueError("at least 4 players are required")
+    if schedule.ndim != 1 or len(schedule) == 0:
+        raise ValueError(
+            "sampled_sizes must be a nonempty one-dimensional array"
+        )
+    if np.any(schedule < 2) or np.any(schedule > num_players - 2):
+        raise ValueError("sampled sizes must lie in the OFA inner range")
+    if not np.isfinite(mean_balance) or mean_balance < 0:
+        raise ValueError("mean_balance must be finite and nonnegative")
+    if mean_balance_mode not in {"normalized", "raw"}:
+        raise ValueError("mean_balance_mode must be 'normalized' or 'raw'")
+
+    dimension_correction = 1.0 - 1.0 / (num_players - 1)
+    if radial_weights:
+        weight_squared = schedule * (num_players - schedule)
+        mean_weight_squared = float(
+            np.mean(weight_squared, dtype=np.float64)
+        )
+    else:
+        mean_weight_squared = 1.0
+    normalization_factor = float(
+        dimension_correction * mean_weight_squared
+    )
+
+    if mean_balance_mode == "normalized":
+        lambda0 = float(mean_balance)
+        effective_raw = float(lambda0 * normalization_factor)
+    else:
+        effective_raw = float(mean_balance)
+        lambda0 = float(effective_raw / normalization_factor)
+
+    diagnostics: dict[str, float | str] = {
+        "mean_balance_mode": mean_balance_mode,
+        "mean_balance_input": float(mean_balance),
+        "mean_balance_lambda0": lambda0,
+        "mean_balance_effective_raw": effective_raw,
+        "mean_balance_normalization_factor": normalization_factor,
+        "mean_balance_mean_weight_squared": mean_weight_squared,
+        "mean_balance_dimension_correction": float(dimension_correction),
+    }
+    return effective_raw, diagnostics
 
 
 def frame_diagnostics(
@@ -274,9 +392,19 @@ def frame_diagnostics(
 
 
 def iid_ofa_design(
-    num_players: int, num_samples: int, seed: int = 0
+    num_players: int,
+    num_samples: int,
+    seed: int = 0,
+    *,
+    compute_diagnostics: bool = True,
 ) -> CoalitionDesign:
-    """Generate the independent Shapley-specific OFA design."""
+    """Generate the independent Shapley-specific OFA design.
+
+    Full frame diagnostics cost ``O(num_samples * num_players**2)``.  They
+    remain enabled by default for backwards compatibility, but large data
+    valuation experiments can disable them because they do not enter the
+    estimator.
+    """
     if num_samples < 1:
         raise ValueError("num_samples must be positive")
     rng = np.random.default_rng(seed)
@@ -290,7 +418,9 @@ def iid_ofa_design(
         sizes=sampled_sizes,
         method="iid",
         seed=seed,
-        diagnostics=frame_diagnostics(coalitions),
+        diagnostics=(
+            frame_diagnostics(coalitions) if compute_diagnostics else {}
+        ),
     )
 
 
@@ -299,14 +429,22 @@ def frame_coupled_design(
     num_samples: int,
     seed: int = 0,
     candidate_pool: int = 32,
-    mean_balance: float = 0.1,
+    mean_balance: float = 1.0,
+    *,
+    mean_balance_mode: str = "normalized",
+    relabel_seed: int | None = None,
 ) -> CoalitionDesign:
     """Generate a coupled batch with the exact OFA marginal for every row.
 
     Size draws use randomized systematic sampling.  Base coalitions then
-    greedily reduce the weighted frame potential.  A final independent,
-    uniform relabeling makes each row uniform on its fixed-size Boolean slice
-    without changing any geometric relationship inside the batch.
+    greedily reduce the weighted frame potential.  ``mean_balance`` is a
+    dimensionless weight by default and is normalized using the realized size
+    schedule.  Pass ``mean_balance_mode="raw"`` to reproduce the legacy
+    objective, where the value is used directly.  A final independent,
+    uniform batch-wide relabeling makes every row uniform on its fixed-size
+    Boolean slice without changing geometric relationships inside the batch.
+    ``relabel_seed`` can place that permutation on a separate RNG substream;
+    its default ``None`` preserves the historical RNG path exactly.
     """
     if num_samples < 1:
         raise ValueError("num_samples must be positive")
@@ -315,22 +453,175 @@ def frame_coupled_design(
     sampled_sizes = _systematic_sizes(
         sizes, probabilities, num_samples, rng
     )
+    effective_mean_balance, balance_diagnostics = _resolve_mean_balance(
+        num_players,
+        sampled_sizes,
+        mean_balance,
+        mean_balance_mode,
+        radial_weights=True,
+    )
     base = _greedy_frame_rows(
         num_players,
         sampled_sizes,
         rng,
         candidate_pool,
         radial_weights=True,
-        mean_balance=mean_balance,
+        mean_balance=effective_mean_balance,
     )
-    coalitions = _random_relabel(base, rng)
+    relabel_rng = (
+        rng if relabel_seed is None else np.random.default_rng(relabel_seed)
+    )
+    permutation = relabel_rng.permutation(num_players)
+    coalitions = _relabel_with_permutation(base, permutation)
+    diagnostics: dict[str, Any] = frame_diagnostics(coalitions)
+    diagnostics.update(balance_diagnostics)
+    diagnostics["second_moment_scope"] = "global_weighted"
+    diagnostics["relabel_seed"] = relabel_seed
+    diagnostics["relabel_permutation_sha256"] = _permutation_sha256(
+        permutation
+    )
     return CoalitionDesign(
         coalitions=coalitions,
         sizes=sampled_sizes,
         method="frame_coupled",
         seed=seed,
-        diagnostics=frame_diagnostics(coalitions),
+        diagnostics=diagnostics,
     )
+
+
+def per_size_frame_coupled_design(
+    num_players: int,
+    num_samples: int,
+    seed: int = 0,
+    candidate_pool: int = 64,
+    mean_balance: float = 1.0 / 16.0,
+    *,
+    mean_balance_mode: str = "normalized",
+    relabel_seed: int | None = None,
+) -> CoalitionDesign:
+    """Generate the design-only per-size counterpart of coupled Greedy.
+
+    This function uses the randomized-systematic OFA size schedule and a
+    batch-wide random relabeling, so every row retains the intended OFA
+    sampling marginal.  Aggregation is chosen separately by the estimator;
+    INSIDE-Greedy uses the covered official OFA ratio estimator.  Every
+    fixed-size slice maintains a separate, unweighted second-moment operator.
+    """
+    if num_samples < 1:
+        raise ValueError("num_samples must be positive")
+    rng = np.random.default_rng(seed)
+    sizes, probabilities, _ = inner_size_distribution(num_players)
+    sampled_sizes = _systematic_sizes(
+        sizes, probabilities, num_samples, rng
+    )
+    effective_mean_balance, balance_diagnostics = _resolve_mean_balance(
+        num_players,
+        sampled_sizes,
+        mean_balance,
+        mean_balance_mode,
+        radial_weights=False,
+    )
+    base = _greedy_frame_rows(
+        num_players,
+        sampled_sizes,
+        rng,
+        candidate_pool,
+        radial_weights=False,
+        mean_balance=effective_mean_balance,
+        second_moment_scope="per_size",
+    )
+    relabel_rng = (
+        rng if relabel_seed is None else np.random.default_rng(relabel_seed)
+    )
+    permutation = relabel_rng.permutation(num_players)
+    coalitions = _relabel_with_permutation(base, permutation)
+    diagnostics: dict[str, Any] = frame_diagnostics(coalitions)
+    diagnostics.update(balance_diagnostics)
+    diagnostics["second_moment_scope"] = "per_size"
+    diagnostics["relabel_seed"] = relabel_seed
+    diagnostics["relabel_permutation_sha256"] = _permutation_sha256(
+        permutation
+    )
+    return CoalitionDesign(
+        coalitions=coalitions,
+        sizes=sampled_sizes,
+        method="frame_coupled_per_size",
+        seed=seed,
+        diagnostics=diagnostics,
+    )
+
+
+def paired_frame_scope_designs(
+    num_players: int,
+    num_samples: int,
+    seed: int = 0,
+    candidate_pool: int = 32,
+    mean_balance: float = 1.0,
+    *,
+    mean_balance_mode: str = "normalized",
+    relabel_seed: int | None = None,
+) -> tuple[CoalitionDesign, CoalitionDesign]:
+    """Generate a strict global-versus-per-size scope ablation pair.
+
+    Both outputs use the same seed for their randomized-systematic size and
+    candidate streams, plus a common *independent* seed for their final
+    batch-wide random relabeling.  The common-random-number candidate streams
+    can diverge only after a scope-dependent choice changes a blocked set or
+    draw count.  The separate relabel substream prevents that divergence from
+    changing player labels in a non-exchangeable game.
+
+    When ``relabel_seed`` is omitted, a deterministic SeedSequence child with
+    a fixed domain-separation salt is derived from ``seed``.  Existing
+    standalone APIs retain their historical behavior because their own
+    ``relabel_seed`` defaults remain ``None``.
+    """
+    if num_samples < 1:
+        raise ValueError("num_samples must be positive")
+    if relabel_seed is None:
+        relabel_seed = int(
+            np.random.SeedSequence([seed, 0x1A51DE]).generate_state(
+                1, dtype=np.uint32
+            )[0]
+        )
+    global_design = frame_coupled_design(
+        num_players,
+        num_samples,
+        seed=seed,
+        candidate_pool=candidate_pool,
+        mean_balance=mean_balance,
+        mean_balance_mode=mean_balance_mode,
+        relabel_seed=relabel_seed,
+    )
+    per_size_design = per_size_frame_coupled_design(
+        num_players,
+        num_samples,
+        seed=seed,
+        candidate_pool=candidate_pool,
+        mean_balance=mean_balance,
+        mean_balance_mode=mean_balance_mode,
+        relabel_seed=relabel_seed,
+    )
+    if not np.array_equal(global_design.sizes, per_size_design.sizes):
+        raise RuntimeError("paired scope designs have different size schedules")
+    permutation_hash = global_design.diagnostics[
+        "relabel_permutation_sha256"
+    ]
+    if (
+        permutation_hash
+        != per_size_design.diagnostics["relabel_permutation_sha256"]
+    ):
+        raise RuntimeError("paired scope designs have different relabelings")
+    for design in (global_design, per_size_design):
+        design.diagnostics.update(
+            {
+                "paired_scope_ablation": True,
+                "shared_size_schedule": True,
+                "shared_final_relabel": True,
+                "candidate_common_random_numbers": True,
+                "relabel_seed": relabel_seed,
+            }
+        )
+    return global_design, per_size_design
 
 
 def _minimum_one_counts(
@@ -420,12 +711,27 @@ def stratified_frame_design(
     num_samples: int,
     seed: int = 0,
     candidate_pool: int = 32,
-    mean_balance: float = 0.1,
+    mean_balance: float = 1.0,
+    *,
+    mean_balance_mode: str = "normalized",
 ) -> CoalitionDesign:
-    """Preallocate OFA-optimal counts and frame-balance every fixed-size slice."""
+    """Preallocate OFA-optimal counts and frame-balance every fixed-size slice.
+
+    Here the frame objective is unweighted within each slice, so normalized
+    ``mean_balance`` uses only the dimension correction.  Use
+    ``mean_balance_mode="raw"`` for the legacy unnormalized objective.
+    """
     rng = np.random.default_rng(seed)
     sizes, probabilities, _ = inner_size_distribution(num_players)
     counts = _minimum_one_counts(num_samples, probabilities)
+    sampled_schedule = np.repeat(sizes, counts)
+    effective_mean_balance, balance_diagnostics = _resolve_mean_balance(
+        num_players,
+        sampled_schedule,
+        mean_balance,
+        mean_balance_mode,
+        radial_weights=False,
+    )
 
     blocks: list[np.ndarray] = []
     recorded_sizes: list[np.ndarray] = []
@@ -437,7 +743,7 @@ def stratified_frame_design(
             rng,
             candidate_pool,
             radial_weights=False,
-            mean_balance=mean_balance,
+            mean_balance=effective_mean_balance,
         )
         blocks.append(_random_relabel(base, rng))
         recorded_sizes.append(size_sequence)
@@ -447,12 +753,16 @@ def stratified_frame_design(
     order = rng.permutation(num_samples)
     coalitions = coalitions[order]
     sampled_sizes = sampled_sizes[order]
+    diagnostics: dict[str, Any] = _stratified_diagnostics(
+        coalitions, sampled_sizes
+    )
+    diagnostics.update(balance_diagnostics)
     return CoalitionDesign(
         coalitions=coalitions,
         sizes=sampled_sizes,
         method="frame_stratified",
         seed=seed,
-        diagnostics=_stratified_diagnostics(coalitions, sampled_sizes),
+        diagnostics=diagnostics,
     )
 
 

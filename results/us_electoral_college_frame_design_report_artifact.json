@@ -1,0 +1,914 @@
+{
+  "manifest": {
+    "blocks": [
+      {
+        "body": "# Why Batch-balanced Frame-OFA Beats Greedy Frame-OFA",
+        "id": "title",
+        "type": "markdown"
+      },
+      {
+        "body": "## Technical summary\n\n**The faster method is not a weakened version of the slower method.** Batch-balanced Frame-OFA restricts coalitions to complete 51-row cyclic batches. That restriction makes every player's fixed-size inclusion count exactly equal and removes a large variance term that coalition-wise greedy only penalizes softly.\n\nAcross the stored budgets, Greedy Frame-OFA reduced RMSE versus Random OFA but remained above the batch-balanced design. At the largest budget, the RMSE values were 0.00498 and 0.00327, respectively. The same cyclic symmetry also reduces design complexity, so being faster and more accurate in this game is not contradictory.",
+        "id": "technical_summary",
+        "type": "markdown"
+      },
+      {
+        "body": "## The accuracy gap persists across all eight budgets\n\nAt the smallest budget, Greedy and Batch-balanced RMSE were 0.08948 and 0.04439. The batch method stayed lower as calls increased. Read the chart as an empirical result for this voting game, not a universal dominance theorem.",
+        "id": "main_finding",
+        "sourceId": "voting_results",
+        "type": "markdown"
+      },
+      {
+        "chartId": "rmse_curve",
+        "id": "rmse_chart",
+        "type": "chart"
+      },
+      {
+        "body": "## Exact batch balance is stronger than a local soft penalty\n\nGreedy Frame-OFA scores one candidate coalition at a time using a second-moment frame term plus a weighted mean-balance penalty. Batch-balanced Frame-OFA scores an entire cyclic batch through FFT autocorrelation. Every complete batch has direction sum exactly zero; the row design has no such guarantee.",
+        "id": "mechanism_intro",
+        "sourceId": "design_code",
+        "type": "markdown"
+      },
+      {
+        "id": "mechanism_table_block",
+        "tableId": "mechanism_table",
+        "type": "table"
+      },
+      {
+        "body": "## The threshold game's nonlinear size profile is the main driver\n\nThe estimator subtracts the linear baseline s/51, but the exact fixed-size winning curve leaves an OFA-weighted residual RMS of 0.2143. A size-only residual multiplied by an unbalanced direction sum leaks directly into the Shapley estimate. Complete balanced batches cancel every such fixed-size constant exactly.",
+        "id": "driver_finding",
+        "sourceId": "design_diagnostics",
+        "type": "markdown"
+      },
+      {
+        "id": "size_residual_table_block",
+        "tableId": "size_residual_table",
+        "type": "table"
+      },
+      {
+        "body": "## Scope and metric definitions\n\nThe population is 51 jurisdiction blocs in the 538-vote Electoral College game with winning quota 270. RMSE is the square root of mean coordinate error against exact Shapley\u2013Shubik values. Each budget includes 104 exact boundary calls. The main comparison uses 30 independent designs per budget.",
+        "id": "scope",
+        "type": "markdown"
+      },
+      {
+        "body": "## How coalition-wise greedy works\n\nFor a sampled size s, it generates K unused candidates. For unit direction u, accumulated weighted frame A, and same-size direction sum m_s, it minimizes\n\n`sqrt(s(n-s)) * u\u1d40 A u + \u03bb * u\u1d40 m_s`.\n\nThe first term discourages squared correlation with previous directions. The second only softly encourages a zero same-size mean. The procedure is local, finite-candidate, and utility-agnostic; it is not a global optimizer of voting-game RMSE.",
+        "id": "methodology",
+        "sourceId": "design_code",
+        "type": "markdown"
+      },
+      {
+        "body": "## Tuning K and \u03bb does not close this voting-game gap\n\nThe controlled 20-seed sweep changes candidate-pool size and mean-balance weight at 2,550 inner calls. Larger K improves the frame surrogate but RMSE is not monotone in K. The tested \u03bb values alter first-moment imbalance only slightly, while complete batches keep it at zero by construction.",
+        "id": "sensitivity_finding",
+        "sourceId": "design_diagnostics",
+        "type": "markdown"
+      },
+      {
+        "id": "sensitivity_table_block",
+        "tableId": "sensitivity_table",
+        "type": "table"
+      },
+      {
+        "body": "## The main practical controls are K, \u03bb, budget, and seed\n\nOnly Greedy Frame-OFA exposes \u03bb because balanced batches already enforce the corresponding constraint exactly. The baseline is an estimator choice rather than a coalition-design parameter, but it materially affects variance in this threshold game.",
+        "id": "hyperparameters",
+        "sourceId": "design_code",
+        "type": "markdown"
+      },
+      {
+        "id": "hyperparameter_table_block",
+        "tableId": "hyperparameter_table",
+        "type": "table"
+      },
+      {
+        "body": "## Limitations and robustness\n\nBatch-balanced budgets must be multiples of 51 and use only T/51 size draws, so radial size coverage is coarser. Its low-budget curve is heavy-tailed and need not be monotone. The design family is cyclic and may be worse for other high-order games. Both estimators retain the correct OFA marginal after random relabeling, so the observed finite-repeat bias is not evidence of theoretical bias.",
+        "id": "limitations",
+        "type": "markdown"
+      },
+      {
+        "body": "## Recommended next steps\n\n- Use Batch-balanced Frame-OFA when the budget can be a multiple of n and batch evaluation is acceptable.\n- Use Greedy Frame-OFA for arbitrary budgets or sequential selection; start with K=8\u201332 and \u03bb between 0 and 0.1.\n- Test a fixed-size mean baseline \u03bc_s instead of s/n. If Greedy then approaches Batch-balanced, it confirms that size-only leakage is the dominant mechanism.",
+        "id": "next_steps",
+        "type": "markdown"
+      },
+      {
+        "body": "## Further questions\n\nCan a row design enforce exact per-size first moments without requiring complete n-row batches? Can partial orbits preserve most of the balance benefit at arbitrary budgets? Those are the most promising extensions if the goal is to combine Greedy's budget flexibility with Batch-balanced accuracy.",
+        "id": "further_questions",
+        "type": "markdown"
+      }
+    ],
+    "cards": [],
+    "charts": [
+      {
+        "dataset": "rmse_curve",
+        "encodings": {
+          "color": {
+            "field": "method",
+            "label": "Sampling method",
+            "type": "nominal"
+          },
+          "tooltip": [
+            {
+              "field": "rmse_change_vs_random",
+              "format": "percent",
+              "label": "Change vs Random OFA",
+              "type": "quantitative"
+            },
+            {
+              "field": "frame_frobenius",
+              "format": "number",
+              "label": "Frame discrepancy",
+              "type": "quantitative"
+            },
+            {
+              "field": "design_seconds",
+              "format": "number",
+              "label": "Mean design seconds",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "total_calls",
+            "label": "Total utility calls",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "rmse",
+            "format": "number",
+            "label": "RMSE",
+            "type": "quantitative"
+          }
+        },
+        "id": "rmse_curve",
+        "intent": "trend",
+        "question": "How does estimation error change with utility-call budget for the three coalition designs?",
+        "rationale": "A multi-series line chart shows error decay and the persistent gap across eight ordered budgets.",
+        "sourceId": "voting_results",
+        "subtitle": "U.S. Electoral College voting game, 30 independent designs per budget; lower is better.",
+        "title": "Shapley RMSE by utility-call budget",
+        "type": "line"
+      }
+    ],
+    "description": "Technical diagnosis of the statistical and computational gap between coalition-wise and batch-balanced Frame-OFA.",
+    "generatedAt": "2026-08-24T08:41:23+00:00",
+    "sources": [
+      {
+        "id": "voting_results",
+        "label": "30-repeat Electoral College experiment",
+        "path": "results/us_electoral_college_2024_frame_ofa_greedy.json"
+      },
+      {
+        "id": "design_diagnostics",
+        "label": "Frame-design diagnostic sweep",
+        "path": "results/us_electoral_college_frame_design_diagnostics.json"
+      },
+      {
+        "id": "design_code",
+        "label": "Frame-OFA coalition-design implementation",
+        "path": "frame_ofa/design.py"
+      },
+      {
+        "id": "estimator_code",
+        "label": "Frame-OFA linear estimator implementation",
+        "path": "frame_ofa/estimator.py"
+      }
+    ],
+    "surface": "report",
+    "tables": [
+      {
+        "columns": [
+          {
+            "field": "property",
+            "label": "Property",
+            "type": "text"
+          },
+          {
+            "field": "greedy",
+            "label": "Greedy Frame-OFA",
+            "type": "text"
+          },
+          {
+            "field": "batch_balanced",
+            "label": "Batch-balanced Frame-OFA",
+            "type": "text"
+          }
+        ],
+        "dataset": "mechanism_comparison",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "property"
+        },
+        "id": "mechanism_table",
+        "sourceId": "design_code",
+        "subtitle": "Batch-balanced is a stronger structured design, not a lower-quality approximation of row greedy.",
+        "title": "What the two Frame-OFA designs optimize"
+      },
+      {
+        "columns": [
+          {
+            "field": "size",
+            "format": "number",
+            "label": "Coalition size"
+          },
+          {
+            "field": "winning_probability",
+            "format": "percent",
+            "label": "Exact win probability"
+          },
+          {
+            "field": "linear_baseline",
+            "format": "percent",
+            "label": "Linear baseline"
+          },
+          {
+            "field": "size_only_residual",
+            "format": "percent",
+            "label": "Residual"
+          },
+          {
+            "field": "absolute_residual",
+            "format": "percent",
+            "label": "Absolute residual"
+          }
+        ],
+        "dataset": "size_residual_extremes",
+        "defaultSort": {
+          "direction": "desc",
+          "field": "absolute_residual"
+        },
+        "id": "size_residual_table",
+        "sourceId": "design_diagnostics",
+        "subtitle": "Exact coalition-size winning probabilities versus the linear s/51 baseline.",
+        "title": "Largest fixed-size baseline residuals"
+      },
+      {
+        "columns": [
+          {
+            "field": "configuration",
+            "label": "Configuration",
+            "type": "text"
+          },
+          {
+            "field": "rmse",
+            "format": "number",
+            "label": "RMSE"
+          },
+          {
+            "field": "design_seconds",
+            "format": "number",
+            "label": "Design seconds"
+          },
+          {
+            "field": "frame_frobenius",
+            "format": "number",
+            "label": "Frame discrepancy"
+          },
+          {
+            "field": "slice_mean_direction_rms",
+            "format": "number",
+            "label": "Slice mean imbalance"
+          }
+        ],
+        "dataset": "sensitivity",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "rmse"
+        },
+        "id": "sensitivity_table",
+        "sourceId": "design_diagnostics",
+        "subtitle": "2,550 inner calls, 20 independent seeds; aggregate coordinate RMSE.",
+        "title": "Candidate-pool and balance sensitivity"
+      },
+      {
+        "columns": [
+          {
+            "field": "parameter",
+            "label": "Parameter",
+            "type": "text"
+          },
+          {
+            "field": "applies_to",
+            "label": "Applies to",
+            "type": "text"
+          },
+          {
+            "field": "experiment_value",
+            "label": "Experiment value",
+            "type": "text"
+          },
+          {
+            "field": "effect",
+            "label": "Effect",
+            "type": "text"
+          }
+        ],
+        "dataset": "hyperparameters",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "parameter"
+        },
+        "id": "hyperparameter_table",
+        "sourceId": "design_code",
+        "subtitle": "Visible and fixed choices in the current experiment.",
+        "title": "Practical controls"
+      }
+    ],
+    "title": "Why Batch-balanced Frame-OFA Beats Greedy Frame-OFA",
+    "version": 1
+  },
+  "snapshot": {
+    "datasets": {
+      "hyperparameters": [
+        {
+          "applies_to": "Both",
+          "effect": "Candidates scored at each greedy decision; time grows roughly linearly with K.",
+          "experiment_value": "64",
+          "parameter": "candidate_pool (K)"
+        },
+        {
+          "applies_to": "Greedy only",
+          "effect": "Soft penalty for fixed-size mean-direction imbalance; zero disables it.",
+          "experiment_value": "0.1",
+          "parameter": "mean_balance (\u03bb)"
+        },
+        {
+          "applies_to": "Both",
+          "effect": "Batch-balanced requires T to be divisible by the 51 players; Greedy accepts arbitrary T.",
+          "experiment_value": "51\u201312,750",
+          "parameter": "inner-call budget (T)"
+        },
+        {
+          "applies_to": "Both",
+          "effect": "Controls systematic size offset, candidate coalitions, tie breaks, and final relabeling.",
+          "experiment_value": "20260824",
+          "parameter": "seed"
+        },
+        {
+          "applies_to": "Estimator",
+          "effect": "A zero-attribution control variate; it is unbiased but fits this threshold game's size curve poorly.",
+          "experiment_value": "linear: s/51",
+          "parameter": "baseline"
+        }
+      ],
+      "mechanism_comparison": [
+        {
+          "batch_balanced": "One balanced batch of 51 coalitions",
+          "greedy": "One coalition",
+          "property": "Decision unit"
+        },
+        {
+          "batch_balanced": "Exact: direction sum is zero in every batch",
+          "greedy": "Soft penalty \u03bb",
+          "property": "First-moment balance"
+        },
+        {
+          "batch_balanced": "Orbit frame-potential increment via FFT",
+          "greedy": "Dense local frame-potential increment",
+          "property": "Second-moment objective"
+        },
+        {
+          "batch_balanced": "Approximately O(T K log n)",
+          "greedy": "O(T K n\u00b2)",
+          "property": "Design complexity"
+        },
+        {
+          "batch_balanced": "T must be a multiple of n",
+          "greedy": "Any positive T",
+          "property": "Budget restriction"
+        }
+      ],
+      "rmse_curve": [
+        {
+          "budget_index": 1,
+          "ci_lower": 0.09256014978734993,
+          "ci_upper": 0.10084695128594252,
+          "design_seconds": 0.0017487160861492158,
+          "frame_frobenius": 6.92623610851438,
+          "inner_calls": 51,
+          "method": "Random OFA",
+          "rmse": 0.09669485270981439,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 155
+        },
+        {
+          "budget_index": 1,
+          "ci_lower": 0.08671344201497704,
+          "ci_upper": 0.09221177629704091,
+          "design_seconds": 0.07222186389068762,
+          "frame_frobenius": 5.22375369246619,
+          "inner_calls": 51,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.08947662113553013,
+          "rmse_change_vs_random": -0.07464959480259503,
+          "total_calls": 155
+        },
+        {
+          "budget_index": 1,
+          "ci_lower": 0.021327115289500334,
+          "ci_upper": 0.06466724900966045,
+          "design_seconds": 0.003715864320596059,
+          "frame_frobenius": 4.719286195161661,
+          "inner_calls": 51,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.04439214209558751,
+          "rmse_change_vs_random": -0.5409048067035136,
+          "total_calls": 155
+        },
+        {
+          "budget_index": 2,
+          "ci_lower": 0.06465731319782346,
+          "ci_upper": 0.06911503888635337,
+          "design_seconds": 0.0014184595396121342,
+          "frame_frobenius": 4.839480845924504,
+          "inner_calls": 102,
+          "method": "Random OFA",
+          "rmse": 0.06685343907984338,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 206
+        },
+        {
+          "budget_index": 2,
+          "ci_lower": 0.05959805318999049,
+          "ci_upper": 0.0630750431568635,
+          "design_seconds": 0.1441252265125513,
+          "frame_frobenius": 3.154152804589572,
+          "inner_calls": 102,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.061365450740160206,
+          "rmse_change_vs_random": -0.082089843323226,
+          "total_calls": 206
+        },
+        {
+          "budget_index": 2,
+          "ci_lower": 0.036545396144995,
+          "ci_upper": 0.055339782052324205,
+          "design_seconds": 0.003523607552051544,
+          "frame_frobenius": 2.8183566913711657,
+          "inner_calls": 102,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.04641431448919172,
+          "rmse_change_vs_random": -0.30573033896193613,
+          "total_calls": 206
+        },
+        {
+          "budget_index": 3,
+          "ci_lower": 0.03907540846130171,
+          "ci_upper": 0.04290920242454289,
+          "design_seconds": 0.0016806033750375112,
+          "frame_frobenius": 3.0782461732958124,
+          "inner_calls": 255,
+          "method": "Random OFA",
+          "rmse": 0.04098729049840746,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 359
+        },
+        {
+          "budget_index": 3,
+          "ci_lower": 0.03540660560802856,
+          "ci_upper": 0.03767210788342025,
+          "design_seconds": 0.3398469595859448,
+          "frame_frobenius": 1.4780704384536365,
+          "inner_calls": 255,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.03653155898249847,
+          "rmse_change_vs_random": -0.10871007723923864,
+          "total_calls": 359
+        },
+        {
+          "budget_index": 3,
+          "ci_lower": 0.023201451755375895,
+          "ci_upper": 0.02657497031673608,
+          "design_seconds": 0.0068894488116105395,
+          "frame_frobenius": 1.3085529867047674,
+          "inner_calls": 255,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.024905759936096904,
+          "rmse_change_vs_random": -0.3923540777338135,
+          "total_calls": 359
+        },
+        {
+          "budget_index": 4,
+          "ci_lower": 0.02941087328873246,
+          "ci_upper": 0.03132866897406429,
+          "design_seconds": 0.0018082076062758763,
+          "frame_frobenius": 2.176568221556456,
+          "inner_calls": 510,
+          "method": "Random OFA",
+          "rmse": 0.030401344264223213,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 614
+        },
+        {
+          "budget_index": 4,
+          "ci_lower": 0.025022287374463,
+          "ci_upper": 0.02674389373634435,
+          "design_seconds": 0.585486272846659,
+          "frame_frobenius": 0.7713097193074002,
+          "inner_calls": 510,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.025850555538452127,
+          "rmse_change_vs_random": -0.14969037836680554,
+          "total_calls": 614
+        },
+        {
+          "budget_index": 4,
+          "ci_lower": 0.014760912969728915,
+          "ci_upper": 0.016325487885821083,
+          "design_seconds": 0.011593678966164589,
+          "frame_frobenius": 0.7007466080681023,
+          "inner_calls": 510,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.015538955761067605,
+          "rmse_change_vs_random": -0.4888727410861863,
+          "total_calls": 614
+        },
+        {
+          "budget_index": 5,
+          "ci_lower": 0.017773861023100957,
+          "ci_upper": 0.019068470226398352,
+          "design_seconds": 0.002568519860506058,
+          "frame_frobenius": 1.3757811553389547,
+          "inner_calls": 1275,
+          "method": "Random OFA",
+          "rmse": 0.018428888499536222,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 1379
+        },
+        {
+          "budget_index": 5,
+          "ci_lower": 0.01635840717491274,
+          "ci_upper": 0.017344506541432436,
+          "design_seconds": 1.3598862335085868,
+          "frame_frobenius": 0.3111405420021453,
+          "inner_calls": 1275,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.016851363752823496,
+          "rmse_change_vs_random": -0.08560064524523148,
+          "total_calls": 1379
+        },
+        {
+          "budget_index": 5,
+          "ci_lower": 0.009805993541304814,
+          "ci_upper": 0.010432252013282016,
+          "design_seconds": 0.026994708552956583,
+          "frame_frobenius": 0.27715646090801266,
+          "inner_calls": 1275,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.01012177596442034,
+          "rmse_change_vs_random": -0.45076579281083273,
+          "total_calls": 1379
+        },
+        {
+          "budget_index": 6,
+          "ci_lower": 0.012893343363566782,
+          "ci_upper": 0.013742461752782714,
+          "design_seconds": 0.00393257848918438,
+          "frame_frobenius": 0.973153917547602,
+          "inner_calls": 2550,
+          "method": "Random OFA",
+          "rmse": 0.013311095497884716,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 2654
+        },
+        {
+          "budget_index": 6,
+          "ci_lower": 0.011062190671226007,
+          "ci_upper": 0.011653460683125233,
+          "design_seconds": 2.66547827621301,
+          "frame_frobenius": 0.1552595918542035,
+          "inner_calls": 2550,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.011358607859664747,
+          "rmse_change_vs_random": -0.1466812133178852,
+          "total_calls": 2654
+        },
+        {
+          "budget_index": 6,
+          "ci_lower": 0.00666782441028385,
+          "ci_upper": 0.007200329481732494,
+          "design_seconds": 0.052989272649089494,
+          "frame_frobenius": 0.1323494338851143,
+          "inner_calls": 2550,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.0069439320641220235,
+          "rmse_change_vs_random": -0.4783350427299171,
+          "total_calls": 2654
+        },
+        {
+          "budget_index": 7,
+          "ci_lower": 0.009416035439804389,
+          "ci_upper": 0.010281549332690728,
+          "design_seconds": 0.006503142913182576,
+          "frame_frobenius": 0.688942432221452,
+          "inner_calls": 5100,
+          "method": "Random OFA",
+          "rmse": 0.00985484959545985,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 5204
+        },
+        {
+          "budget_index": 7,
+          "ci_lower": 0.007910462762242606,
+          "ci_upper": 0.008468595895118329,
+          "design_seconds": 5.34211409278214,
+          "frame_frobenius": 0.07764917673060572,
+          "inner_calls": 5100,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.00819733921927862,
+          "rmse_change_vs_random": -0.1681923564764347,
+          "total_calls": 5204
+        },
+        {
+          "budget_index": 7,
+          "ci_lower": 0.004702332841993707,
+          "ci_upper": 0.005127425416566906,
+          "design_seconds": 0.10550425387918949,
+          "frame_frobenius": 0.07046148297944854,
+          "inner_calls": 5100,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.004917820758154253,
+          "rmse_change_vs_random": -0.5009745495842064,
+          "total_calls": 5204
+        },
+        {
+          "budget_index": 8,
+          "ci_lower": 0.005717551805246963,
+          "ci_upper": 0.006070624554703717,
+          "design_seconds": 0.012963588659962019,
+          "frame_frobenius": 0.4361919114956815,
+          "inner_calls": 12750,
+          "method": "Random OFA",
+          "rmse": 0.005901640128981268,
+          "rmse_change_vs_random": 0.0,
+          "total_calls": 12854
+        },
+        {
+          "budget_index": 8,
+          "ci_lower": 0.004823915822261005,
+          "ci_upper": 0.005144984422134097,
+          "design_seconds": 13.503599433104197,
+          "frame_frobenius": 0.031124370713727974,
+          "inner_calls": 12750,
+          "method": "Greedy Frame-OFA",
+          "rmse": 0.004982178060400617,
+          "rmse_change_vs_random": -0.15579771868254644,
+          "total_calls": 12854
+        },
+        {
+          "budget_index": 8,
+          "ci_lower": 0.0031308852234957826,
+          "ci_upper": 0.0034141425891545717,
+          "design_seconds": 0.2579951789230108,
+          "frame_frobenius": 0.028132472615770236,
+          "inner_calls": 12750,
+          "method": "Batch-balanced Frame-OFA",
+          "rmse": 0.0032717514096785596,
+          "rmse_change_vs_random": -0.44561997374053297,
+          "total_calls": 12854
+        }
+      ],
+      "sensitivity": [
+        {
+          "candidate_pool": 1,
+          "configuration": "Greedy, K=1, \u03bb=0.1",
+          "design_seconds": 0.6311767008155584,
+          "family": "Greedy",
+          "frame_frobenius": 0.9731021624906729,
+          "internal_key": "row_k1_lambda0.1",
+          "mean_balance": 0.1,
+          "rmse": 0.013270391031683934,
+          "rmse_ci_lower": 0.012770542932135646,
+          "rmse_ci_upper": 0.013767909269969797,
+          "slice_mean_direction_rms": 0.14211599068385045
+        },
+        {
+          "candidate_pool": 8,
+          "configuration": "Greedy, K=8, \u03bb=0.1",
+          "design_seconds": 0.7925812700763345,
+          "family": "Greedy",
+          "frame_frobenius": 0.2516217819139299,
+          "internal_key": "row_k8_lambda0.1",
+          "mean_balance": 0.1,
+          "rmse": 0.011428144476188217,
+          "rmse_ci_lower": 0.01108104799171303,
+          "rmse_ci_upper": 0.01175660465732781,
+          "slice_mean_direction_rms": 0.13997040600296315
+        },
+        {
+          "candidate_pool": 32,
+          "configuration": "Greedy, K=32, \u03bb=0.1",
+          "design_seconds": 1.5692662607878447,
+          "family": "Greedy",
+          "frame_frobenius": 0.1738082786561194,
+          "internal_key": "row_k32_lambda0.1",
+          "mean_balance": 0.1,
+          "rmse": 0.011521620674211955,
+          "rmse_ci_lower": 0.011115488971358604,
+          "rmse_ci_upper": 0.011976654159753079,
+          "slice_mean_direction_rms": 0.14094201730420242
+        },
+        {
+          "candidate_pool": 64,
+          "configuration": "Greedy, K=64, \u03bb=0",
+          "design_seconds": 2.6624700458720327,
+          "family": "Greedy",
+          "frame_frobenius": 0.15442132651339663,
+          "internal_key": "row_k64_lambda0",
+          "mean_balance": 0.0,
+          "rmse": 0.011454495803067103,
+          "rmse_ci_lower": 0.010985139093144776,
+          "rmse_ci_upper": 0.01191656359979766,
+          "slice_mean_direction_rms": 0.1407163126048638
+        },
+        {
+          "candidate_pool": 64,
+          "configuration": "Greedy, K=64, \u03bb=0.1",
+          "design_seconds": 2.679951158165932,
+          "family": "Greedy",
+          "frame_frobenius": 0.15479211451116412,
+          "internal_key": "row_k64_lambda0.1",
+          "mean_balance": 0.1,
+          "rmse": 0.011313524560411823,
+          "rmse_ci_lower": 0.010884948645187279,
+          "rmse_ci_upper": 0.011778535997876672,
+          "slice_mean_direction_rms": 0.1399588603688733
+        },
+        {
+          "candidate_pool": 64,
+          "configuration": "Greedy, K=64, \u03bb=1",
+          "design_seconds": 2.6811584413051603,
+          "family": "Greedy",
+          "frame_frobenius": 0.15487904933316926,
+          "internal_key": "row_k64_lambda1",
+          "mean_balance": 1.0,
+          "rmse": 0.011464510380107353,
+          "rmse_ci_lower": 0.011103294668484923,
+          "rmse_ci_upper": 0.011796255187107174,
+          "slice_mean_direction_rms": 0.13928258072726424
+        },
+        {
+          "candidate_pool": 128,
+          "configuration": "Greedy, K=128, \u03bb=0.1",
+          "design_seconds": 4.800497080013156,
+          "family": "Greedy",
+          "frame_frobenius": 0.14046800517275232,
+          "internal_key": "row_k128_lambda0.1",
+          "mean_balance": 0.1,
+          "rmse": 0.011349583363999643,
+          "rmse_ci_lower": 0.010901632564787544,
+          "rmse_ci_upper": 0.011813847711530118,
+          "slice_mean_direction_rms": 0.14011717506567317
+        },
+        {
+          "candidate_pool": 64,
+          "configuration": "Batch-balanced, K=64",
+          "design_seconds": 0.05396964512765408,
+          "family": "Batch-balanced",
+          "frame_frobenius": 0.1387147961456146,
+          "internal_key": "batch_k64",
+          "mean_balance": 0.0,
+          "rmse": 0.007056343088496503,
+          "rmse_ci_lower": 0.006763474863372512,
+          "rmse_ci_upper": 0.007339042670812871,
+          "slice_mean_direction_rms": 0.0
+        }
+      ],
+      "size_residual_extremes": [
+        {
+          "absolute_residual": 0.3507144899343724,
+          "linear_baseline": 0.37254901960784315,
+          "ofa_size_probability": 0.016558632950177513,
+          "size": 19,
+          "size_only_residual": -0.3507144899343724,
+          "winning_probability": 0.02183452967347078
+        },
+        {
+          "absolute_residual": 0.3489624813277111,
+          "linear_baseline": 0.6274509803921569,
+          "ofa_size_probability": 0.016558632950177513,
+          "size": 32,
+          "size_only_residual": 0.3489624813277111,
+          "winning_probability": 0.976413461719868
+        },
+        {
+          "absolute_residual": 0.3455865029619657,
+          "linear_baseline": 0.39215686274509803,
+          "ofa_size_probability": 0.016397605141263587,
+          "size": 20,
+          "size_only_residual": -0.3455865029619657,
+          "winning_probability": 0.04657035978313235
+        },
+        {
+          "absolute_residual": 0.34417663277160154,
+          "linear_baseline": 0.35294117647058826,
+          "ofa_size_probability": 0.016752631920901036,
+          "size": 18,
+          "size_only_residual": -0.34417663277160154,
+          "winning_probability": 0.008764543698986708
+        },
+        {
+          "absolute_residual": 0.34331980190661904,
+          "linear_baseline": 0.6470588235294118,
+          "ofa_size_probability": 0.016752631920901036,
+          "size": 33,
+          "size_only_residual": 0.34331980190661904,
+          "winning_probability": 0.9903786254360308
+        },
+        {
+          "absolute_residual": 0.3425103253532701,
+          "linear_baseline": 0.6078431372549019,
+          "ofa_size_probability": 0.016397605141263587,
+          "size": 31,
+          "size_only_residual": 0.3425103253532701,
+          "winning_probability": 0.950353462608172
+        },
+        {
+          "absolute_residual": 0.33043207699437854,
+          "linear_baseline": 0.3333333333333333,
+          "ofa_size_probability": 0.016982919452472132,
+          "size": 17,
+          "size_only_residual": -0.33043207699437854,
+          "winning_probability": 0.0029012563389547866
+        },
+        {
+          "absolute_residual": 0.3300831277461733,
+          "linear_baseline": 0.6666666666666666,
+          "ofa_size_probability": 0.016982919452472132,
+          "size": 34,
+          "size_only_residual": 0.3300831277461733,
+          "winning_probability": 0.99674979441284
+        },
+        {
+          "absolute_residual": 0.32438387157688986,
+          "linear_baseline": 0.4117647058823529,
+          "ofa_size_probability": 0.016266944850697643,
+          "size": 21,
+          "size_only_residual": -0.32438387157688986,
+          "winning_probability": 0.08738083430546308
+        },
+        {
+          "absolute_residual": 0.3196281993633595,
+          "linear_baseline": 0.5882352941176471,
+          "ofa_size_probability": 0.016266944850697643,
+          "size": 30,
+          "size_only_residual": 0.3196281993633595,
+          "winning_probability": 0.9078634934810066
+        }
+      ]
+    },
+    "generatedAt": "2026-08-24T08:41:23+00:00",
+    "status": "ready",
+    "version": 1
+  },
+  "sources": [
+    {
+      "id": "voting_results",
+      "query": {
+        "description": "Loads RMSE, frame discrepancy, timing, and call-budget results.",
+        "engine": "duckdb",
+        "executed_at": "2026-08-24T08:41:23+00:00",
+        "language": "sql",
+        "sql": "SELECT * FROM read_json_auto('results/us_electoral_college_2024_frame_ofa_greedy.json')",
+        "tables_used": [
+          "results/us_electoral_college_2024_frame_ofa_greedy.json"
+        ]
+      }
+    },
+    {
+      "id": "design_diagnostics",
+      "query": {
+        "description": "Loads exact size profile and the K/lambda sensitivity sweep.",
+        "engine": "duckdb",
+        "executed_at": "2026-08-24T08:41:23+00:00",
+        "language": "sql",
+        "sql": "SELECT * FROM read_json_auto('results/us_electoral_college_frame_design_diagnostics.json')",
+        "tables_used": [
+          "results/us_electoral_college_frame_design_diagnostics.json"
+        ]
+      }
+    },
+    {
+      "id": "design_code",
+      "query": {
+        "description": "Reads the row-greedy and cyclic-batch construction code.",
+        "engine": "duckdb",
+        "executed_at": "2026-08-24T08:41:23+00:00",
+        "language": "sql",
+        "sql": "SELECT content FROM read_text('frame_ofa/design.py')",
+        "tables_used": [
+          "frame_ofa/design.py"
+        ]
+      }
+    },
+    {
+      "id": "estimator_code",
+      "query": {
+        "description": "Reads the baseline and coupled-estimator implementation.",
+        "engine": "duckdb",
+        "executed_at": "2026-08-24T08:41:23+00:00",
+        "language": "sql",
+        "sql": "SELECT content FROM read_text('frame_ofa/estimator.py')",
+        "tables_used": [
+          "frame_ofa/estimator.py"
+        ]
+      }
+    }
+  ],
+  "surface": "report"
+}

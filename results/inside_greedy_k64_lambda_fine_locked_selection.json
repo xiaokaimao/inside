@@ -1,0 +1,312 @@
+{
+  "experiment": "inside_greedy_fixed_k_lambda_joint_selection",
+  "holdout_validation": null,
+  "locked_configuration": {
+    "candidate_pool": 64,
+    "configuration_id": "lambda0=0.0625|K=64",
+    "joint_geometric_mean_rmse_ratio_to_default": 0.8147441684516054,
+    "joint_geometric_mean_rmse_ratio_to_orbit": 0.8655647266136857,
+    "lambda0": 0.0625,
+    "mean_design_seconds": 186.92866246111225,
+    "rank_among_fixed_k_lambda_candidates": 1,
+    "worst_cell_rmse_ratio_to_default": 0.8613673149835825,
+    "worst_cell_rmse_ratio_to_orbit": 0.9496616172161843
+  },
+  "ranking": [
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8552685500125697,
+        "airport:budget_index=1": 0.7158876603421684,
+        "voting:budget_index=0": 0.8355054275332389,
+        "voting:budget_index=1": 0.8613673149835825
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9496616172161843,
+        "airport:budget_index=1": 0.8219623617039472,
+        "voting:budget_index=0": 0.826905782060504,
+        "voting:budget_index=1": 0.8696036498546172
+      },
+      "configuration_id": "lambda0=0.0625|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7824807992741658,
+        "voting": 0.8483378258503602
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8147441684516054,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8655647266136857,
+      "lambda0": 0.0625,
+      "mean_design_seconds": 186.92866246111225,
+      "rank_among_fixed_k_lambda_candidates": 1,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.8613673149835825,
+      "worst_cell_rmse_ratio_to_orbit": 0.9496616172161843
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8012593466679009,
+        "airport:budget_index=1": 0.7428205825431635,
+        "voting:budget_index=0": 0.8361715206783794,
+        "voting:budget_index=1": 0.9065109813837898
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.8896916026609872,
+        "airport:budget_index=1": 0.8528859961877957,
+        "voting:budget_index=0": 0.8275650192778298,
+        "voting:budget_index=1": 0.9151789768801009
+      },
+      "configuration_id": "lambda0=0|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7714868337567432,
+        "voting": 0.8706311881705902
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.819561162288453,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8706821857069058,
+      "lambda0": 0.0,
+      "mean_design_seconds": 177.0969416795997,
+      "rank_among_fixed_k_lambda_candidates": 2,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9065109813837898,
+      "worst_cell_rmse_ratio_to_orbit": 0.9151789768801009
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8646125945162374,
+        "airport:budget_index=1": 0.7209741533442682,
+        "voting:budget_index=0": 0.8527499053053488,
+        "voting:budget_index=1": 0.8672971337866663
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9600369319808422,
+        "airport:budget_index=1": 0.8278025319323294,
+        "voting:budget_index=0": 0.8439727667962844,
+        "voting:budget_index=1": 0.8755901691762106
+      },
+      "configuration_id": "lambda0=0.25|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7895336175883426,
+        "voting": 0.8599927608463807
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8240104341395377,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.875408985753518,
+      "lambda0": 0.25,
+      "mean_design_seconds": 183.11005775118247,
+      "rank_among_fixed_k_lambda_candidates": 3,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.8672971337866663,
+      "worst_cell_rmse_ratio_to_orbit": 0.9600369319808422
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8346407346971754,
+        "airport:budget_index=1": 0.7228593616352992,
+        "voting:budget_index=0": 0.9177342472987414,
+        "voting:budget_index=1": 0.8590084507531374
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9267571804147067,
+        "airport:budget_index=1": 0.829967075819647,
+        "voting:budget_index=0": 0.908288241438244,
+        "voting:budget_index=1": 0.867222230327054
+      },
+      "configuration_id": "lambda0=0.03125|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7767418288453489,
+        "voting": 0.8878859577531275
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8304565988847752,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8822572370715018,
+      "lambda0": 0.03125,
+      "mean_design_seconds": 189.38557499239687,
+      "rank_among_fixed_k_lambda_candidates": 4,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9177342472987414,
+      "worst_cell_rmse_ratio_to_orbit": 0.9267571804147067
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.7954360326114034,
+        "airport:budget_index=1": 0.7371473742354604,
+        "voting:budget_index=0": 0.8473228683234907,
+        "voting:budget_index=1": 0.9692966807836731
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.8832255893317588,
+        "airport:budget_index=1": 0.8463721757137714,
+        "voting:budget_index=0": 0.8386015889297277,
+        "voting:budget_index=1": 0.9785650288083123
+      },
+      "configuration_id": "lambda0=0.0078125|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7657372805419415,
+        "voting": 0.9062600310165184
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8330408703145629,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8850027052567737,
+      "lambda0": 0.0078125,
+      "mean_design_seconds": 182.9735363323707,
+      "rank_among_fixed_k_lambda_candidates": 5,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9692966807836731,
+      "worst_cell_rmse_ratio_to_orbit": 0.9785650288083123
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8417184096462678,
+        "airport:budget_index=1": 0.7417124725625387,
+        "voting:budget_index=0": 0.8611988990512102,
+        "voting:budget_index=1": 0.9371632412084736
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9346159941617885,
+        "airport:budget_index=1": 0.8516136950333565,
+        "voting:budget_index=0": 0.8523347971922725,
+        "voting:budget_index=1": 0.9461243314996283
+      },
+      "configuration_id": "lambda0=0.125|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.7901348257228896,
+        "voting": 0.8983785124099981
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8425201180602531,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.8950732314430425,
+      "lambda0": 0.125,
+      "mean_design_seconds": 192.6387082209112,
+      "rank_among_fixed_k_lambda_candidates": 6,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9371632412084736,
+      "worst_cell_rmse_ratio_to_orbit": 0.9461243314996283
+    },
+    {
+      "candidate_pool": 64,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 0.8517744416567914,
+        "airport:budget_index=1": 0.7551114178926047,
+        "voting:budget_index=0": 0.8773896691979619,
+        "voting:budget_index=1": 0.9225691381415775
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 0.9457818760613992,
+        "airport:budget_index=1": 0.8669979925397265,
+        "voting:budget_index=0": 0.8683589198480512,
+        "voting:budget_index=1": 0.9313906806255302
+      },
+      "configuration_id": "lambda0=0.015625|K=64",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 0.8019879091134363,
+        "voting": 0.8996958546788395
+      },
+      "eligible_for_lambda_lock": true,
+      "is_registered_default": false,
+      "joint_geometric_mean_rmse_ratio_to_default": 0.8494381656906573,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 0.9024227998570041,
+      "lambda0": 0.015625,
+      "mean_design_seconds": 185.7492319366429,
+      "rank_among_fixed_k_lambda_candidates": 7,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 0.9225691381415775,
+      "worst_cell_rmse_ratio_to_orbit": 0.9457818760613992
+    },
+    {
+      "candidate_pool": 4,
+      "cell_rmse_ratios_to_default": {
+        "airport:budget_index=0": 1.0,
+        "airport:budget_index=1": 1.0,
+        "voting:budget_index=0": 1.0,
+        "voting:budget_index=1": 1.0
+      },
+      "cell_rmse_ratios_to_orbit": {
+        "airport:budget_index=0": 1.1103665827560563,
+        "airport:budget_index=1": 1.1481722723242345,
+        "voting:budget_index=0": 0.9897072536103989,
+        "voting:budget_index=1": 1.0095619310458648
+      },
+      "configuration_id": "lambda0=1|K=4",
+      "coverage_failures": 0,
+      "dataset_geometric_mean_rmse_ratio_to_default": {
+        "airport": 1.0,
+        "voting": 1.0
+      },
+      "eligible_for_lambda_lock": false,
+      "is_registered_default": true,
+      "joint_geometric_mean_rmse_ratio_to_default": 1.0,
+      "joint_geometric_mean_rmse_ratio_to_orbit": 1.0623760931712627,
+      "lambda0": 1.0,
+      "mean_design_seconds": 47.86596966907382,
+      "rank_among_fixed_k_lambda_candidates": null,
+      "selection_eligible": true,
+      "worst_cell_rmse_ratio_to_default": 1.0,
+      "worst_cell_rmse_ratio_to_orbit": 1.1481722723242345
+    }
+  ],
+  "screening_contract": {
+    "all_rmse_and_aggregates_independently_recomputed": true,
+    "base_seed": 20260911,
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "greedy_size_schedules_and_relabels_paired_across_hyperparameters": true,
+    "orbit_is_equal_call_but_independently_randomized": true,
+    "repeats": 8
+  },
+  "screening_sources": {
+    "airport": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_fine_screen_airport.json",
+      "sha256": "47ba08e9e7727471f52fa8fcc5cd52404a93370f8b5d3d5c86868d20b4802151"
+    },
+    "voting": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_fine_screen_voting.json",
+      "sha256": "4700c72912072a514636f4bb215cc6b9fec064727644c27241c2a1afa84e1c7c"
+    }
+  },
+  "selection_rule": {
+    "budget_indices": [
+      0,
+      1
+    ],
+    "budget_multipliers": [
+      500,
+      2000
+    ],
+    "candidate_constraint": "candidate_pool K=64",
+    "cell_count": 4,
+    "coverage_policy": "eliminate any candidate with a candidate, registered-default, or Orbit coverage failure",
+    "datasets": [
+      "airport",
+      "voting"
+    ],
+    "design_time_is_descriptive_not_a_selection_tie_break": true,
+    "primary": "minimize the equal-weight mean log aggregate-RMSE ratio to the registered default across 2 datasets x 2 budgets",
+    "registered_default_is_comparator_not_a_lambda_candidate": true,
+    "tie_breaks": [
+      "lower worst dataset-budget RMSE ratio to default",
+      "smaller lambda0"
+    ],
+    "zero_ratio_policy": "an exact zero is valid and ranks first"
+  },
+  "status": "configuration_locked"
+}

@@ -1,0 +1,156 @@
+{
+  "dataset": "Wine",
+  "experiment": "inside_greedy_mean_balance_before_after",
+  "legacy_report": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_3repeats_71k_1p42m.json",
+  "method_identity": {
+    "canonical_label": "INSIDE-Greedy",
+    "legacy_ablation": {
+      "mean_balance_mode": "raw",
+      "raw_lambda": 0.1
+    },
+    "normalized": {
+      "lambda0": 1.0,
+      "mean_balance_mode": "normalized"
+    }
+  },
+  "normalized_report": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_normalized_mean_balance_3repeats_71k_1p42m.json",
+  "rows": [
+    {
+      "inside_orbit_rmse": 0.0006353593658663042,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.002813820562828758,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.860409740080418,
+      "normalized_lambda0_1_greedy_rmse": 0.0011820287527089903,
+      "normalized_vs_legacy_fractional_rmse_change": -0.5799203515945996,
+      "total_utility_calls": 71286
+    },
+    {
+      "inside_orbit_rmse": 0.0004123874449317491,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.0018711834485940814,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.7356765498103779,
+      "normalized_lambda0_1_greedy_rmse": 0.0007157712176042555,
+      "normalized_vs_legacy_fractional_rmse_change": -0.6174767267516972,
+      "total_utility_calls": 142286
+    },
+    {
+      "inside_orbit_rmse": 0.0002743887084824147,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.0013971341200072875,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.4848083937804835,
+      "normalized_lambda0_1_greedy_rmse": 0.0004074146575132755,
+      "normalized_vs_legacy_fractional_rmse_change": -0.708392593324433,
+      "total_utility_calls": 284286
+    },
+    {
+      "inside_orbit_rmse": 0.00017557094056054747,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.000903401206396081,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.2696198700810444,
+      "normalized_lambda0_1_greedy_rmse": 0.00022290835474448903,
+      "normalized_vs_legacy_fractional_rmse_change": -0.7532565230527724,
+      "total_utility_calls": 710286
+    },
+    {
+      "inside_orbit_rmse": 0.00013244603951226917,
+      "legacy_raw_lambda_0p1_greedy_rmse": 0.000615707303084792,
+      "normalized_greedy_to_orbit_rmse_ratio": 1.183621408906889,
+      "normalized_lambda0_1_greedy_rmse": 0.00015676596789164954,
+      "normalized_vs_legacy_fractional_rmse_change": -0.7453888120114428,
+      "total_utility_calls": 1420286
+    }
+  ],
+  "status": "ready_to_share",
+  "validation": {
+    "legacy": {
+      "call_accounting": {
+        "total_actual_utility_calls": 58070349,
+        "total_unused_utility_calls": 5011971
+      },
+      "caveats": [
+        "Wine uses a high-budget Monte Carlo reference with retained standard errors; it is not labeled exact.",
+        "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+        "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+      ],
+      "checks": {
+        "actual_calls_do_not_exceed_target": "passed",
+        "available_method_diagnostic_call_accounting": "passed",
+        "common_method_order_exactly_eight": "passed",
+        "five_budget_points": "passed",
+        "ground_truth": "passed",
+        "ground_truth_uncertainty_metadata_if_mc": "passed",
+        "inside_candidate_pool_K_equals_4": "passed",
+        "inside_greedy_mean_balance_configuration": "passed",
+        "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+        "rmse_and_retained_secondary_metrics_recomputed": "passed",
+        "three_repeats_per_method_budget": "passed"
+      },
+      "dataset": "wine",
+      "ground_truth_audit": {
+        "kind": "monte_carlo_with_standard_error",
+        "maximum_truth_discrepancy": 0.0
+      },
+      "inside_greedy_balance_audit": {
+        "coefficient": 0.1,
+        "mode": "legacy_raw"
+      },
+      "maximum_discrepancies": {
+        "sample_estimate_efficiency_residual": 0.03382223407626139,
+        "stored_metric_absolute": 4.336808689942018e-19
+      },
+      "status": "ready_to_share",
+      "validated_report": "wine_inside_greedy_orbit_baseline_comparison",
+      "validated_shape": {
+        "budget_points": 5,
+        "methods": 8,
+        "per_repeat_estimates_checked": 120,
+        "players": 142,
+        "repeats": 3,
+        "scalar_player_estimates_checked": 17040
+      }
+    },
+    "normalized": {
+      "call_accounting": {
+        "total_actual_utility_calls": 58070349,
+        "total_unused_utility_calls": 5011971
+      },
+      "caveats": [
+        "Wine uses a high-budget Monte Carlo reference with retained standard errors; it is not labeled exact.",
+        "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+        "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+      ],
+      "checks": {
+        "actual_calls_do_not_exceed_target": "passed",
+        "available_method_diagnostic_call_accounting": "passed",
+        "common_method_order_exactly_eight": "passed",
+        "five_budget_points": "passed",
+        "ground_truth": "passed",
+        "ground_truth_uncertainty_metadata_if_mc": "passed",
+        "inside_candidate_pool_K_equals_4": "passed",
+        "inside_greedy_mean_balance_configuration": "passed",
+        "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+        "rmse_and_retained_secondary_metrics_recomputed": "passed",
+        "three_repeats_per_method_budget": "passed"
+      },
+      "dataset": "wine",
+      "ground_truth_audit": {
+        "kind": "monte_carlo_with_standard_error",
+        "maximum_truth_discrepancy": 0.0
+      },
+      "inside_greedy_balance_audit": {
+        "coefficient": 1.0,
+        "mode": "normalized"
+      },
+      "maximum_discrepancies": {
+        "sample_estimate_efficiency_residual": 0.03382223407626139,
+        "stored_metric_absolute": 4.336808689942018e-19
+      },
+      "status": "ready_to_share",
+      "validated_report": "wine_inside_greedy_orbit_baseline_comparison_normalized_mean_balance",
+      "validated_shape": {
+        "budget_points": 5,
+        "methods": 8,
+        "per_repeat_estimates_checked": 120,
+        "players": 142,
+        "repeats": 3,
+        "scalar_player_estimates_checked": 17040
+      }
+    }
+  }
+}

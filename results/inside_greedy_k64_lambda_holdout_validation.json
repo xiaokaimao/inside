@@ -1,0 +1,727 @@
+{
+  "bootstrap": {
+    "base_seed": 20261031,
+    "cell_resampling": "dataset-budget cells independently resampled because budget index enters the experiment seed sequence",
+    "confidence_level": 0.95,
+    "joint_summary": "draw-wise equal-weight geometric mean over 6 cells",
+    "pairing": "same resampled repeat indices for all compared methods within one dataset-budget cell",
+    "samples": 20000,
+    "unit": "repeat within each dataset-budget cell"
+  },
+  "comparators": {
+    "inside_orbit": {
+      "estimator": "INSIDE-Orbit"
+    },
+    "lambda0_zero_k64": {
+      "candidate_pool": 64,
+      "lambda0": 0.0
+    },
+    "registered_default": {
+      "candidate_pool": 4,
+      "lambda0": 1.0
+    }
+  },
+  "comparisons": {
+    "inside_orbit": {
+      "complete_coverage": true,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.00520746268404707,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.005134983989221518,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9860817639562567,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9338828052535917,
+                1.0462556657050617
+              ],
+              "total_utility_calls": 50202
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.0021141147878994977,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0017592278297706532,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.8321344894988193,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.7952392365020737,
+                0.8735519717805765
+              ],
+              "total_utility_calls": 200202
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.0007984357289256303,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0007363694069478987,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9222650994573507,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.8882681270813066,
+                0.9598841443029333
+              ],
+              "total_utility_calls": 1000202
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 0.9112846915366195,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                0.9338828052535917,
+                1.0462556657050617
+              ],
+              [
+                0.7952392365020737,
+                0.8735519717805765
+              ],
+              [
+                0.8882681270813066,
+                0.9598841443029333
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.8866745573638255,
+              0.9380959959825094
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 1.0
+          }
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.002093828815475981,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0019280665736725116,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9208329541659368,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.8628351373265035,
+                0.9825937466239576
+              ],
+              "total_utility_calls": 25604
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.0009571876774431656,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.000910908720631998,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9516511151347167,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9105096929560299,
+                0.9946713716917533
+              ],
+              "total_utility_calls": 102104
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.00041097062558906994,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.00041773854720153833,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 1.0164681395483375,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9537077790742896,
+                1.084830582443287
+              ],
+              "total_utility_calls": 510104
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 0.9621677472148722,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                0.8628351373265035,
+                0.9825937466239576
+              ],
+              [
+                0.9105096929560299,
+                0.9946713716917533
+              ],
+              [
+                0.9537077790742896,
+                1.084830582443287
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.9303968229574285,
+              0.995424472852975
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 0.98685
+          }
+        }
+      },
+      "joint_equal_cell_geometric_mean_rmse_ratio": 0.9363806590950012,
+      "paired_repeat_bootstrap": {
+        "budget_ratio_95_percent_ci": [
+          [
+            0.9338828052535917,
+            1.0462556657050617
+          ],
+          [
+            0.7952392365020737,
+            0.8735519717805765
+          ],
+          [
+            0.8882681270813066,
+            0.9598841443029333
+          ],
+          [
+            0.8628351373265035,
+            0.9825937466239576
+          ],
+          [
+            0.9105096929560299,
+            0.9946713716917533
+          ],
+          [
+            0.9537077790742896,
+            1.084830582443287
+          ]
+        ],
+        "geometric_mean_ratio_95_percent_ci": [
+          0.9163436392870494,
+          0.957653541990618
+        ],
+        "invalid_denominator_draws_by_budget": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "invalid_joint_draws": 0,
+        "probability_locked_rmse_is_lower": 1.0
+      },
+      "ratio_direction": "locked RMSE / comparator RMSE; below 1 is better"
+    },
+    "lambda0_zero_k64": {
+      "complete_coverage": true,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.004857210326661383,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.005134983989221518,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 1.0571879008482352,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                1.010350162508525,
+                1.102222164415081
+              ],
+              "total_utility_calls": 50202
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.0018121067880986302,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0017592278297706532,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.970819071659976,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9295184214960488,
+                1.0138250945411826
+              ],
+              "total_utility_calls": 200202
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.0007373356663550469,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0007363694069478987,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9986895257462253,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9398005604564365,
+                1.0664999606789611
+              ],
+              "total_utility_calls": 1000202
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 1.0082626035894753,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                1.010350162508525,
+                1.102222164415081
+              ],
+              [
+                0.9295184214960488,
+                1.0138250945411826
+              ],
+              [
+                0.9398005604564365,
+                1.0664999606789611
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.9790096319020862,
+              1.0385036902367564
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 0.2962
+          }
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.0019002829886910968,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0019280665736725116,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 1.0146207618269276,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9525610894426632,
+                1.088506966651166
+              ],
+              "total_utility_calls": 25604
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.0009271799294165711,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.000910908720631998,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9824508617277643,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9356588114970693,
+                1.034009935237275
+              ],
+              "total_utility_calls": 102104
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.00040555938538369837,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.00041773854720153833,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 1.0300305263711682,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9641175953556993,
+                1.1031684668973767
+              ],
+              "total_utility_calls": 510104
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 1.0088382951310801,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                0.9525610894426632,
+                1.088506966651166
+              ],
+              [
+                0.9356588114970693,
+                1.034009935237275
+              ],
+              [
+                0.9641175953556993,
+                1.1031684668973767
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.9747184202918364,
+              1.045978022867919
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 0.31635
+          }
+        }
+      },
+      "joint_equal_cell_geometric_mean_rmse_ratio": 1.0085504082839045,
+      "paired_repeat_bootstrap": {
+        "budget_ratio_95_percent_ci": [
+          [
+            1.010350162508525,
+            1.102222164415081
+          ],
+          [
+            0.9295184214960488,
+            1.0138250945411826
+          ],
+          [
+            0.9398005604564365,
+            1.0664999606789611
+          ],
+          [
+            0.9525610894426632,
+            1.088506966651166
+          ],
+          [
+            0.9356588114970693,
+            1.034009935237275
+          ],
+          [
+            0.9641175953556993,
+            1.1031684668973767
+          ]
+        ],
+        "geometric_mean_ratio_95_percent_ci": [
+          0.9856542293361782,
+          1.0324018781849382
+        ],
+        "invalid_denominator_draws_by_budget": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "invalid_joint_draws": 0,
+        "probability_locked_rmse_is_lower": 0.2359
+      },
+      "ratio_direction": "locked RMSE / comparator RMSE; below 1 is better"
+    },
+    "registered_default": {
+      "complete_coverage": true,
+      "datasets": {
+        "airport": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.005692740038163719,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.005134983989221518,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9020232708321398,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.8421127903446968,
+                0.96266423997551
+              ],
+              "total_utility_calls": 50202
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.002309417692986963,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0017592278297706532,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.7617625149027487,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.7239296496398955,
+                0.8067272966723138
+              ],
+              "total_utility_calls": 200202
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.000811232419040655,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0007363694069478987,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.907716937420613,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.8630211568202624,
+                0.9548876809304321
+              ],
+              "total_utility_calls": 1000202
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 0.8544026623741192,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                0.8421127903446968,
+                0.96266423997551
+              ],
+              [
+                0.7239296496398955,
+                0.8067272966723138
+              ],
+              [
+                0.8630211568202624,
+                0.9548876809304321
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.8261817080475574,
+              0.8834465516243801
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 1.0
+          }
+        },
+        "voting": {
+          "budget_cells": [
+            {
+              "budget_index": 0,
+              "budget_multiplier": 500,
+              "comparator_aggregate_rmse": 0.0024143924111984065,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.0019280665736725116,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.7985721644624858,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.7530453905416232,
+                0.8518111808748728
+              ],
+              "total_utility_calls": 25604
+            },
+            {
+              "budget_index": 1,
+              "budget_multiplier": 2000,
+              "comparator_aggregate_rmse": 0.0010596827177562246,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.000910908720631998,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.8596051491344116,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.8138209693270774,
+                0.909423166423231
+              ],
+              "total_utility_calls": 102104
+            },
+            {
+              "budget_index": 2,
+              "budget_multiplier": 10000,
+              "comparator_aggregate_rmse": 0.00042406512861723004,
+              "comparator_coverage_failures": 0,
+              "invalid_denominator_bootstrap_draws": 0,
+              "locked_aggregate_rmse": 0.00041773854720153833,
+              "locked_coverage_failures": 0,
+              "locked_over_comparator_rmse_ratio": 0.9850811090354892,
+              "paired_repeat_bootstrap_95_percent_ci": [
+                0.9166847358427981,
+                1.0574632431074105
+              ],
+              "total_utility_calls": 510104
+            }
+          ],
+          "comparator_coverage_failures": 0,
+          "complete_coverage": true,
+          "geometric_mean_locked_over_comparator_rmse_ratio": 0.8777315763202584,
+          "locked_coverage_failures": 0,
+          "paired_repeat_bootstrap": {
+            "budget_ratio_95_percent_ci": [
+              [
+                0.7530453905416232,
+                0.8518111808748728
+              ],
+              [
+                0.8138209693270774,
+                0.909423166423231
+              ],
+              [
+                0.9166847358427981,
+                1.0574632431074105
+              ]
+            ],
+            "geometric_mean_ratio_95_percent_ci": [
+              0.8466286297187242,
+              0.9101105844920249
+            ],
+            "invalid_denominator_draws_by_budget": [
+              0,
+              0,
+              0
+            ],
+            "invalid_joint_draws": 0,
+            "probability_locked_rmse_is_lower": 1.0
+          }
+        }
+      },
+      "joint_equal_cell_geometric_mean_rmse_ratio": 0.8659885655468329,
+      "paired_repeat_bootstrap": {
+        "budget_ratio_95_percent_ci": [
+          [
+            0.8421127903446968,
+            0.96266423997551
+          ],
+          [
+            0.7239296496398955,
+            0.8067272966723138
+          ],
+          [
+            0.8630211568202624,
+            0.9548876809304321
+          ],
+          [
+            0.7530453905416232,
+            0.8518111808748728
+          ],
+          [
+            0.8138209693270774,
+            0.909423166423231
+          ],
+          [
+            0.9166847358427981,
+            1.0574632431074105
+          ]
+        ],
+        "geometric_mean_ratio_95_percent_ci": [
+          0.8450736416837604,
+          0.8878829312765285
+        ],
+        "invalid_denominator_draws_by_budget": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "invalid_joint_draws": 0,
+        "probability_locked_rmse_is_lower": 1.0
+      },
+      "ratio_direction": "locked RMSE / comparator RMSE; below 1 is better"
+    }
+  },
+  "coverage_failures_by_method": {
+    "inside_orbit": {
+      "by_dataset": {
+        "airport": 0,
+        "voting": 0
+      },
+      "total": 0
+    },
+    "lambda0_zero_k64": {
+      "by_dataset": {
+        "airport": 0,
+        "voting": 0
+      },
+      "total": 0
+    },
+    "locked": {
+      "by_dataset": {
+        "airport": 0,
+        "voting": 0
+      },
+      "total": 0
+    },
+    "registered_default": {
+      "by_dataset": {
+        "airport": 0,
+        "voting": 0
+      },
+      "total": 0
+    }
+  },
+  "experiment": "inside_greedy_fixed_k_lambda_holdout",
+  "locked_configuration": {
+    "candidate_pool": 64,
+    "configuration_id": "lambda0=0.0625|K=64",
+    "lambda0": 0.0625
+  },
+  "plots": {
+    "locked_vs_lambda0_zero": [
+      "results/inside_greedy_k64_lambda_holdout_locked_vs_zero.png",
+      "results/inside_greedy_k64_lambda_holdout_locked_vs_zero.pdf"
+    ]
+  },
+  "protocol": {
+    "base_seed": 20261031,
+    "budget_indices": [
+      0,
+      1,
+      2
+    ],
+    "budget_multipliers": [
+      500,
+      2000,
+      10000
+    ],
+    "equal_utility_call_comparisons": true,
+    "raw_reports_independently_reconstructed": true,
+    "repeats": 20,
+    "screening_and_validation_seed_sets_disjoint": true
+  },
+  "sources": {
+    "airport_validation": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_holdout_airport.json",
+      "sha256": "98e6124ce3b752aa571e77ea4dc1fcaa412022cce415b3969dd594c8a4384a1f"
+    },
+    "locked_selection": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_fine_locked_selection.json",
+      "sha256": "b4bee02e97f0dd804b42b29a1ee9326d2d80bee56017e6d3346111f87a4a78e3"
+    },
+    "voting_validation": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_greedy_k64_lambda_holdout_voting.json",
+      "sha256": "0b5fd579c588ffc088e21db2ac2bfebf1d5c553fc055737e317a076dd549ca5c"
+    }
+  },
+  "status": "holdout_validated"
+}
