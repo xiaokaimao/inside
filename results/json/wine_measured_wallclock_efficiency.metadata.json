@@ -1,0 +1,57 @@
+{
+  "archetype": "single-panel quantitative comparison",
+  "artifact": "wine_fresh_measured_cold_wallclock_efficiency",
+  "axis_semantics": {
+    "x": "mean fresh cold end-to-end wall time in seconds",
+    "x_interval": "minimum to maximum across three repeats",
+    "y": "aggregate RMSE against the fixed high-budget reference",
+    "y_interval": "repeat bootstrap 95% interval"
+  },
+  "chart_title": null,
+  "figure_claim": "Accuracy-efficiency is compared using fresh measured cold end-to-end runtime rather than a utility-call proxy.",
+  "full_axis_box": true,
+  "layout": "1x1_near_square",
+  "legend_location": "inside_axes_upper_right",
+  "methods": [
+    "inside_greedy",
+    "inside_orbit",
+    "ofa",
+    "cc",
+    "s_diff",
+    "kernel_shap",
+    "tmc_shapley"
+  ],
+  "outputs": {
+    "csv": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.csv",
+    "pdf": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.pdf",
+    "png": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.png",
+    "svg": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.svg"
+  },
+  "panel_alignment": {
+    "json": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.alignment.json",
+    "overlay_svg": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_efficiency.alignment.svg",
+    "status": "NOT APPLICABLE"
+  },
+  "qa_notes": [
+    "The 8.9-inch square working export intentionally follows the requested near-square layout rather than a journal column width.",
+    "PNG is the raster preview; PDF and SVG are the editable publication masters, so no TIFF preview is duplicated here.",
+    "All plotted wall times and RMSE bounds pass explicit finite, strictly-positive validation before log scaling."
+  ],
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "source_report": {
+    "path": "/home/maoxiaokai/python_project/frame/results/wine_measured_wallclock_k64_lambda1over16_3repeats_71k_1p42m.json",
+    "sha256": "f4fe9796c601d1960d0eb636b1081fd56f6c2d316cd44c89b800ecdcadb9f4b0"
+  },
+  "statistics": {
+    "repeat_unit": "independent method-budget run with a fresh pool",
+    "repeats": 3,
+    "x_center": "arithmetic mean wall time",
+    "x_spread": "minimum to maximum repeat time",
+    "y_center": "RMSE of the repeat-mean Shapley vector",
+    "y_spread": "95% bootstrap interval over repeats"
+  },
+  "status": "complete"
+}

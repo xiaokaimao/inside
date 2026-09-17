@@ -1,12 +1,12 @@
-"""Independently audit the common Wine/Airport/Voting INSIDE reports.
+"""Independently audit the common data-valuation/analytic INSIDE reports.
 
 This validator treats the retained 3 x n estimates as the audit source.  It
 recomputes every stored accuracy/ranking/efficiency statistic that is present,
 checks physical utility-call accounting, and reconstructs the analytic truth
 for Airport and weighted voting without calling either production truth
-routine.  Wine deliberately uses a high-budget Monte Carlo reference; for it
-we validate the retained standard-error and call-budget metadata instead of
-misrepresenting the reference as exact.
+routine.  Wine and Breast Cancer deliberately use high-budget Monte Carlo
+references; for them we validate retained standard-error and call-budget
+metadata instead of misrepresenting the references as exact.
 """
 
 from __future__ import annotations
@@ -56,6 +56,7 @@ CURRENT_K64_CANONICAL_INSIDE_EXPERIMENT_IDS = frozenset(
     {
         "analytic_inside_baseline_comparison_per_size_ratio_k64_lambda1over16",
         "wine_inside_greedy_orbit_baseline_comparison_per_size_ratio_k64_lambda1over16",
+        "cancer_inside_greedy_orbit_baseline_comparison_per_size_ratio_k64_lambda1over16",
     }
 )
 # Both explicit K=64 protocols retain full hyperparameter diagnostics.  Keep
@@ -79,6 +80,7 @@ ANALYTIC_PROTOCOL_VERSIONS = {
     ),
     CURRENT_ANALYTIC_EXPERIMENT_ID: CURRENT_ANALYTIC_PROTOCOL_VERSION,
 }
+MC_REFERENCE_DATASETS = frozenset({"wine", "cancer"})
 
 
 def _require(condition: bool, message: str) -> None:
@@ -233,6 +235,8 @@ def _dataset_kind(report: Mapping[str, Any]) -> str:
     normalized = str(candidate or "").strip().lower()
     if normalized == "wine":
         return "wine"
+    if normalized in {"cancer", "breast_cancer", "breast cancer"}:
+        return "cancer"
     if "airport" in normalized:
         return "airport"
     if "vot" in normalized or "electoral" in normalized:
@@ -344,7 +348,7 @@ def _validate_game_and_truth(
         )
         target = 1.0
         kind = "analytic_exact"
-    else:
+    elif dataset in MC_REFERENCE_DATASETS:
         expected = truth
         target = _finite(
             boundary_mapping.get("efficiency_target", truth.sum()),
@@ -354,10 +358,13 @@ def _validate_game_and_truth(
         standard_errors = np.asarray(
             ground_truth.get("standard_errors"), dtype=np.float64
         )
-        _require(standard_errors.shape == (n,), "Wine ground-truth SE has wrong shape")
+        _require(
+            standard_errors.shape == (n,),
+            "Monte Carlo ground-truth SE has wrong shape",
+        )
         _require(
             np.all(np.isfinite(standard_errors)) and np.all(standard_errors >= 0.0),
-            "Wine ground-truth SE is invalid",
+            "Monte Carlo ground-truth SE is invalid",
         )
         recomputed_rmse_se = float(np.sqrt(np.mean(np.square(standard_errors))))
         _close(
@@ -368,10 +375,13 @@ def _validate_game_and_truth(
         half_widths = np.asarray(
             ground_truth.get("simultaneous_half_widths"), dtype=np.float64
         )
-        _require(half_widths.shape == (n,), "Wine simultaneous half-widths have wrong shape")
+        _require(
+            half_widths.shape == (n,),
+            "Monte Carlo simultaneous half-widths have wrong shape",
+        )
         _require(
             np.all(np.isfinite(half_widths)) and np.all(half_widths >= 0.0),
-            "Wine simultaneous half-widths are invalid",
+            "Monte Carlo simultaneous half-widths are invalid",
         )
         _close(
             ground_truth.get("max_simultaneous_half_width"),
@@ -388,7 +398,10 @@ def _validate_game_and_truth(
             path="ground_truth.independent_pair_units",
             minimum=1,
         )
-        _require(permutations == 2 * pairs, "Wine permutation/pair counts disagree")
+        _require(
+            permutations == 2 * pairs,
+            "Monte Carlo permutation/pair counts disagree",
+        )
         conceptual = _integer(
             ground_truth.get("conceptual_internal_prefix_calls"),
             path="ground_truth.conceptual_internal_prefix_calls",
@@ -403,20 +416,28 @@ def _validate_game_and_truth(
             ground_truth.get("boundary_reuse_saved_calls"),
             path="ground_truth.boundary_reuse_saved_calls",
         )
-        _require(conceptual == permutations * (n - 1), "Wine conceptual GT calls are wrong")
-        _require(physical + saved == conceptual, "Wine physical/saved GT calls do not add up")
+        _require(
+            conceptual == permutations * (n - 1),
+            "Monte Carlo conceptual ground-truth calls are wrong",
+        )
+        _require(
+            physical + saved == conceptual,
+            "Monte Carlo physical/saved ground-truth calls do not add up",
+        )
         equivalent = ground_truth.get("permutation_path_equivalent_utility_calls")
         if equivalent is not None:
             _require(
                 int(equivalent) == conceptual + 2,
-                "Wine permutation-path-equivalent GT calls are wrong",
+                "Monte Carlo permutation-path-equivalent ground-truth calls are wrong",
             )
         shared_boundary = ground_truth.get("shared_boundary_calls_physically_evaluated")
         if shared_boundary is not None:
             _require(
                 int(shared_boundary) == 2 * n + 2,
-                "Wine shared GT boundary-call count is wrong",
+                "Monte Carlo shared ground-truth boundary-call count is wrong",
             )
+    else:  # pragma: no cover - guarded by _dataset_kind
+        raise ValueError(f"unsupported dataset kind: {dataset}")
 
     discrepancy = float(np.max(np.abs(truth - expected)))
     _require(discrepancy <= 2e-12, f"{dataset} ground truth is incorrect")
@@ -1109,11 +1130,11 @@ def validate_report(report: Mapping[str, Any]) -> dict[str, Any]:
             int(boundary_metadata["utility_calls"]) == boundary_calls,
             "boundary metadata has the wrong physical call count",
         )
-    if dataset == "wine":
+    if dataset in MC_REFERENCE_DATASETS:
         gt_physical = int(report["ground_truth"]["physical_internal_prefix_calls"])
         _require(
             gt_physical > max(total_budgets),
-            "Wine ground-truth budget must exceed every comparison budget",
+            "Monte Carlo ground-truth budget must exceed every comparison budget",
         )
 
     results = _mapping(
@@ -1125,7 +1146,7 @@ def validate_report(report: Mapping[str, Any]) -> dict[str, Any]:
         "result budget keys differ from configuration",
     )
     ground_truth_se: np.ndarray | None = None
-    if dataset == "wine":
+    if dataset in MC_REFERENCE_DATASETS:
         ground_truth_se = np.asarray(report["ground_truth"]["standard_errors"], dtype=float)
 
     max_metric_discrepancy = 0.0
@@ -1279,9 +1300,11 @@ def validate_report(report: Mapping[str, Any]) -> dict[str, Any]:
         },
         "caveats": (
             [
-                "Wine uses a high-budget Monte Carlo reference with retained standard errors; it is not labeled exact."
+                "This data-valuation experiment uses a high-budget Monte Carlo "
+                "reference with retained standard errors; the reference is not "
+                "exact."
             ]
-            if dataset == "wine"
+            if dataset in MC_REFERENCE_DATASETS
             else []
         )
         + [

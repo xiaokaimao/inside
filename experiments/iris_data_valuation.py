@@ -625,7 +625,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/iris_logistic_frame_ofa.json"),
+        default=Path("results/json/iris_logistic_frame_ofa.json"),
     )
     args = parser.parse_args()
     if args.gt_pairs < 2 or args.gt_pairs % 2:

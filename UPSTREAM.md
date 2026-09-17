@@ -1,5 +1,11 @@
 # Upstream OFA reference
 
+The author-maintained **ShapDoE 1.0.0** R package (Yang et al., JASA 2024)
+is also integrated as LS/COA baselines. It is MIT licensed; its original
+source and fingerprints are retained in `third_party/shapdoe/`. See
+[the ShapDoE audit](docs/SHAPDOE_BASELINE_AUDIT.md) for the official CRAN
+release, Python mapping, null-player extension and complete-block budgets.
+
 The official research code was downloaded for verification from:
 
 - Repository: https://github.com/watml/one-for-all
@@ -86,3 +92,22 @@ to Shapley Value Approximation* (Proc. ACM Manag. Data, 2023) was audited at:
 `frame_ofa/complementary.py` ports the basic CC sampling and accumulator into
 the local Boolean-coalition and persistent-`GameEvaluator` interfaces. It does
 not modify or import the user's separate `integral_shapley` baseline tree.
+
+## Orthogonal spherical codes reference
+
+Mitchell et al., *Sampling Permutations for Shapley Value Estimation*,
+JMLR 23(43):1–46 (2022), Section 4.2 / Algorithm 3:
+
+- Author repository: https://github.com/RAMitchell/shap_sampling
+- Commit: `fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac`
+- Entry point: `algorithms.py::OrthogonalSphericalCodes`
+- Sampler: `algorithms.py::_orthogonal_permutations`
+- Paper: https://jmlr.org/papers/v23/21-0439.html
+
+`frame_ofa/orthogonal.py` independently implements the mathematical method,
+using positive-diagonal QR for stable orthogonalization. It follows the
+author sampler's partial-basis and antithetic-pair behavior. There was no
+license file at the pinned commit; upstream code is used temporarily for
+comparison and is not redistributed. Source hashes, executed fixtures and
+the comparison script are recorded in
+[`docs/ORTHOGONAL_BASELINE_AUDIT.md`](docs/ORTHOGONAL_BASELINE_AUDIT.md).

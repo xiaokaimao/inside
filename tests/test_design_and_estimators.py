@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import multiprocessing as mp
 import time
 import unittest
 from itertools import permutations
@@ -28,6 +29,7 @@ from frame_ofa import (
     inner_frame_target,
     inner_size_distribution,
     orbit_coupled_frame_design,
+    paired_cyclic_orbit_designs,
     paired_frame_scope_designs,
     per_size_frame_coupled_design,
     shapley_boundary_vector,
@@ -43,8 +45,10 @@ from frame_ofa.design import (
     _cyclic_orbit_operator,
     _cyclic_orbit_signature,
     _cyclic_orbit_signatures,
+    _greedy_frame_rows,
     _minimum_one_counts,
     _random_relabel,
+    _relabel_with_permutation,
     _resolve_mean_balance,
     _sample_iid_coalitions,
     _sample_uniform_coalition,
@@ -412,6 +416,297 @@ class DesignAndEstimatorTests(unittest.TestCase):
         self.assertAlmostEqual(
             float(estimate.sum()), float(coefficients.sum()), places=12
         )
+
+    def test_first_only_and_frame_only_activate_exact_components(self) -> None:
+        sizes = np.asarray([2, 2], dtype=np.int64)
+        first_only = _greedy_frame_rows(
+            4,
+            sizes,
+            np.random.default_rng(2401),
+            candidate_pool=6,
+            radial_weights=False,
+            mean_balance=1.0,
+            second_moment_weight=0.0,
+            second_moment_scope="per_size",
+        )
+        frame_only = _greedy_frame_rows(
+            4,
+            sizes,
+            np.random.default_rng(2401),
+            candidate_pool=6,
+            radial_weights=False,
+            mean_balance=0.0,
+            second_moment_weight=1.0,
+            second_moment_scope="per_size",
+        )
+        np.testing.assert_allclose(
+            centered_directions(first_only).sum(axis=0), 0.0, atol=1e-14
+        )
+        self.assertGreater(
+            np.linalg.norm(centered_directions(frame_only).sum(axis=0)),
+            0.5,
+        )
+        with self.assertRaisesRegex(ValueError, "at least one moment"):
+            _greedy_frame_rows(
+                4,
+                sizes,
+                np.random.default_rng(1),
+                candidate_pool=2,
+                radial_weights=False,
+                mean_balance=0.0,
+                second_moment_weight=0.0,
+            )
+
+    def test_parallel_first_only_design_is_worker_count_invariant(self) -> None:
+        start_method = (
+            "fork"
+            if "fork" in mp.get_all_start_methods()
+            else mp.get_all_start_methods()[0]
+        )
+        parameters = {
+            "num_players": 8,
+            "num_samples": 79,
+            "seed": 20260901,
+            "candidate_pool": 6,
+            "mean_balance": 1.0,
+            "second_moment_weight": 0.0,
+            "design_start_method": start_method,
+            "compute_frame_diagnostics": False,
+        }
+        serial = per_size_frame_coupled_design(
+            **parameters, design_jobs=1
+        )
+        parallel = per_size_frame_coupled_design(
+            **parameters, design_jobs=3
+        )
+        np.testing.assert_array_equal(serial.sizes, parallel.sizes)
+        np.testing.assert_array_equal(
+            serial.coalitions, parallel.coalitions
+        )
+        self.assertEqual(
+            parallel.diagnostics["objective_components"],
+            ["first_moment"],
+        )
+
+    def test_parallel_per_size_design_is_worker_count_invariant(self) -> None:
+        start_method = (
+            "fork"
+            if "fork" in mp.get_all_start_methods()
+            else mp.get_all_start_methods()[0]
+        )
+        parameters = {
+            "num_players": 8,
+            "num_samples": 79,
+            "seed": 20260829,
+            "candidate_pool": 6,
+            "mean_balance": 1.0 / 16.0,
+            "design_start_method": start_method,
+            "compute_frame_diagnostics": False,
+        }
+        serial = per_size_frame_coupled_design(
+            **parameters, design_jobs=1
+        )
+        parallel = per_size_frame_coupled_design(
+            **parameters, design_jobs=3
+        )
+
+        np.testing.assert_array_equal(serial.sizes, parallel.sizes)
+        np.testing.assert_array_equal(
+            serial.coalitions, parallel.coalitions
+        )
+        self.assertEqual(
+            serial.diagnostics["ratio_coverage"],
+            parallel.diagnostics["ratio_coverage"],
+        )
+        self.assertEqual(serial.diagnostics["design_jobs"], 1)
+        self.assertEqual(parallel.diagnostics["design_jobs"], 3)
+        self.assertEqual(
+            serial.diagnostics["fixed_slice_rng_partitioning"],
+            "independent_seedsequence_substreams",
+        )
+        self.assertEqual(
+            parallel.diagnostics["design_start_method"], start_method
+        )
+
+    def test_parallel_per_size_design_metadata_and_coverage_are_exact(
+        self,
+    ) -> None:
+        start_method = (
+            "fork"
+            if "fork" in mp.get_all_start_methods()
+            else mp.get_all_start_methods()[0]
+        )
+        num_players = 8
+        num_samples = 79
+        design = per_size_frame_coupled_design(
+            num_players,
+            num_samples,
+            seed=4401,
+            candidate_pool=6,
+            design_jobs=2,
+            design_start_method=start_method,
+            compute_frame_diagnostics=False,
+        )
+        sizes, probabilities, _ = inner_size_distribution(num_players)
+
+        self.assertEqual(design.coalitions.shape, (num_samples, num_players))
+        np.testing.assert_array_equal(
+            design.coalitions.sum(axis=1), design.sizes
+        )
+        self.assertTrue(np.isin(design.sizes, sizes).all())
+        realized_size_counts = np.asarray(
+            [np.count_nonzero(design.sizes == size) for size in sizes]
+        )
+        # A randomized-systematic schedule puts either floor(T q_s) or
+        # ceil(T q_s) rows in every fixed-size interval.
+        self.assertTrue(
+            np.all(
+                np.abs(realized_size_counts - num_samples * probabilities)
+                < 1.0
+            )
+        )
+
+        inclusion_counts = np.asarray(
+            [
+                design.coalitions[design.sizes == size].sum(
+                    axis=0, dtype=np.int64
+                )
+                for size in sizes
+            ]
+        )
+        exclusion_counts = realized_size_counts[:, None] - inclusion_counts
+        coverage = design.diagnostics["ratio_coverage"]
+        self.assertEqual(coverage["expected_inner_sizes"], len(sizes))
+        self.assertEqual(
+            coverage["observed_inner_sizes"],
+            int(np.count_nonzero(realized_size_counts)),
+        )
+        self.assertEqual(
+            coverage["missing_inner_sizes"],
+            int(np.count_nonzero(realized_size_counts == 0)),
+        )
+        self.assertEqual(
+            coverage["minimum_inclusion_count"],
+            int(inclusion_counts.min()),
+        )
+        self.assertEqual(
+            coverage["minimum_exclusion_count"],
+            int(exclusion_counts.min()),
+        )
+        self.assertEqual(
+            coverage["missing_inclusion_strata"],
+            int(np.count_nonzero(inclusion_counts == 0)),
+        )
+        self.assertEqual(
+            coverage["missing_exclusion_strata"],
+            int(np.count_nonzero(exclusion_counts == 0)),
+        )
+        self.assertEqual(
+            coverage["exactly_1_balanced_sizes"],
+            sum(
+                np.all(player_counts == player_counts[0])
+                for player_counts in inclusion_counts
+            ),
+        )
+        self.assertEqual(
+            coverage["all_player_size_strata_covered"],
+            bool(
+                np.all(inclusion_counts > 0)
+                and np.all(exclusion_counts > 0)
+            ),
+        )
+        self.assertFalse(
+            design.diagnostics["frame_diagnostics_computed"]
+        )
+        for omitted_key in (
+            "frobenius_discrepancy",
+            "spectral_discrepancy",
+            "trace_discrepancy",
+        ):
+            self.assertNotIn(omitted_key, design.diagnostics)
+
+    def test_default_per_size_design_preserves_legacy_rng_path(self) -> None:
+        num_players = 7
+        num_samples = 43
+        seed = 20260831
+        candidate_pool = 5
+        mean_balance = 1.0 / 16.0
+
+        # Reconstruct the implementation that preceded optional fixed-slice
+        # RNG partitioning: one shared stream for size scheduling, candidates,
+        # tie breaking, and the final relabeling.
+        legacy_rng = np.random.default_rng(seed)
+        sizes, probabilities, _ = inner_size_distribution(num_players)
+        expected_sizes = _systematic_sizes(
+            sizes, probabilities, num_samples, legacy_rng
+        )
+        effective_balance, _ = _resolve_mean_balance(
+            num_players,
+            expected_sizes,
+            mean_balance,
+            "normalized",
+            radial_weights=False,
+        )
+        expected_base = _greedy_frame_rows(
+            num_players,
+            expected_sizes,
+            legacy_rng,
+            candidate_pool,
+            radial_weights=False,
+            mean_balance=effective_balance,
+            second_moment_scope="per_size",
+        )
+        expected_coalitions = _relabel_with_permutation(
+            expected_base, legacy_rng.permutation(num_players)
+        )
+
+        first = per_size_frame_coupled_design(
+            num_players,
+            num_samples,
+            seed=seed,
+            candidate_pool=candidate_pool,
+            mean_balance=mean_balance,
+        )
+        second = per_size_frame_coupled_design(
+            num_players,
+            num_samples,
+            seed=seed,
+            candidate_pool=candidate_pool,
+            mean_balance=mean_balance,
+        )
+        np.testing.assert_array_equal(first.sizes, expected_sizes)
+        np.testing.assert_array_equal(first.coalitions, expected_coalitions)
+        np.testing.assert_array_equal(first.sizes, second.sizes)
+        np.testing.assert_array_equal(first.coalitions, second.coalitions)
+        self.assertEqual(
+            first.diagnostics["fixed_slice_rng_partitioning"],
+            "historical_shared_stream",
+        )
+        self.assertIsNone(first.diagnostics["design_jobs"])
+        self.assertIsNone(first.diagnostics["design_start_method"])
+
+    def test_parallel_per_size_design_rejects_invalid_arguments(self) -> None:
+        for invalid_jobs in (0, -1, 1.5, "2", True):
+            with self.subTest(design_jobs=invalid_jobs):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "design_jobs must be a positive integer or None",
+                ):
+                    per_size_frame_coupled_design(
+                        6, 17, design_jobs=invalid_jobs
+                    )
+
+        unsupported = "definitely-not-a-multiprocessing-start-method"
+        self.assertNotIn(unsupported, mp.get_all_start_methods())
+        with self.assertRaisesRegex(
+            ValueError, "unsupported design start method"
+        ):
+            per_size_frame_coupled_design(
+                6,
+                17,
+                design_jobs=1,
+                design_start_method=unsupported,
+            )
 
     def test_paired_scope_design_preserves_global_and_controls_relabel(self) -> None:
         parameters = {
@@ -890,6 +1185,43 @@ class DesignAndEstimatorTests(unittest.TestCase):
                     num_players, (num_players - size) * orbit_count
                 ),
             )
+
+    def test_paired_orbit_ablation_shares_every_candidate_pool(self) -> None:
+        num_players = 7
+        random_orbit, inside_orbit = paired_cyclic_orbit_designs(
+            num_players=num_players,
+            num_orbits=12,
+            seed=2601,
+            candidate_pool=5,
+        )
+        np.testing.assert_array_equal(random_orbit.sizes, inside_orbit.sizes)
+        self.assertEqual(random_orbit.method, "cyclic_orbit_random")
+        self.assertEqual(inside_orbit.method, "cyclic_orbit_frame")
+        for field in (
+            "shared_candidate_pool_sha256",
+            "shared_relabel_permutations_sha256",
+            "orbit_counts_by_size",
+        ):
+            self.assertEqual(
+                random_orbit.diagnostics[field],
+                inside_orbit.diagnostics[field],
+            )
+        self.assertEqual(
+            random_orbit.diagnostics["selection_rule"],
+            "uniform_random_from_shared_candidate_pool",
+        )
+        self.assertEqual(
+            inside_orbit.diagnostics["selection_rule"],
+            "minimum_per_size_frame_increment",
+        )
+        for design in (random_orbit, inside_orbit):
+            for size in range(2, num_players - 1):
+                rows = design.coalitions[design.sizes == size]
+                orbit_count = len(rows) // num_players
+                np.testing.assert_array_equal(
+                    rows.sum(axis=0),
+                    np.full(num_players, size * orbit_count),
+                )
 
     def test_fft_cyclic_operator_matches_direct_outer_products(self) -> None:
         rng = np.random.default_rng(29)

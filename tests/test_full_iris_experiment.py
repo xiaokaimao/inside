@@ -56,21 +56,21 @@ class FullIrisExperimentTests(unittest.TestCase):
         self.assertEqual(
             args.ground_truth_cache,
             Path(
-                "results/"
+                "results/npz/"
                 "digits_100_per_class_full_train_rbf_svm_gt.npz"
             ),
         )
         self.assertEqual(
             args.ground_truth_progress_cache,
             Path(
-                "results/"
+                "results/npz/"
                 "digits_100_per_class_full_train_rbf_svm_gt.partial.npz"
             ),
         )
         self.assertEqual(
             args.output,
             Path(
-                "results/"
+                "results/json/"
                 "digits_100_per_class_full_train_rbf_svm_frame_ofa.json"
             ),
         )

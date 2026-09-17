@@ -23,6 +23,8 @@ import argparse
 import json
 import math
 from pathlib import Path
+
+from experiments.result_paths import by_format
 from typing import Any, Mapping
 
 import matplotlib
@@ -389,7 +391,7 @@ def _default_output(input_path: Path) -> Path:
         stem = input_path.stem.replace(marker, f"{marker}rmse_", 1)
     else:
         stem = f"{input_path.stem}_rmse"
-    return input_path.with_name(stem + ".png")
+    return by_format(input_path.with_name(stem + ".png"))
 
 
 def _linear_output(main_output: Path) -> Path:
@@ -634,9 +636,9 @@ def plot_results(
     )
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    pdf_output = output.with_suffix(".pdf")
+    pdf_output = by_format(output.with_suffix(".pdf"))
     linear_png_output = _linear_output(output)
-    linear_pdf_output = linear_png_output.with_suffix(".pdf")
+    linear_pdf_output = by_format(linear_png_output.with_suffix(".pdf"))
     figure.savefig(output, dpi=220, facecolor="white")
     figure.savefig(pdf_output, facecolor="white")
     linear_figure.savefig(linear_png_output, dpi=220, facecolor="white")
@@ -652,7 +654,7 @@ def parse_args() -> argparse.Namespace:
         "--input",
         type=Path,
         default=Path(
-            "results/"
+            "results/json/"
             "wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_"
             "3repeats_71k_1p42m.json"
         ),

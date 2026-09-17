@@ -1,0 +1,59 @@
+{
+  "base_report_audit": {
+    "call_accounting": {
+      "total_actual_utility_calls": 58070349,
+      "total_unused_utility_calls": 5011971
+    },
+    "caveats": [
+      "This data-valuation experiment uses a high-budget Monte Carlo reference with retained standard errors; the reference is not exact.",
+      "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+      "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+    ],
+    "checks": {
+      "actual_calls_do_not_exceed_target": "passed",
+      "available_method_diagnostic_call_accounting": "passed",
+      "canonical_inside_algorithm_identity": "passed",
+      "common_method_order_exactly_eight": "passed",
+      "five_budget_points": "passed",
+      "ground_truth": "passed",
+      "ground_truth_uncertainty_metadata_if_mc": "passed",
+      "inside_candidate_pool_matches_protocol": "passed",
+      "inside_greedy_mean_balance_configuration": "passed",
+      "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+      "rmse_and_retained_secondary_metrics_recomputed": "passed",
+      "three_repeats_per_method_budget": "passed"
+    },
+    "dataset": "wine",
+    "ground_truth_audit": {
+      "kind": "monte_carlo_with_standard_error",
+      "maximum_truth_discrepancy": 0.0
+    },
+    "inside_candidate_pool_audit": {
+      "greedy": 64,
+      "orbit": null
+    },
+    "inside_greedy_balance_audit": {
+      "candidate_pool": 64,
+      "coefficient": 0.0625,
+      "mode": "normalized"
+    },
+    "maximum_discrepancies": {
+      "sample_estimate_efficiency_residual": 0.03382223407626139,
+      "stored_metric_absolute": 4.336808689942018e-19
+    },
+    "status": "ready_to_share",
+    "validated_report": "wine_inside_greedy_orbit_baseline_comparison_per_size_ratio_k64_lambda1over16",
+    "validated_shape": {
+      "budget_points": 5,
+      "methods": 8,
+      "per_repeat_estimates_checked": 120,
+      "players": 142,
+      "repeats": 3,
+      "scalar_player_estimates_checked": 17040
+    }
+  },
+  "completed_method_budget_cells": 5,
+  "infeasible_method_budget_cells": 5,
+  "report_status": "complete",
+  "status": "passed"
+}

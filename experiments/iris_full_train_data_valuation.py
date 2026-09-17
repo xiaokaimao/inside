@@ -995,15 +995,15 @@ def parse_args() -> argparse.Namespace:
         result_stem = f"{args.dataset}_full_train_rbf_svm"
     if args.ground_truth_cache is None:
         args.ground_truth_cache = Path(
-            f"results/{result_stem}_gt.npz"
+            f"results/npz/{result_stem}_gt.npz"
         )
     if args.ground_truth_progress_cache is None:
         args.ground_truth_progress_cache = Path(
-            f"results/{result_stem}_gt.partial.npz"
+            f"results/npz/{result_stem}_gt.partial.npz"
         )
     if args.output is None:
         args.output = Path(
-            f"results/{result_stem}_frame_ofa.json"
+            f"results/json/{result_stem}_frame_ofa.json"
         )
     if args.gt_pairs < 2 or args.gt_pairs % 2:
         raise ValueError("gt-pairs must be an even integer of at least 2")

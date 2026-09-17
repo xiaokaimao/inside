@@ -19,6 +19,71 @@
 from each coalition's training features. No model choice uses the test
 labels.
 
+## Current INSIDE comparison (August 2026)
+
+The current paper setting fixes **INSIDE-Greedy** to per-size first- and
+second-moment design with \(K=64\), normalized
+\(\lambda_0=1/16\), and the OFA conditional-mean ratio estimator.
+**INSIDE-Orbit** uses complete cyclic orbits, \(K=4\), and the same OFA ratio
+estimator. The common figure also includes OFA linear (IID), OFA ratio (IID),
+CC, S-Diff, KernelSHAP, and TMC-Shapley.
+
+All methods use five target total-call budgets
+
+\[
+[228{,}412,455{,}912,910{,}912,2{,}275{,}912,4{,}550{,}912]
+\]
+
+and three independent repeats. TMC-Shapley is plotted at its observed calls
+after truncation; the other seven methods spend the full cap. Lower RMSE is
+better.
+
+| Method | 228,412 | 455,912 | 910,912 | 2,275,912 | 4,550,912 |
+|---|---:|---:|---:|---:|---:|
+| INSIDE-Greedy | 2.3445e-4 | 1.6691e-4 | 1.1539e-4 | 7.0135e-5 | 4.7809e-5 |
+| INSIDE-Orbit | 2.6179e-4 | 1.7044e-4 | 1.1943e-4 | 7.1147e-5 | 5.0920e-5 |
+| OFA linear (IID) | 9.9116e-4 | 6.9169e-4 | 5.0034e-4 | 3.1496e-4 | 2.3758e-4 |
+| OFA ratio (IID) | 2.5044e-4 | 1.7126e-4 | 1.2170e-4 | 7.8673e-5 | 5.8045e-5 |
+| CC | 8.3459e-4 | 4.8278e-4 | 2.5940e-4 | 1.4207e-4 | 9.9808e-5 |
+| S-Diff | 2.0111e-4 | 1.4303e-4 | 9.9235e-5 | 6.4740e-5 | 4.6974e-5 |
+| KernelSHAP | 1.2988e-3 | 9.3924e-4 | 6.4260e-4 | 4.0095e-4 | 2.9534e-4 |
+| TMC-Shapley | 1.0568e-3 | 7.8569e-4 | 5.8501e-4 | 4.4220e-4 | 3.7041e-4 |
+
+INSIDE-Greedy is lower than INSIDE-Orbit at every budget (1.4%--10.4%)
+and lower than OFA ratio (IID) at every budget (2.5%--17.6%). S-Diff is the
+lowest curve at all five points, although its final advantage over
+INSIDE-Greedy is only 1.8%. The reference SE-RMSE is
+\(1.8193\times10^{-5}\), 38.1% of INSIDE-Greedy's final raw RMSE,
+so small final differences should not be interpreted as an exact ordering.
+Three repeats also give only coarse method uncertainty.
+
+The independently recomputing validator passed all protocol, call-accounting,
+ground-truth, method-identity, and stored-metric checks. The complete run used
+191,156,763 actual method utility calls and took 6,909.7 wall-clock seconds
+(1.92 hours), reusing the immutable 800,000-pair reference and the first three
+compatible repeats of the existing Orbit/OFA curves.
+
+Current artifacts:
+
+- Report:
+  `results/json/cancer_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_228k_4p55m.json`
+- Validation audit:
+  `results/json/cancer_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_228k_4p55m_validation.json`
+- Figure:
+  `results/cancer_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_228k_4p55m_rmse.png`
+- Vector figure:
+  `results/pdf/cancer_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_228k_4p55m_rmse.pdf`
+
+In the combined four-panel presentation, OFA linear is omitted from every
+panel and S-Diff is omitted from the Cancer panel. S-Diff maintains a
+pairwise state with \(O(n^2)\) space complexity, so its memory scaling is not
+appropriate as a large-\(n\) comparison. This is a presentation choice: the
+completed Cancer S-Diff measurements remain available in the raw report.
+
+The remainder of this document records the earlier ten-repeat four-method
+experiment that supplied the immutable reference and reusable Orbit/OFA
+curves.
+
 ## High-budget Monte Carlo reference
 
 Ground truth uses 800,000 independent antithetic units. Each unit averages a
@@ -190,12 +255,12 @@ was released after its method finished; the formal run completed without swap
 use or worker failure.
 
 - Raw method report:
-  `results/cancer_full_train_rbf_svm_frame_ofa_228k_4p55m.json`
+  `results/json/cancer_full_train_rbf_svm_frame_ofa_228k_4p55m.json`
 - Ground-truth report:
-  `results/cancer_full_train_rbf_svm_ground_truth_report.json`
-- Ground-truth cache: `results/cancer_full_train_rbf_svm_gt.npz`
+  `results/json/cancer_full_train_rbf_svm_ground_truth_report.json`
+- Ground-truth cache: `results/npz/cancer_full_train_rbf_svm_gt.npz`
 - Ground-truth progress/moment cache:
-  `results/cancer_full_train_rbf_svm_gt.partial.npz`
+  `results/npz/cancer_full_train_rbf_svm_gt.partial.npz`
 - Figure: `results/cancer_full_train_rbf_svm_rmse_228k_4p55m.png`
 - Vector figure:
-  `results/cancer_full_train_rbf_svm_rmse_228k_4p55m.pdf`
+  `results/pdf/cancer_full_train_rbf_svm_rmse_228k_4p55m.pdf`

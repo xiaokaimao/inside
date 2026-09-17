@@ -102,11 +102,11 @@ RATIO_METHOD = "inside_greedy_per_size_ratio"
 EXPERIMENT_ID = "analytic_inside_per_size_ratio_vs_global_linear"
 DEFAULT_SOURCE_REPORTS = {
     "airport": Path(
-        "results/airport_inside_global_vs_per_size_"
+        "results/json/airport_inside_global_vs_per_size_"
         "3repeats_50k_1m.json"
     ),
     "voting": Path(
-        "results/voting_inside_global_vs_per_size_"
+        "results/json/voting_inside_global_vs_per_size_"
         "3repeats_25k_510k.json"
     ),
 }
@@ -1070,7 +1070,7 @@ def main() -> None:
     args = _parse_args()
     source = args.source_report or DEFAULT_SOURCE_REPORTS[args.dataset]
     output = args.output or Path(
-        f"results/{args.dataset}_inside_per_size_ratio_vs_global_linear.json"
+        f"results/json/{args.dataset}_inside_per_size_ratio_vs_global_linear.json"
     )
     report = run_experiment(
         dataset=args.dataset,

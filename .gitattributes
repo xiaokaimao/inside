@@ -1,0 +1,4 @@
+# Preserve recorded experiment bytes and upstream source hashes.
+results/** -text
+results/**/*.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+third_party/** -text -whitespace

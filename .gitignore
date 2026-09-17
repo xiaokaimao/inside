@@ -10,3 +10,14 @@ ofa_upstream/
 # Large datasets and experiment artifacts used by the upstream research code.
 dataset/
 exp/
+
+# Local environments, credentials, and disposable diagnostics.
+.venv/
+.env
+.env.*
+!.env.example
+*.log
+results/**/*.collision-audit.*
+results/**/*.text-audit.json
+results/**/*.source-audit.json
+results/**/*.alignment.svg

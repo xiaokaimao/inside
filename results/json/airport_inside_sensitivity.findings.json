@@ -1,0 +1,22 @@
+{
+  "lambda_neighborhood": {
+    "range": [
+      0.03125,
+      0.125
+    ],
+    "rmse_means": [
+      0.005145012494043216,
+      0.005456733811905646,
+      0.005494163393766945
+    ],
+    "max_over_min_excess_percent": 6.7862012021927764
+  },
+  "K128_vs_K64": {
+    "rmse_reduction_percent": 13.819108053013307,
+    "design_time_increase_percent": 77.89757281165346
+  },
+  "lambda_endpoints": {
+    "D1_reduction_percent": 76.55344920388121,
+    "D2_increase_percent": 24.534015471933145
+  }
+}

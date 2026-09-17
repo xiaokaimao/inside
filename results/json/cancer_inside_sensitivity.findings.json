@@ -1,0 +1,22 @@
+{
+  "dataset": "cancer",
+  "players": 455,
+  "total_calls": 228412,
+  "lambda_neighborhood": {
+    "range": [
+      0.03125,
+      0.125
+    ],
+    "rmse_means": [
+      0.0002351326841395602,
+      0.00023672620998652926,
+      0.00024016988225957357
+    ],
+    "max_over_min_excess_percent": 2.1422790023625904
+  },
+  "K128_vs_K64": {
+    "rmse_reduction_percent": 0.4928148139351385,
+    "design_time_increase_percent": 75.2813716427105
+  },
+  "reference_rmse_standard_error": 1.8192664974497505e-05
+}

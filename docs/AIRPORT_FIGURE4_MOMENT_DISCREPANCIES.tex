@@ -1,0 +1,56 @@
+% Ready-to-integrate experiment text. The theorem number follows the supplied revision.
+We measure first- and second-moment discrepancies separately within each
+coalition-size slice and then aggregate them with equal weight across sizes.
+Let $P=I_n-\mathbf{1}\mathbf{1}^{\mathsf T}/n$ and
+$u_S=\sqrt{n/[s(n-s)]}(\mathbf{1}_S-s\mathbf{1}/n)$ for $|S|=s$.
+For the sampled multiset $\mathcal B_s$ of size $T_s$, define
+\[
+\bar u_s=\frac{1}{T_s}\sum_{S\in\mathcal B_s}u_S,
+\qquad
+M_s=\frac{1}{T_s}\sum_{S\in\mathcal B_s}u_Su_S^{\mathsf T}.
+\]
+Our across-size RMS discrepancies are
+\[
+D_1=\sqrt{\frac{1}{|\mathcal S_{\mathrm{int}}|}
+\sum_{s\in\mathcal S_{\mathrm{int}}}\|\bar u_s\|_2^2},
+\qquad
+D_2=\sqrt{\frac{1}{|\mathcal S_{\mathrm{int}}|}
+\sum_{s\in\mathcal S_{\mathrm{int}}}
+\left\|M_s-\frac{P}{n-1}\right\|_F^2}.
+\]
+For Airport, $n=100$ and $\mathcal S_{\mathrm{int}}=\{2,\ldots,98\}$;
+the boundary coalitions are evaluated separately. Sizes are weighted equally,
+rather than in proportion to $T_s$, so the summaries do not additionally
+weight discrepancies by the size allocation. The within-size discrepancies
+can nevertheless depend on the number of samples allocated to each size.
+
+Figure~4(a) shows that INSIDE-Coalition reduces the first-moment discrepancy
+relative to OFA (IID), whereas the complete cyclic orbits of INSIDE-Orbit
+achieve exact first-moment balance. Figure~4(b) compares the second-moment
+discrepancy. These diagnostics correspond to the moment factors in
+Theorem~5.5, rather than the full error bound, which also depends on
+size-specific coefficients and a residual term.
+Figure~4(c) shows a positive pooled association between $D_2$ and estimation
+RMSE (Spearman $\rho=0.973$, 45 method--budget--repeat observations),
+providing empirical support for the second-moment component of Theorem~5.5.
+This association is descriptive: utility budget affects both quantities.
+After subtracting each method--budget group's mean log discrepancy and mean
+log RMSE, the residual Spearman correlation is only $0.050$; the pooled
+trend therefore does not establish an independent effect of $D_2$ on error.
+Together with the First-only ablation in Figure~3(a), the first-moment
+measurements provide complementary evidence about the first-moment term.
+
+% Suggested Figure 4 caption (not printed below the exported image).
+\paragraph{Figure 4: Moment discrepancies and estimation error on Airport.}
+(a) First-moment discrepancy $D_1$ and (b) second-moment discrepancy $D_2$
+under varying utility-call budgets, comparing OFA (IID), INSIDE-Coalition,
+and INSIDE-Orbit. Lines show means across three estimator seeds; shading
+shows $\pm$ one sample standard deviation (denominator $3-1$). Discrepancies
+are calculated separately for each seed using equal weights across the
+97 interior coalition sizes. The linear vertical axis in (a) preserves
+INSIDE-Orbit's exact zeros. (c) Second-moment discrepancy versus Shapley
+estimation RMSE relative to the exact Airport Shapley values. Each point is
+one method, budget, and seed (three methods, five budgets, three repeats).
+The dashed line is a pooled ordinary least-squares fit in log--log space;
+the displayed Spearman correlation is descriptive, with no significance
+claim. Panels (b) and (c) use logarithmic axes for both quantities.

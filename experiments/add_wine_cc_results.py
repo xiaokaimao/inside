@@ -520,14 +520,14 @@ def parse_args() -> argparse.Namespace:
         "--input",
         type=Path,
         default=Path(
-            "results/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json"
+            "results/json/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json"
         ),
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path(
-            "results/"
+            "results/json/"
             "wine_full_train_rbf_svm_frame_ofa_with_cc_71k_1p42m.json"
         ),
     )

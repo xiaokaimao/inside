@@ -1,0 +1,3184 @@
+{
+  "configuration": {
+    "actual_calls_policy": "use per-repeat physical calls; preserves TMC truncation",
+    "baseline_favouring_caveat": "Displayed baselines other than S-Diff are assigned zero nonutility overhead, conservatively favouring them. S-Diff is charged a full-pipeline wall-time upper bound, which is conservative against S-Diff.",
+    "charged_extra_time_components": [
+      "INSIDE-Greedy production design time",
+      "S-Diff source complete 128-process pipeline wall time as a conservative upper-bound surcharge"
+    ],
+    "dataset": "wine",
+    "greedy_design_protocol": {
+      "candidate_pool": 64,
+      "estimator": "OFA conditional-mean ratio",
+      "mean_balance_lambda0": 0.0625,
+      "mean_balance_mode": "normalized",
+      "second_moment_scope": "per_size"
+    },
+    "method_labels": {
+      "cc": "CC",
+      "inside_greedy": "INSIDE-Greedy",
+      "inside_orbit": "INSIDE-Orbit",
+      "kernel_shap": "KernelSHAP",
+      "ofa": "OFA",
+      "s_diff": "S-Diff",
+      "tmc_shapley": "TMC-Shapley"
+    },
+    "methods": [
+      "inside_greedy",
+      "inside_orbit",
+      "ofa",
+      "cc",
+      "s_diff",
+      "kernel_shap",
+      "tmc_shapley"
+    ],
+    "omitted_nonutility_overhead": [
+      "INSIDE-Orbit design and aggregation",
+      "OFA sampling and aggregation",
+      "CC pairing and aggregation",
+      "KernelSHAP sampling and linear solve",
+      "TMC permutation and truncation bookkeeping"
+    ],
+    "omitted_source_method": {
+      "method": "ofa_iid_linear",
+      "reason": "OFA is represented by the requested ratio estimator"
+    },
+    "players": 142,
+    "repeats": 3,
+    "sdiff_surcharge_caveat": "The source did not separately time S-Diff coalition generation, its O(n^3) stratified pair state, inter-process merging, and reconstruction. Its complete persistent-128-process estimator wall time is therefore added as an upper-bound surcharge. That wall time includes some utility evaluation and hence slightly double-counts utility work.",
+    "source_report": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_71k_1p42m.json",
+      "sha256": "650aa354f538fc5d983f1d018dd57bfb4e4577b3c14c5f19d0a95ebe1427a982"
+    },
+    "strictly_isolated_nonutility_components": [
+      "INSIDE-Greedy production design time"
+    ],
+    "test_observations": 36,
+    "time_formula": "actual_utility_calls * median_scalar_utility_seconds + I[method=INSIDE-Greedy] * measured_design_seconds + I[method=S-Diff] * source_complete_parallel_wall_seconds",
+    "time_interpretation": "estimated utility-dominated one-shot time",
+    "utility_cost_caveat": "RBF-SVM utility cost depends on coalition composition and size; one common Q*-averaged scalar calibration is used as the requested cross-method proxy, not measured end-to-end time."
+  },
+  "created_at_utc": "2026-09-02T05:50:07.546847+00:00",
+  "dataset": {
+    "dataset": "wine",
+    "dataset_seed": 2024,
+    "feature_names": [
+      "alcohol",
+      "malic_acid",
+      "ash",
+      "alcalinity_of_ash",
+      "magnesium",
+      "total_phenols",
+      "flavanoids",
+      "nonflavanoid_phenols",
+      "proanthocyanins",
+      "color_intensity",
+      "hue",
+      "od280/od315_of_diluted_wines",
+      "proline"
+    ],
+    "split": "stratified_train_test",
+    "standardization_fitted_on": "training partition only",
+    "standardization_mean": [
+      13.020845070422533,
+      2.3030985915492956,
+      2.377605633802817,
+      19.652112676056337,
+      100.97887323943662,
+      2.3223943661971824,
+      2.0641549295774655,
+      0.3542253521126761,
+      1.6083802816901402,
+      5.044154929577463,
+      0.9629295774647887,
+      2.624084507042254,
+      739.0985915492957
+    ],
+    "standardization_std": [
+      0.818089919777708,
+      1.0992354469104857,
+      0.27189198760906275,
+      3.3770709516763517,
+      14.695725310183997,
+      0.6474042749160124,
+      1.000824479101434,
+      0.11879870502247432,
+      0.5752227214996798,
+      2.291227680929152,
+      0.22843307793969894,
+      0.6983896516520104,
+      323.10479505814453
+    ],
+    "target_names": [
+      "class_0",
+      "class_1",
+      "class_2"
+    ],
+    "test_class_counts": [
+      12,
+      14,
+      10
+    ],
+    "test_labels": [
+      1,
+      1,
+      2,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      1,
+      1,
+      2,
+      1,
+      2,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      2,
+      1,
+      1,
+      2,
+      1,
+      2,
+      2
+    ],
+    "test_original_indices": [
+      81,
+      88,
+      134,
+      35,
+      41,
+      0,
+      67,
+      137,
+      175,
+      8,
+      59,
+      120,
+      153,
+      119,
+      172,
+      37,
+      135,
+      92,
+      124,
+      27,
+      107,
+      32,
+      57,
+      2,
+      10,
+      71,
+      36,
+      104,
+      1,
+      144,
+      60,
+      129,
+      155,
+      112,
+      171,
+      148
+    ],
+    "test_size": 0.2,
+    "train_class_counts": [
+      47,
+      57,
+      38
+    ],
+    "train_labels": [
+      0,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      2,
+      1,
+      0,
+      2,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      1,
+      0,
+      2,
+      0,
+      0,
+      1,
+      1,
+      2,
+      2,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      2,
+      0,
+      1,
+      2,
+      1,
+      1,
+      1,
+      2,
+      1,
+      1,
+      0,
+      1,
+      1,
+      2,
+      1,
+      0,
+      2,
+      0,
+      2,
+      0,
+      1,
+      2,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      2,
+      1,
+      0,
+      1,
+      2,
+      2,
+      0,
+      1,
+      2,
+      1,
+      2,
+      1,
+      1,
+      2,
+      2,
+      1,
+      2,
+      0,
+      1,
+      1,
+      0,
+      1,
+      1,
+      2,
+      1,
+      2,
+      1,
+      0,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      1,
+      1,
+      2,
+      1,
+      2,
+      2,
+      1,
+      0,
+      2,
+      1,
+      1,
+      0,
+      1,
+      1,
+      2,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      2,
+      2,
+      0,
+      1,
+      0
+    ],
+    "train_original_indices": [
+      39,
+      83,
+      68,
+      151,
+      167,
+      162,
+      160,
+      58,
+      117,
+      28,
+      110,
+      78,
+      40,
+      53,
+      80,
+      161,
+      86,
+      51,
+      152,
+      3,
+      62,
+      94,
+      18,
+      54,
+      21,
+      30,
+      164,
+      140,
+      75,
+      4,
+      158,
+      47,
+      43,
+      115,
+      72,
+      165,
+      130,
+      96,
+      91,
+      49,
+      133,
+      12,
+      17,
+      48,
+      66,
+      46,
+      19,
+      136,
+      5,
+      76,
+      177,
+      70,
+      123,
+      102,
+      131,
+      69,
+      126,
+      11,
+      128,
+      125,
+      142,
+      82,
+      44,
+      173,
+      23,
+      132,
+      29,
+      63,
+      145,
+      34,
+      100,
+      50,
+      77,
+      55,
+      7,
+      105,
+      147,
+      97,
+      33,
+      116,
+      138,
+      146,
+      38,
+      90,
+      168,
+      65,
+      141,
+      127,
+      118,
+      156,
+      139,
+      89,
+      163,
+      22,
+      108,
+      87,
+      16,
+      84,
+      103,
+      169,
+      114,
+      154,
+      93,
+      42,
+      122,
+      56,
+      85,
+      159,
+      111,
+      9,
+      73,
+      64,
+      143,
+      74,
+      149,
+      157,
+      101,
+      13,
+      150,
+      61,
+      113,
+      14,
+      98,
+      109,
+      166,
+      52,
+      95,
+      106,
+      99,
+      31,
+      121,
+      20,
+      45,
+      24,
+      170,
+      15,
+      26,
+      174,
+      176,
+      25,
+      79,
+      6
+    ]
+  },
+  "experiment": "wine_estimated_time_efficiency_sdiff_wall_upper_bound_k64_lambda1over16",
+  "game": {
+    "dataset": "wine",
+    "empty_coalition_rule": "best constant-label accuracy on the fixed test set",
+    "model": "sklearn.svm.SVC(C=1.0, kernel='rbf', gamma='scale')",
+    "num_players": 142,
+    "num_test": 36,
+    "single_class_rule": "predict the coalition's sole observed class",
+    "utility": "fixed-test classification accuracy"
+  },
+  "ground_truth": {
+    "boundary_reuse_saved_calls": 3200000,
+    "conceptual_internal_prefix_calls": 225600000,
+    "estimator": "streaming antithetic permutation Monte Carlo (independent permutation/reverse-permutation pairs)",
+    "half_split_rmse": 3.236225558562869e-05,
+    "independent_pair_units": 800000,
+    "loaded_from_cache": true,
+    "max_simultaneous_half_width": 0.0001343240372889456,
+    "max_worker_tasks_per_outer_block": 128,
+    "peak_forward_permutation_bytes": 290816,
+    "permutation_path_equivalent_utility_calls": 225600002,
+    "permutations": 1600000,
+    "physical_internal_prefix_calls": 222400000,
+    "rmse_standard_error": 3.32666456327458e-05,
+    "shared_boundary_calls_physically_evaluated": 286,
+    "simultaneous_half_widths": [
+      0.00011155910644226693,
+      0.000128631226318296,
+      0.00011789817373199361,
+      0.00011763591850647342,
+      0.00012979590488895,
+      0.000119422494579053,
+      0.0001285594786972396,
+      0.0001197593689423018,
+      0.00011769138900814833,
+      0.000120438339569673,
+      9.828930033758622e-05,
+      0.0001001647507991109,
+      0.00011920003339912781,
+      0.00012458374454484347,
+      0.00011170193514146798,
+      0.0001184813760493695,
+      0.00012095160182839798,
+      0.00012621540288917205,
+      0.00011206527433862702,
+      0.0001071556626592475,
+      0.00011413951286901843,
+      0.00011262408152950752,
+      0.00011152606049078201,
+      0.00012853601507556043,
+      0.0001246661429126944,
+      0.00011788183995690789,
+      0.0001249462237373226,
+      0.00011636050379498268,
+      0.00011417002673953546,
+      0.00011825090654670188,
+      0.00011643457908108758,
+      0.0001229058984522308,
+      0.0001290976438657638,
+      0.00010521595317854619,
+      0.00012099162818145506,
+      0.000124463482944947,
+      0.00011518624719249623,
+      0.00010372192724496613,
+      0.0001215875392074884,
+      0.00012102452344864631,
+      0.00011210984275142918,
+      0.00013423870226959047,
+      0.00012139647175651836,
+      0.00012596183174572027,
+      0.00010665713038998245,
+      0.00012336803522503288,
+      0.00012510082920644044,
+      0.00011941050733202383,
+      0.00012177372265438323,
+      0.00010779420753658307,
+      0.000122042719880531,
+      0.00012111789083031614,
+      0.00011032613586434016,
+      0.00012131297986252893,
+      0.0001117416870027446,
+      9.256673131891956e-05,
+      0.00011873701473833493,
+      0.0001343240372889456,
+      0.00012120335829935827,
+      0.00012109782173032172,
+      0.00011211643208250839,
+      0.0001208979897036169,
+      0.00012459517978732424,
+      0.00012557813031025404,
+      0.00012933338899826289,
+      0.00011297496908232679,
+      0.00012910811487247352,
+      0.00011067154022779098,
+      0.00012080882314932243,
+      0.0001294434224622832,
+      0.00010968066881405171,
+      0.0001149514137002221,
+      0.00012025093049621328,
+      0.00011937716871252574,
+      0.0001267365960650606,
+      0.00012060176234727067,
+      0.00012708834430251976,
+      0.00011266965849370783,
+      0.00011576551844006521,
+      0.00011734621192443395,
+      0.0001271172974580874,
+      0.00011905734505373074,
+      0.00013102564300868447,
+      0.00012130182345323877,
+      0.000117046684975824,
+      0.00012106940559769687,
+      0.0001176495538101217,
+      0.00011167606136824014,
+      0.0001233707154223929,
+      0.00012889180832343066,
+      0.00011623365757956877,
+      0.00012278685022700317,
+      0.00012005011341059331,
+      0.00012868819028895735,
+      0.00011571960777808516,
+      0.00011723745531548966,
+      0.0001196470124950042,
+      0.00011529582173470922,
+      0.00011736185817911186,
+      0.00011316273161048495,
+      0.0001223361434114709,
+      0.00013318297140466927,
+      0.00011725716315037027,
+      0.00012255816275085998,
+      0.00011447730601217214,
+      0.00012057365847422588,
+      0.00011471340773235745,
+      0.0001223667593673128,
+      0.00011924652643260194,
+      0.00012499500105567828,
+      9.755752909266438e-05,
+      0.00011566358675774911,
+      0.00011818703973302377,
+      0.00011199632360293472,
+      0.00012197154369644509,
+      0.0001231964438590851,
+      0.00011527206764784524,
+      0.00011271276749182671,
+      0.0001113477055281552,
+      0.00011960500119169743,
+      0.00011854321927057478,
+      0.00010706714949536515,
+      0.00011201222919219005,
+      0.00011370296689676494,
+      0.00012121943614471391,
+      0.00011628711067334892,
+      9.373122756485895e-05,
+      0.0001211895223054207,
+      0.00011206695860721982,
+      0.0001260180639742492,
+      9.571467869506057e-05,
+      0.00011690767237676501,
+      0.00012804849468906986,
+      0.0001246256811482717,
+      0.00012058567803851322,
+      0.00012417396633567605,
+      0.00013204296687022098,
+      0.00012401919953080028,
+      0.00012853223388677054,
+      0.00010709934853594795,
+      0.00011990889378914463,
+      0.00013102654335348334
+    ],
+    "standard_errors": [
+      3.121747408902213e-05,
+      3.59947484583756e-05,
+      3.299132900034683e-05,
+      3.29179423807469e-05,
+      3.632065930743969e-05,
+      3.341787819085204e-05,
+      3.5974671392749086e-05,
+      3.351214540974033e-05,
+      3.293346463620381e-05,
+      3.370214108685824e-05,
+      2.7504197410406957e-05,
+      2.802900285260714e-05,
+      3.335562709955523e-05,
+      3.486214564881534e-05,
+      3.1257441702233385e-05,
+      3.3154525926280995e-05,
+      3.38457667555607e-05,
+      3.5318730984702506e-05,
+      3.135911454934164e-05,
+      2.998526278343935e-05,
+      3.193954665965489e-05,
+      3.151548501122858e-05,
+      3.1208226873199714e-05,
+      3.596810559077053e-05,
+      3.488520310235183e-05,
+      3.2986758336267715e-05,
+      3.4963577841667145e-05,
+      3.25610443472428e-05,
+      3.1948085325771886e-05,
+      3.309003387397543e-05,
+      3.2581772761070796e-05,
+      3.439263564114412e-05,
+      3.6125265617996955e-05,
+      2.944247580364796e-05,
+      3.3856967290230494e-05,
+      3.482849296461591e-05,
+      3.223245328703245e-05,
+      2.9024404008729102e-05,
+      3.402372048150122e-05,
+      3.386617234021649e-05,
+      3.137158608408417e-05,
+      3.756388289120598e-05,
+      3.397025426623533e-05,
+      3.5247774423173155e-05,
+      2.9845758993075295e-05,
+      3.4521954915837305e-05,
+      3.500684093672165e-05,
+      3.341452381140722e-05,
+      3.407582001075168e-05,
+      3.016394616302716e-05,
+      3.4151093237699156e-05,
+      3.389229924200865e-05,
+      3.0872453155308625e-05,
+      3.3946890812364286e-05,
+      3.1268565426140546e-05,
+      2.5902856598706233e-05,
+      3.3226061047020415e-05,
+      3.7587762105019714e-05,
+      3.391621551908691e-05,
+      3.388668332566577e-05,
+      3.1373429970063446e-05,
+      3.3830764527866484e-05,
+      3.4865345561374965e-05,
+      3.5140403631118755e-05,
+      3.619123394456483e-05,
+      3.161367352705328e-05,
+      3.61281957094173e-05,
+      3.096910731569168e-05,
+      3.380581313943155e-05,
+      3.6222024499648356e-05,
+      3.0691832750930206e-05,
+      3.216674006384438e-05,
+      3.3649698591741945e-05,
+      3.340519469858501e-05,
+      3.546457595408737e-05,
+      3.374787152059788e-05,
+      3.556300531444106e-05,
+      3.152823876790837e-05,
+      3.2394550185602164e-05,
+      3.283687407528394e-05,
+      3.5571107247241993e-05,
+      3.331569876140971e-05,
+      3.666477570558385e-05,
+      3.3943768925419786e-05,
+      3.275305774638538e-05,
+      3.387873166746218e-05,
+      3.292175793424057e-05,
+      3.125020146993784e-05,
+      3.45227049128058e-05,
+      3.606766686237489e-05,
+      3.2525549096615064e-05,
+      3.43593224943746e-05,
+      3.359350414588361e-05,
+      3.6010688629777464e-05,
+      3.23817030506037e-05,
+      3.28064408212897e-05,
+      3.348070481655072e-05,
+      3.226311542248188e-05,
+      3.2841252351209366e-05,
+      3.166621492904721e-05,
+      3.4233201653285706e-05,
+      3.7268458770560884e-05,
+      3.2811955645174154e-05,
+      3.42953291047836e-05,
+      3.203407097981254e-05,
+      3.374000724168282e-05,
+      3.210013908995891e-05,
+      3.424176888583789e-05,
+      3.336863719899117e-05,
+      3.497722715027548e-05,
+      2.7299426588858104e-05,
+      3.236602674405595e-05,
+      3.3072162086859814e-05,
+      3.133982013337205e-05,
+      3.413117607671322e-05,
+      3.44739386741229e-05,
+      3.2256468339918805e-05,
+      3.154030191608782e-05,
+      3.115831798093611e-05,
+      3.3468948835221634e-05,
+      3.317183145352234e-05,
+      2.9960494232595274e-05,
+      3.134427097863501e-05,
+      3.181738843329313e-05,
+      3.392071456660355e-05,
+      3.2540506822822056e-05,
+      2.62287164280263e-05,
+      3.391234380662868e-05,
+      3.135958585655117e-05,
+      3.5263509831899996e-05,
+      2.678374359020561e-05,
+      3.27141579886913e-05,
+      3.5831683244639464e-05,
+      3.4873880726951516e-05,
+      3.3743370664433925e-05,
+      3.474747781904431e-05,
+      3.694945243257158e-05,
+      3.470416957756472e-05,
+      3.5967047504462396e-05,
+      2.9969504458180087e-05,
+      3.3553986799303595e-05,
+      3.666502764817578e-05
+    ],
+    "values": [
+      0.0037163194444444444,
+      -0.004586562499999997,
+      -0.010194427083333422,
+      0.005291736111111119,
+      0.007657170138888896,
+      0.005007395833333334,
+      0.007736041666666667,
+      0.005534687499999999,
+      0.0047740104166666625,
+      0.0038633854166666617,
+      0.0019555208333333343,
+      0.0009559722222222216,
+      0.004377725694444443,
+      0.0057286979166666615,
+      0.004880486111111109,
+      0.005079513888888888,
+      0.005370989583333335,
+      0.005972343750000002,
+      0.0035970138888888887,
+      0.0042293229166666686,
+      0.0004913715277777784,
+      0.004032274305555554,
+      0.00447890625,
+      0.006361788194444443,
+      0.0021536805555555536,
+      0.0035702430555555544,
+      0.007201232638888888,
+      0.00437005208333333,
+      0.0041260590277777745,
+      0.0012431423611111117,
+      0.001706805555555557,
+      0.005856440972222222,
+      0.0022336458333333327,
+      0.004271770833333329,
+      0.003787447916666667,
+      0.00697034722222222,
+      0.0025032986111111102,
+      0.0016513541666666662,
+      0.003385972222222222,
+      0.005445399305555556,
+      0.0020553645833333366,
+      0.007129618055555553,
+      0.004691180555555558,
+      0.0055879166666666655,
+      0.0013920833333333344,
+      0.0061031250000000035,
+      0.0056735763888888895,
+      0.005382274305555555,
+      0.005823437500000003,
+      0.0030345138888888926,
+      0.006734531250000009,
+      -0.005212934027777792,
+      0.0010936284722222226,
+      0.0034050694444444445,
+      0.0033725694444444424,
+      0.0011339062500000001,
+      0.003905850694444444,
+      0.006733645833333336,
+      0.005419878472222224,
+      0.005250034722222222,
+      0.003688281249999999,
+      0.005537274305555554,
+      0.004381979166666666,
+      0.007125486111111105,
+      0.0032636458333333315,
+      0.004167013888888888,
+      0.006332170138888889,
+      0.0032670312499999982,
+      0.005824565972222228,
+      0.00541272569444444,
+      0.002793437500000001,
+      0.0033767708333333315,
+      0.003095138888888889,
+      0.0046859027777777775,
+      0.005868107638888896,
+      0.0038373437500000005,
+      0.007500746527777791,
+      0.004055034722222222,
+      0.0031113194444444404,
+      0.005258246527777775,
+      0.009887829861111174,
+      0.0049091145833333304,
+      0.0034780034722222183,
+      0.004153767361111117,
+      0.005258576388888892,
+      -0.00024673611111111055,
+      0.004482916666666669,
+      0.003946475694444443,
+      -0.003418072916666667,
+      0.007738524305555552,
+      0.0027481250000000027,
+      0.005716822916666669,
+      0.005759965277777776,
+      0.00608986111111111,
+      0.004679704861111119,
+      0.005421440972222222,
+      0.004963854166666663,
+      0.0033392361111111127,
+      0.0050900347222222276,
+      0.004105572916666664,
+      0.005396145833333336,
+      0.015836354166666806,
+      0.004728906250000002,
+      0.005838506944444448,
+      0.004163298611111112,
+      0.005499878472222224,
+      0.0035798784722222182,
+      0.006031909722222225,
+      0.00503605902777778,
+      0.0059996180555555575,
+      0.0009427083333333323,
+      0.004450590277777777,
+      0.0012586631944444455,
+      0.0007703645833333329,
+      0.006690781250000003,
+      0.006710520833333346,
+      0.004246180555555556,
+      0.0035147916666666604,
+      0.0041336458333333295,
+      -0.013635798611111284,
+      0.005168263888888888,
+      0.003736788194444441,
+      0.0010079687499999987,
+      0.0032905034722222177,
+      0.006311250000000001,
+      0.005046979166666664,
+      0.0004573784722222221,
+      0.005035503472222226,
+      0.0038601215277777714,
+      0.006235156250000004,
+      0.0012740798611111115,
+      0.004375555555555551,
+      0.005912118055555554,
+      0.0014838715277777775,
+      0.006876388888888898,
+      0.0056871354166666745,
+      0.006582968750000008,
+      0.006908888888888891,
+      0.007764131944444457,
+      -0.001017100694444445,
+      0.003350329861111107,
+      0.006606961805555557
+    ],
+    "wall_seconds": 3379.7875621691346
+  },
+  "results": [
+    {
+      "budget_index": 0,
+      "inner_utility_calls": 71000,
+      "methods": {
+        "cc": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.001268198201505001,
+          "aggregate_rmse_bootstrap_95": [
+            0.0010892591174142899,
+            0.0014783194398106387
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_total_seconds_range": [
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "CC",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 75.2921179457903,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "cc"
+        },
+        "inside_greedy": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.0005943727251457693,
+          "aggregate_rmse_bootstrap_95": [
+            0.0005528262321806531,
+            0.0006473512682852767
+          ],
+          "charged_design_provenance_by_repeat": [
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "2649cecdf3d7efb711ba76d2c078b80284056859d85d3a5365eeb9231afbc952",
+              "repeat": 0,
+              "second_moment_scope": "per_size",
+              "seconds": 115.87194685637951,
+              "seed": 910001
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "0a659247bdca192797ee39da92c1fabfa9d4e0d91ccdfe03e4c8f3614623a27b",
+              "repeat": 1,
+              "second_moment_scope": "per_size",
+              "seconds": 117.5006656832993,
+              "seed": 910002
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "a3fbca82d9ea5363450bd2ba657378c9e25b0e132379f5d76b9cb3d6bec02f24",
+              "repeat": 2,
+              "second_moment_scope": "per_size",
+              "seconds": 116.87825085222721,
+              "seed": 910003
+            }
+          ],
+          "charged_design_seconds_by_repeat": [
+            115.87194685637951,
+            117.5006656832993,
+            116.87825085222721
+          ],
+          "charged_extra_seconds_by_repeat": [
+            115.87194685637951,
+            117.5006656832993,
+            116.87825085222721
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            191.1640648021698,
+            192.7927836290896,
+            192.1703687980175
+          ],
+          "estimated_total_seconds_range": [
+            191.1640648021698,
+            192.7927836290896
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "INSIDE-Greedy",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 116.75028779730201,
+          "mean_charged_extra_seconds": 116.75028779730201,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 192.0424057430923,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "inside_greedy"
+        },
+        "inside_orbit": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.0006353593658663042,
+          "aggregate_rmse_bootstrap_95": [
+            0.0006197410028869236,
+            0.0006474699994841251
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_total_seconds_range": [
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "INSIDE-Orbit",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 75.2921179457903,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "inside_orbit"
+        },
+        "kernel_shap": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.0036699443027068904,
+          "aggregate_rmse_bootstrap_95": [
+            0.003410914323324459,
+            0.003833153284665696
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_total_seconds_range": [
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "KernelSHAP",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 75.2921179457903,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "kernel_shap"
+        },
+        "ofa": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.0006116600120098172,
+          "aggregate_rmse_bootstrap_95": [
+            0.0005685219880498157,
+            0.0006380914701375941
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_total_seconds_range": [
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "OFA",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 75.2921179457903,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "ofa_iid_ratio"
+        },
+        "s_diff": {
+          "actual_utility_calls_by_repeat": [
+            71286.0,
+            71286.0,
+            71286.0
+          ],
+          "aggregate_rmse": 0.0006457489934256435,
+          "aggregate_rmse_bootstrap_95": [
+            0.0006262323008842016,
+            0.0006717812812682115
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            2.910996649414301,
+            2.955130249261856,
+            2.97314540296793
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 0,
+              "requested_num_tasks": 128,
+              "seconds": 2.910996649414301,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 1,
+              "requested_num_tasks": 128,
+              "seconds": 2.955130249261856,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 2,
+              "requested_num_tasks": 128,
+              "seconds": 2.97314540296793,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            }
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            2.910996649414301,
+            2.955130249261856,
+            2.97314540296793
+          ],
+          "estimated_total_seconds_by_repeat": [
+            78.2031145952046,
+            78.24724819505215,
+            78.26526334875822
+          ],
+          "estimated_total_seconds_range": [
+            78.2031145952046,
+            78.26526334875822
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            75.2921179457903,
+            75.2921179457903,
+            75.2921179457903
+          ],
+          "label": "S-Diff",
+          "mean_actual_utility_calls": 71286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 2.946424100548029,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 2.946424100548029,
+          "mean_estimated_total_seconds": 78.23854204633832,
+          "mean_estimated_utility_seconds": 75.2921179457903,
+          "source_method": "s_diff"
+        },
+        "tmc_shapley": {
+          "actual_utility_calls_by_repeat": [
+            25871.0,
+            26062.0,
+            26462.0
+          ],
+          "aggregate_rmse": 0.0023982159995749523,
+          "aggregate_rmse_bootstrap_95": [
+            0.0021070860672770613,
+            0.0025685193714336807
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            27.324893855392936,
+            27.526627639412883,
+            27.949106768250466
+          ],
+          "estimated_total_seconds_range": [
+            27.324893855392936,
+            27.949106768250466
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            27.324893855392936,
+            27.526627639412883,
+            27.949106768250466
+          ],
+          "label": "TMC-Shapley",
+          "mean_actual_utility_calls": 26131.666666666668,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 27.600209421018764,
+          "mean_estimated_utility_seconds": 27.600209421018764,
+          "source_method": "tmc_shapley"
+        }
+      },
+      "target_total_utility_calls": 71286
+    },
+    {
+      "budget_index": 1,
+      "inner_utility_calls": 142000,
+      "methods": {
+        "cc": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.0006145396575158054,
+          "aggregate_rmse_bootstrap_95": [
+            0.0005918279755425483,
+            0.000637543182115269
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_total_seconds_range": [
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "CC",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 150.2821633144617,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "cc"
+        },
+        "inside_greedy": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.00041801612276599594,
+          "aggregate_rmse_bootstrap_95": [
+            0.0004082586499956441,
+            0.00042971085665590407
+          ],
+          "charged_design_provenance_by_repeat": [
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "a55fa2f3169f46c6fa38e25b8774a0eab5fd995c1e68b966cf7e0ff19ebcab1c",
+              "repeat": 0,
+              "second_moment_scope": "per_size",
+              "seconds": 231.24702207744122,
+              "seed": 1010001
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "b8a3e89d398361751c3f9876f34089c32dd0c1dea104c3c0953468507f0093d7",
+              "repeat": 1,
+              "second_moment_scope": "per_size",
+              "seconds": 236.00280116871,
+              "seed": 1010002
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "c63c003e0b961df54020dbef130aab6712eb6eca66ac13c8aafb19bcb35214cb",
+              "repeat": 2,
+              "second_moment_scope": "per_size",
+              "seconds": 223.06656146794558,
+              "seed": 1010003
+            }
+          ],
+          "charged_design_seconds_by_repeat": [
+            231.24702207744122,
+            236.00280116871,
+            223.06656146794558
+          ],
+          "charged_extra_seconds_by_repeat": [
+            231.24702207744122,
+            236.00280116871,
+            223.06656146794558
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            381.52918539190296,
+            386.28496448317173,
+            373.3487247824073
+          ],
+          "estimated_total_seconds_range": [
+            373.3487247824073,
+            386.28496448317173
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "INSIDE-Greedy",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 230.1054615713656,
+          "mean_charged_extra_seconds": 230.1054615713656,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 380.38762488582734,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "inside_greedy"
+        },
+        "inside_orbit": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.0004123874449317491,
+          "aggregate_rmse_bootstrap_95": [
+            0.0004043227040002764,
+            0.0004257379112288864
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_total_seconds_range": [
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "INSIDE-Orbit",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 150.2821633144617,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "inside_orbit"
+        },
+        "kernel_shap": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.002606711719157409,
+          "aggregate_rmse_bootstrap_95": [
+            0.002486917429863001,
+            0.0027964078697383333
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_total_seconds_range": [
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "KernelSHAP",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 150.2821633144617,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "kernel_shap"
+        },
+        "ofa": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.0004629363150425797,
+          "aggregate_rmse_bootstrap_95": [
+            0.000458276837819256,
+            0.00047039533705952555
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_total_seconds_range": [
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "OFA",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 150.2821633144617,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "ofa_iid_ratio"
+        },
+        "s_diff": {
+          "actual_utility_calls_by_repeat": [
+            142286.0,
+            142286.0,
+            142286.0
+          ],
+          "aggregate_rmse": 0.0004560277317121886,
+          "aggregate_rmse_bootstrap_95": [
+            0.0004399418349585235,
+            0.00046392490749355995
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            4.268674734979868,
+            4.211691815406084,
+            4.160691507160664
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 0,
+              "requested_num_tasks": 128,
+              "seconds": 4.268674734979868,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 1,
+              "requested_num_tasks": 128,
+              "seconds": 4.211691815406084,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 2,
+              "requested_num_tasks": 128,
+              "seconds": 4.160691507160664,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            }
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            4.268674734979868,
+            4.211691815406084,
+            4.160691507160664
+          ],
+          "estimated_total_seconds_by_repeat": [
+            154.55083804944158,
+            154.4938551298678,
+            154.44285482162238
+          ],
+          "estimated_total_seconds_range": [
+            154.44285482162238,
+            154.55083804944158
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            150.2821633144617,
+            150.2821633144617,
+            150.2821633144617
+          ],
+          "label": "S-Diff",
+          "mean_actual_utility_calls": 142286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 4.213686019182205,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 4.213686019182205,
+          "mean_estimated_total_seconds": 154.49584933364392,
+          "mean_estimated_utility_seconds": 150.2821633144617,
+          "source_method": "s_diff"
+        },
+        "tmc_shapley": {
+          "actual_utility_calls_by_repeat": [
+            51466.0,
+            53257.0,
+            52993.0
+          ],
+          "aggregate_rmse": 0.001906327976976885,
+          "aggregate_rmse_bootstrap_95": [
+            0.0018611215669378511,
+            0.00195369648497367
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            54.358277111887936,
+            56.24992741125823,
+            55.971091186225415
+          ],
+          "estimated_total_seconds_range": [
+            54.358277111887936,
+            56.24992741125823
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            54.358277111887936,
+            56.24992741125823,
+            55.971091186225415
+          ],
+          "label": "TMC-Shapley",
+          "mean_actual_utility_calls": 52572.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 55.52643190312386,
+          "mean_estimated_utility_seconds": 55.52643190312386,
+          "source_method": "tmc_shapley"
+        }
+      },
+      "target_total_utility_calls": 142286
+    },
+    {
+      "budget_index": 2,
+      "inner_utility_calls": 284000,
+      "methods": {
+        "cc": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.00043739329614191,
+          "aggregate_rmse_bootstrap_95": [
+            0.0004157534506280572,
+            0.00045423657970046087
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_total_seconds_range": [
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "CC",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 300.2622540518046,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "cc"
+        },
+        "inside_greedy": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.0002657565418654164,
+          "aggregate_rmse_bootstrap_95": [
+            0.00025175668323500764,
+            0.00028958762458554735
+          ],
+          "charged_design_provenance_by_repeat": [
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "ec5d34419c668564dada8d7b95b1c5b3ab5bbee60c7bf369b72ee985bc615925",
+              "repeat": 0,
+              "second_moment_scope": "per_size",
+              "seconds": 454.95963060855865,
+              "seed": 1110001
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "a78b509b36c4a7e69c10039dbe1ff0c03744ce66f6207049c4f34319f2a7a347",
+              "repeat": 1,
+              "second_moment_scope": "per_size",
+              "seconds": 471.0875208079815,
+              "seed": 1110002
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "e46da4ae13c21b44aadb19fa6c0a326cb267165e32af68a10da6b2ea9f7f903d",
+              "repeat": 2,
+              "second_moment_scope": "per_size",
+              "seconds": 450.420858386904,
+              "seed": 1110003
+            }
+          ],
+          "charged_design_seconds_by_repeat": [
+            454.95963060855865,
+            471.0875208079815,
+            450.420858386904
+          ],
+          "charged_extra_seconds_by_repeat": [
+            454.95963060855865,
+            471.0875208079815,
+            450.420858386904
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            755.2218846603632,
+            771.3497748597861,
+            750.6831124387086
+          ],
+          "estimated_total_seconds_range": [
+            750.6831124387086,
+            771.3497748597861
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "INSIDE-Greedy",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 458.8226699344814,
+          "mean_charged_extra_seconds": 458.8226699344814,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 759.084923986286,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "inside_greedy"
+        },
+        "inside_orbit": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.0002743887084824147,
+          "aggregate_rmse_bootstrap_95": [
+            0.0002650101249985906,
+            0.00029198148710953475
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_total_seconds_range": [
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "INSIDE-Orbit",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 300.2622540518046,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "inside_orbit"
+        },
+        "kernel_shap": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.0019568012990506247,
+          "aggregate_rmse_bootstrap_95": [
+            0.00172033559845835,
+            0.002092621283219858
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_total_seconds_range": [
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "KernelSHAP",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 300.2622540518046,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "kernel_shap"
+        },
+        "ofa": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.0003003718492403485,
+          "aggregate_rmse_bootstrap_95": [
+            0.00029378403495959875,
+            0.0003048947739028734
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_total_seconds_range": [
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "OFA",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 300.2622540518046,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "ofa_iid_ratio"
+        },
+        "s_diff": {
+          "actual_utility_calls_by_repeat": [
+            284286.0,
+            284286.0,
+            284286.0
+          ],
+          "aggregate_rmse": 0.0002949990643180941,
+          "aggregate_rmse_bootstrap_95": [
+            0.00027845658693993454,
+            0.0003189849510643018
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            6.560745265334845,
+            6.66983650252223,
+            6.559776324778795
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 0,
+              "requested_num_tasks": 128,
+              "seconds": 6.560745265334845,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 1,
+              "requested_num_tasks": 128,
+              "seconds": 6.66983650252223,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 2,
+              "requested_num_tasks": 128,
+              "seconds": 6.559776324778795,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            }
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            6.560745265334845,
+            6.66983650252223,
+            6.559776324778795
+          ],
+          "estimated_total_seconds_by_repeat": [
+            306.8229993171394,
+            306.9320905543268,
+            306.82203037658337
+          ],
+          "estimated_total_seconds_range": [
+            306.82203037658337,
+            306.9320905543268
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            300.2622540518046,
+            300.2622540518046,
+            300.2622540518046
+          ],
+          "label": "S-Diff",
+          "mean_actual_utility_calls": 284286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 6.596786030878623,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 6.596786030878623,
+          "mean_estimated_total_seconds": 306.8590400826832,
+          "mean_estimated_utility_seconds": 300.2622540518046,
+          "source_method": "s_diff"
+        },
+        "tmc_shapley": {
+          "actual_utility_calls_by_repeat": [
+            104016.0,
+            105365.0,
+            104655.0
+          ],
+          "aggregate_rmse": 0.0015793892454091815,
+          "aggregate_rmse_bootstrap_95": [
+            0.0015396870593412156,
+            0.0016018787530514024
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            109.86147266292572,
+            111.28628352493048,
+            110.53638307124378
+          ],
+          "estimated_total_seconds_range": [
+            109.86147266292572,
+            111.28628352493048
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            109.86147266292572,
+            111.28628352493048,
+            110.53638307124378
+          ],
+          "label": "TMC-Shapley",
+          "mean_actual_utility_calls": 104678.66666666667,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 110.56137975303334,
+          "mean_estimated_utility_seconds": 110.56137975303334,
+          "source_method": "tmc_shapley"
+        }
+      },
+      "target_total_utility_calls": 284286
+    },
+    {
+      "budget_index": 3,
+      "inner_utility_calls": 710000,
+      "methods": {
+        "cc": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.00027265425708931424,
+          "aggregate_rmse_bootstrap_95": [
+            0.0002560434663834842,
+            0.0002964241011615443
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_total_seconds_range": [
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "CC",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 750.2025262638331,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "cc"
+        },
+        "inside_greedy": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.0001819266243968701,
+          "aggregate_rmse_bootstrap_95": [
+            0.00016823396884985532,
+            0.00019248417783349344
+          ],
+          "charged_design_provenance_by_repeat": [
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "a40f0166a10dcc174b51f2a31716f18ec48affc7b7637c6b3de987fea2c4d7d7",
+              "repeat": 0,
+              "second_moment_scope": "per_size",
+              "seconds": 1208.1875682584941,
+              "seed": 1210001
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "68bb25d03d9dfb5cd6f0ab3308b655c9ef3c1545b8f307d97800f98b32924bc2",
+              "repeat": 1,
+              "second_moment_scope": "per_size",
+              "seconds": 1221.7331338785589,
+              "seed": 1210002
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "639d86602d8aad34c95bdadb76d501413abc9389fa960a642f52deb5e165ea1f",
+              "repeat": 2,
+              "second_moment_scope": "per_size",
+              "seconds": 1200.3942121043801,
+              "seed": 1210003
+            }
+          ],
+          "charged_design_seconds_by_repeat": [
+            1208.1875682584941,
+            1221.7331338785589,
+            1200.3942121043801
+          ],
+          "charged_extra_seconds_by_repeat": [
+            1208.1875682584941,
+            1221.7331338785589,
+            1200.3942121043801
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1958.3900945223272,
+            1971.935660142392,
+            1950.5967383682132
+          ],
+          "estimated_total_seconds_range": [
+            1950.5967383682132,
+            1971.935660142392
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "INSIDE-Greedy",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 1210.104971413811,
+          "mean_charged_extra_seconds": 1210.104971413811,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 1960.3074976776443,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "inside_greedy"
+        },
+        "inside_orbit": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.00017557094056054747,
+          "aggregate_rmse_bootstrap_95": [
+            0.00016391200816130616,
+            0.00018619131398784827
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_total_seconds_range": [
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "INSIDE-Orbit",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 750.2025262638331,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "inside_orbit"
+        },
+        "kernel_shap": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.001247324139249671,
+          "aggregate_rmse_bootstrap_95": [
+            0.0011988392390151299,
+            0.0013054015713908334
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_total_seconds_range": [
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "KernelSHAP",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 750.2025262638331,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "kernel_shap"
+        },
+        "ofa": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.0001989260317854202,
+          "aggregate_rmse_bootstrap_95": [
+            0.00019756179711667167,
+            0.00019987097382167203
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_total_seconds_range": [
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "OFA",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 750.2025262638331,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "ofa_iid_ratio"
+        },
+        "s_diff": {
+          "actual_utility_calls_by_repeat": [
+            710286.0,
+            710286.0,
+            710286.0
+          ],
+          "aggregate_rmse": 0.00019322064638493123,
+          "aggregate_rmse_bootstrap_95": [
+            0.000189707605787841,
+            0.00019734904035153934
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            13.929522436112165,
+            13.602232035249472,
+            13.99530990794301
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 0,
+              "requested_num_tasks": 128,
+              "seconds": 13.929522436112165,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 1,
+              "requested_num_tasks": 128,
+              "seconds": 13.602232035249472,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 2,
+              "requested_num_tasks": 128,
+              "seconds": 13.99530990794301,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            }
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            13.929522436112165,
+            13.602232035249472,
+            13.99530990794301
+          ],
+          "estimated_total_seconds_by_repeat": [
+            764.1320486999452,
+            763.8047582990826,
+            764.1978361717761
+          ],
+          "estimated_total_seconds_range": [
+            763.8047582990826,
+            764.1978361717761
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            750.2025262638331,
+            750.2025262638331,
+            750.2025262638331
+          ],
+          "label": "S-Diff",
+          "mean_actual_utility_calls": 710286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 13.84235479310155,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 13.84235479310155,
+          "mean_estimated_total_seconds": 764.0448810569346,
+          "mean_estimated_utility_seconds": 750.2025262638331,
+          "source_method": "s_diff"
+        },
+        "tmc_shapley": {
+          "actual_utility_calls_by_repeat": [
+            258573.0,
+            260224.0,
+            262441.0
+          ],
+          "aggregate_rmse": 0.0014561660366119071,
+          "aggregate_rmse_bootstrap_95": [
+            0.0014489597194648604,
+            0.001462936499746465
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            273.10423945230247,
+            274.8480220565796,
+            277.1896126281619
+          ],
+          "estimated_total_seconds_range": [
+            273.10423945230247,
+            277.1896126281619
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            273.10423945230247,
+            274.8480220565796,
+            277.1896126281619
+          ],
+          "label": "TMC-Shapley",
+          "mean_actual_utility_calls": 260412.66666666666,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 275.04729137901467,
+          "mean_estimated_utility_seconds": 275.04729137901467,
+          "source_method": "tmc_shapley"
+        }
+      },
+      "target_total_utility_calls": 710286
+    },
+    {
+      "budget_index": 4,
+      "inner_utility_calls": 1420000,
+      "methods": {
+        "cc": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.00020244398750399016,
+          "aggregate_rmse_bootstrap_95": [
+            0.00019347626014048106,
+            0.00021575860054801432
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_total_seconds_range": [
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "CC",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 1500.1029799505475,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "cc"
+        },
+        "inside_greedy": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.00011670877892371623,
+          "aggregate_rmse_bootstrap_95": [
+            0.00011373797098351081,
+            0.00012165121199557972
+          ],
+          "charged_design_provenance_by_repeat": [
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "3f5482b4ba5ab5918e920c742df7799ee27dfd5d06f48db58dca5f90bce0d407",
+              "repeat": 0,
+              "second_moment_scope": "per_size",
+              "seconds": 2488.104465827346,
+              "seed": 1310001
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "2c040bf77b540bdc0abb4f44dce0a3af9fab23c0aa26fbe09f9bd3b4900ef2b1",
+              "repeat": 1,
+              "second_moment_scope": "per_size",
+              "seconds": 2541.4666118584573,
+              "seed": 1310002
+            },
+            {
+              "candidate_pool": 64,
+              "mean_balance_lambda0": 0.0625,
+              "relabel_permutation_sha256": "b1037a897261fe06e19e3e9422f16cd2da249c3bfad5a24fe153d627960a53c7",
+              "repeat": 2,
+              "second_moment_scope": "per_size",
+              "seconds": 2484.365809548646,
+              "seed": 1310003
+            }
+          ],
+          "charged_design_seconds_by_repeat": [
+            2488.104465827346,
+            2541.4666118584573,
+            2484.365809548646
+          ],
+          "charged_extra_seconds_by_repeat": [
+            2488.104465827346,
+            2541.4666118584573,
+            2484.365809548646
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            3988.207445777893,
+            4041.5695918090046,
+            3984.4687894991935
+          ],
+          "estimated_total_seconds_range": [
+            3984.4687894991935,
+            4041.5695918090046
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "INSIDE-Greedy",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 2504.64562907815,
+          "mean_charged_extra_seconds": 2504.64562907815,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 4004.748609028697,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "inside_greedy"
+        },
+        "inside_orbit": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.00013244603951226917,
+          "aggregate_rmse_bootstrap_95": [
+            0.000124104072077271,
+            0.0001379483177702673
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_total_seconds_range": [
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "INSIDE-Orbit",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 1500.1029799505475,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "inside_orbit"
+        },
+        "kernel_shap": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.0009312615285829801,
+          "aggregate_rmse_bootstrap_95": [
+            0.0008973155518521615,
+            0.0009949117686492387
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_total_seconds_range": [
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "KernelSHAP",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 1500.1029799505475,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "kernel_shap"
+        },
+        "ofa": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.0001505950559845088,
+          "aggregate_rmse_bootstrap_95": [
+            0.00014567360191754982,
+            0.00015679669575358943
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_total_seconds_range": [
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "OFA",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 1500.1029799505475,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "ofa_iid_ratio"
+        },
+        "s_diff": {
+          "actual_utility_calls_by_repeat": [
+            1420286.0,
+            1420286.0,
+            1420286.0
+          ],
+          "aggregate_rmse": 0.00014514493541829335,
+          "aggregate_rmse_bootstrap_95": [
+            0.00014317104037028306,
+            0.00014745774038185352
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            26.572328805923462,
+            26.349828772246838,
+            26.57129880413413
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 0,
+              "requested_num_tasks": 128,
+              "seconds": 26.572328805923462,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 1,
+              "requested_num_tasks": 128,
+              "seconds": 26.349828772246838,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            },
+            {
+              "includes_utility_wall_time": true,
+              "primary_stratified_state_bytes": 34117488,
+              "repeat": 2,
+              "requested_num_tasks": 128,
+              "seconds": 26.57129880413413,
+              "source_field": "total_seconds_by_repeat",
+              "timing_scope": "complete S-Diff estimator wall time on the source persistent 128-process evaluator",
+              "used_as": "conservative upper-bound surcharge"
+            }
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            26.572328805923462,
+            26.349828772246838,
+            26.57129880413413
+          ],
+          "estimated_total_seconds_by_repeat": [
+            1526.6753087564707,
+            1526.452808722794,
+            1526.6742787546814
+          ],
+          "estimated_total_seconds_range": [
+            1526.452808722794,
+            1526.6753087564707
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            1500.1029799505473,
+            1500.1029799505473,
+            1500.1029799505473
+          ],
+          "label": "S-Diff",
+          "mean_actual_utility_calls": 1420286.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 26.497818794101477,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 26.497818794101477,
+          "mean_estimated_total_seconds": 1526.600798744649,
+          "mean_estimated_utility_seconds": 1500.1029799505475,
+          "source_method": "s_diff"
+        },
+        "tmc_shapley": {
+          "actual_utility_calls_by_repeat": [
+            514590.0,
+            510140.0,
+            517204.0
+          ],
+          "aggregate_rmse": 0.0014219611765870512,
+          "aggregate_rmse_bootstrap_95": [
+            0.0013679515990476024,
+            0.0014538971465409248
+          ],
+          "charged_design_provenance_by_repeat": [],
+          "charged_design_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_extra_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "charged_sdiff_end_to_end_wall_upper_bound_provenance_by_repeat": [],
+          "charged_sdiff_end_to_end_wall_upper_bound_seconds_by_repeat": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "estimated_total_seconds_by_repeat": [
+            543.5088372713328,
+            538.8087569630146,
+            546.2697383782864
+          ],
+          "estimated_total_seconds_range": [
+            538.8087569630146,
+            546.2697383782864
+          ],
+          "estimated_utility_seconds_by_repeat": [
+            543.5088372713328,
+            538.8087569630146,
+            546.2697383782864
+          ],
+          "label": "TMC-Shapley",
+          "mean_actual_utility_calls": 513978.0,
+          "mean_charged_design_seconds": 0.0,
+          "mean_charged_extra_seconds": 0.0,
+          "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": 0.0,
+          "mean_estimated_total_seconds": 542.8624442042113,
+          "mean_estimated_utility_seconds": 542.8624442042113,
+          "source_method": "tmc_shapley"
+        }
+      },
+      "target_total_utility_calls": 1420286
+    }
+  ],
+  "source_audit": {
+    "call_accounting": {
+      "total_actual_utility_calls": 58070349,
+      "total_unused_utility_calls": 5011971
+    },
+    "caveats": [
+      "This data-valuation experiment uses a high-budget Monte Carlo reference with retained standard errors; the reference is not exact.",
+      "TMC-Shapley is evaluated at observed physical calls after truncation; saved calls are not silently reassigned.",
+      "Three repeats provide the requested runtime-saving comparison but only coarse uncertainty intervals."
+    ],
+    "checks": {
+      "actual_calls_do_not_exceed_target": "passed",
+      "available_method_diagnostic_call_accounting": "passed",
+      "canonical_inside_algorithm_identity": "passed",
+      "common_method_order_exactly_eight": "passed",
+      "five_budget_points": "passed",
+      "ground_truth": "passed",
+      "ground_truth_uncertainty_metadata_if_mc": "passed",
+      "inside_candidate_pool_matches_protocol": "passed",
+      "inside_greedy_mean_balance_configuration": "passed",
+      "non_tmc_methods_spend_full_budget_except_one_unpaired_cc_call": "passed",
+      "rmse_and_retained_secondary_metrics_recomputed": "passed",
+      "three_repeats_per_method_budget": "passed"
+    },
+    "dataset": "wine",
+    "ground_truth_audit": {
+      "kind": "monte_carlo_with_standard_error",
+      "maximum_truth_discrepancy": 0.0
+    },
+    "inside_candidate_pool_audit": {
+      "greedy": 64,
+      "orbit": null
+    },
+    "inside_greedy_balance_audit": {
+      "candidate_pool": 64,
+      "coefficient": 0.0625,
+      "mode": "normalized"
+    },
+    "maximum_discrepancies": {
+      "sample_estimate_efficiency_residual": 0.03382223407626139,
+      "stored_metric_absolute": 4.336808689942018e-19
+    },
+    "status": "ready_to_share",
+    "validated_report": "wine_inside_greedy_orbit_baseline_comparison_per_size_ratio_k64_lambda1over16",
+    "validated_shape": {
+      "budget_points": 5,
+      "methods": 8,
+      "per_repeat_estimates_checked": 120,
+      "players": 142,
+      "repeats": 3,
+      "scalar_player_estimates_checked": 17040
+    }
+  },
+  "status": "complete",
+  "utility_calibration": {
+    "blocks": 7,
+    "calls_per_block": 1000,
+    "coalition_batch_sha256": "a4f6e6c1d559475ca6355c6390ba610f152c2499716172524e6f33bc1788828e",
+    "coalition_distribution": "Shapley-specific OFA Q*: q_s proportional to 1/sqrt(s(n-s)), uniform within size",
+    "coalition_size_summary": {
+      "maximum": 140,
+      "mean": 70.178,
+      "median": 72.0,
+      "minimum": 2
+    },
+    "host": "diver141",
+    "maximum_scalar_seconds_per_call": 0.0010658124685287477,
+    "mean_scalar_seconds_per_call": 0.001057452858558723,
+    "measured_at_utc": "2026-09-02T05:50:07.495701+00:00",
+    "median_scalar_seconds_per_call": 0.0010561978220939637,
+    "minimum_scalar_seconds_per_call": 0.0010527118556201457,
+    "model": "sklearn.svm.SVC(C=1.0, kernel='rbf', gamma='scale')",
+    "numpy_version": "2.2.4",
+    "platform": "Linux-5.15.0-153-generic-x86_64-with-glibc2.35",
+    "protocol": "warmed repeated scalar RBF-SVC accuracy calls on a fixed Q* coalition batch",
+    "python_version": "3.13.2",
+    "scalar_block_checksums": [
+      916.6666666666575,
+      916.6666666666575,
+      916.6666666666575,
+      916.6666666666575,
+      916.6666666666575,
+      916.6666666666575,
+      916.6666666666575
+    ],
+    "scalar_block_seconds": [
+      1.0658124685287476,
+      1.0545068010687828,
+      1.0561978220939636,
+      1.0527118556201458,
+      1.0542065277695656,
+      1.0608604811131954,
+      1.0578740537166595
+    ],
+    "scalar_seconds_per_call_by_block": [
+      0.0010658124685287477,
+      0.001054506801068783,
+      0.0010561978220939637,
+      0.0010527118556201457,
+      0.0010542065277695655,
+      0.0010608604811131953,
+      0.0010578740537166595
+    ],
+    "seed": 20260902,
+    "thread_environment": {
+      "MKL_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "timing_clock": "time.perf_counter",
+    "used_for_estimated_time": "median_scalar_seconds_per_call",
+    "utility": "fixed-test classification accuracy",
+    "warmup_calls": 100,
+    "warmup_checksum": 93.02777777777784
+  }
+}

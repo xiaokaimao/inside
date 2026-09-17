@@ -54,13 +54,13 @@ class FullTrainPlotMetadataTests(unittest.TestCase):
 
     def test_output_name_is_derived_without_overwriting_other_dataset(self) -> None:
         input_path = Path(
-            "results/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json"
+            "results/json/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json"
         )
         self.assertEqual(
             _default_output(input_path),
             Path(
-                "results/wine_full_train_rbf_svm_rmse_71k_1p42m.png"
-            ),
+                "results/png/wine_full_train_rbf_svm_rmse_71k_1p42m.png"
+            ).resolve(),
         )
 
     def test_relative_change_label_handles_regression(self) -> None:

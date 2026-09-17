@@ -3,6 +3,8 @@
 The implementation in this package is a clean-room extension built from the
 mathematical description in Li and Yu (NeurIPS 2024).  The downloaded upstream
 research code is kept separately in ``ofa_upstream`` for comparison.
+The separately attributed ShapDoE baselines port the author's MIT-licensed
+R implementation; their source and notice are in ``third_party/shapdoe``.
 """
 
 from .design import (
@@ -13,6 +15,7 @@ from .design import (
     iid_ofa_design,
     inner_size_distribution,
     orbit_coupled_frame_design,
+    paired_cyclic_orbit_designs,
     paired_frame_scope_designs,
     per_size_frame_coupled_design,
     stratified_frame_design,
@@ -40,10 +43,19 @@ from .estimator import (
 from .geometry import (
     centered_directions,
     efficiency_projector,
+    fixed_slice_moment_diagnostics,
     inner_frame_operator,
     inner_frame_target,
 )
 from .parallel import GameEvaluator, evaluate_game_coalitions
+from .orthogonal import (
+    OrthogonalBudget,
+    OrthogonalDiagnostics,
+    OrthogonalResult,
+    estimate_orthogonal_shapley,
+    orthogonal_budget,
+    orthogonal_permutations,
+)
 from .differential import (
     DifferentialCoverageError,
     DiffDiagnostics,
@@ -80,6 +92,16 @@ from .traditional_mc import (
     StratifiedMarginalResult,
     estimate_stratified_marginal_mc,
 )
+from .shapdoe import (
+    ShapDoEBudget,
+    ShapDoEDiagnostics,
+    ShapDoEResult,
+    coa_field_order,
+    component_orthogonal_array_design,
+    estimate_shapdoe,
+    latin_square_design,
+    shapdoe_budget,
+)
 from .upstream_adapter import estimate_upstream_game
 from .weighted_voting import (
     evaluate_weighted_voting,
@@ -87,6 +109,20 @@ from .weighted_voting import (
 )
 
 __all__ = [
+    "OrthogonalBudget",
+    "OrthogonalDiagnostics",
+    "OrthogonalResult",
+    "estimate_orthogonal_shapley",
+    "orthogonal_budget",
+    "orthogonal_permutations",
+    "ShapDoEBudget",
+    "ShapDoEDiagnostics",
+    "ShapDoEResult",
+    "coa_field_order",
+    "component_orthogonal_array_design",
+    "estimate_shapdoe",
+    "latin_square_design",
+    "shapdoe_budget",
     "CoalitionDesign",
     "BasicCCDiagnostics",
     "BasicCCResult",
@@ -115,6 +151,7 @@ __all__ = [
     "centered_directions",
     "cyclic_orbit_frame_design",
     "efficiency_projector",
+    "fixed_slice_moment_diagnostics",
     "aggregate_basic_cc_samples",
     "estimate_basic_cc",
     "estimate_coupled",
@@ -143,6 +180,7 @@ __all__ = [
     "inner_frame_target",
     "inner_size_distribution",
     "orbit_coupled_frame_design",
+    "paired_cyclic_orbit_designs",
     "paired_frame_scope_designs",
     "per_size_frame_coupled_design",
     "shapley_boundary_vector",

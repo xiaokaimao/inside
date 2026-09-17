@@ -1,0 +1,131 @@
+{
+  "artifact": "airport_inside_orbit_ablation",
+  "chart_title": null,
+  "dataset": "airport",
+  "experiment": "airport_inside_component_orbit_geometry_ablations",
+  "full_axis_box": true,
+  "interpretation": {
+    "paired_control": "Both methods share every K=4 candidate pool, size allocation, relabeling, complete-orbit balance, and OFA ratio estimator; only base-coalition selection differs.",
+    "uncertainty": "repeat bootstrap 95% intervals"
+  },
+  "layout": "1x1_near_square",
+  "legend_location": "inside_axes",
+  "method_labels": {
+    "inside_orbit": "INSIDE-Orbit",
+    "random_orbit": "Random-Orbit"
+  },
+  "methods": [
+    "random_orbit",
+    "inside_orbit"
+  ],
+  "outputs": {
+    "pdf": {
+      "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16_orbit_rmse.pdf",
+      "sha256": "3daf63ed38ba88efd3dbd7983818920c11c63a27a8905eed47d8f963edae9a21"
+    },
+    "png": {
+      "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16_orbit_rmse.png",
+      "sha256": "a077f9f9ac6bc4a3f37129ae5d820327477248bdbd8e0115d1aa0b9f8bc3d676"
+    }
+  },
+  "plotted_values": {
+    "inside_orbit": {
+      "aggregate_rmse": [
+        0.005807252914971065,
+        0.003317840889202102,
+        0.0020135652056130463,
+        0.0012219944864415358,
+        0.0007779618713182123
+      ],
+      "bootstrap_95": [
+        [
+          0.00529834836781195,
+          0.0063461890386640974
+        ],
+        [
+          0.002780563374135013,
+          0.0036606250797449574
+        ],
+        [
+          0.0018754872273102875,
+          0.002139787975361259
+        ],
+        [
+          0.0011502258411875503,
+          0.0012665772555443512
+        ],
+        [
+          0.0006714338902355271,
+          0.000904138766437035
+        ]
+      ],
+      "label": "INSIDE-Orbit",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    },
+    "random_orbit": {
+      "aggregate_rmse": [
+        0.006242659206873414,
+        0.004855936545934113,
+        0.0029544756589835333,
+        0.002036968172869313,
+        0.00144167410437077
+      ],
+      "bootstrap_95": [
+        [
+          0.006105648996483883,
+          0.0064481080988403544
+        ],
+        [
+          0.0046379790572065255,
+          0.005166530388618321
+        ],
+        [
+          0.0027102617908432275,
+          0.00311167094598972
+        ],
+        [
+          0.0016857888575179537,
+          0.0024504292943348994
+        ],
+        [
+          0.0013560490150119834,
+          0.0015420818877768371
+        ]
+      ],
+      "label": "Random-Orbit",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    }
+  },
+  "plotting_script": {
+    "path": "/home/maoxiaokai/python_project/frame/experiments/plot_airport_inside_ablations.py",
+    "sha256": "da91ac8a4ebdb7812fc82b5c6c6dc3b16b5a9741f36c8a3fc8a7cfcdf811fd47"
+  },
+  "protocol_version": "airport_ablation_v1",
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "source_report": {
+    "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16.json",
+    "sha256": "9e3cf36db0aa113097317432165b5a299a6cd64745dfe8ce0f7e2e1d16344f9f"
+  },
+  "status": "complete",
+  "validation": {
+    "figure_contract": "passed",
+    "output_hashes": "passed",
+    "plotted_aggregate_recomputation": "passed",
+    "source_schema": "passed"
+  }
+}

@@ -10,6 +10,7 @@ from frame_ofa import (
     centered_directions,
     efficiency_projector,
     evaluate_boundary,
+    fixed_slice_moment_diagnostics,
     inner_size_distribution,
     shapley_boundary_vector,
 )
@@ -74,6 +75,39 @@ class GeometricIdentityTests(unittest.TestCase):
                 np.testing.assert_allclose(
                     directions.mean(axis=0), 0.0, atol=2e-14
                 )
+
+    def test_fixed_slice_moment_diagnostics_match_exact_identities(self) -> None:
+        num_players = 5
+        rows = []
+        sizes = []
+        for size in range(2, num_players - 1):
+            for indices in combinations(range(num_players), size):
+                row = np.zeros(num_players, dtype=bool)
+                row[list(indices)] = True
+                rows.append(row)
+                sizes.append(size)
+        diagnostics = fixed_slice_moment_diagnostics(
+            np.asarray(rows),
+            np.asarray(sizes),
+            require_all_inner_sizes=True,
+        )
+        self.assertEqual(diagnostics["missing_sizes"], [])
+        self.assertEqual(diagnostics["first_moment_rms"], 0.0)
+        self.assertLess(diagnostics["frame_frobenius_rms"], 2e-15)
+
+    def test_single_row_slice_and_missing_slice_are_explicit(self) -> None:
+        row = np.asarray([[1, 1, 0, 0, 0]], dtype=bool)
+        diagnostics = fixed_slice_moment_diagnostics(row)
+        self.assertAlmostEqual(diagnostics["first_moment_rms"], 1.0)
+        self.assertAlmostEqual(
+            diagnostics["frame_frobenius_rms"],
+            math.sqrt(3.0 / 4.0),
+        )
+        self.assertEqual(diagnostics["missing_sizes"], [3])
+        with self.assertRaisesRegex(ValueError, "missing"):
+            fixed_slice_moment_diagnostics(
+                row, require_all_inner_sizes=True
+            )
 
     def test_ofa_probability_equalizes_radial_coefficient(self) -> None:
         for num_players in range(4, 20):

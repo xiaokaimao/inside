@@ -180,7 +180,7 @@ class AnalyticInsideComparisonTests(unittest.TestCase):
         self.assertEqual(
             default_output_path("airport"),
             Path(
-                "results/airport_inside_baseline_comparison_"
+                "results/json/airport_inside_baseline_comparison_"
                 "per_size_ratio_k64_lambda1over16.json"
             ),
         )

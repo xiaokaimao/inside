@@ -116,7 +116,7 @@ DEFAULT_BUDGET_MULTIPLIERS = (500, 1000, 2000, 5000, 10000)
 def default_output_path(dataset: str) -> Path:
     _dataset_arrays(dataset)
     return Path(
-        f"results/{dataset}_inside_baseline_comparison_"
+        f"results/json/{dataset}_inside_baseline_comparison_"
         "per_size_ratio_k64_lambda1over16.json"
     )
 

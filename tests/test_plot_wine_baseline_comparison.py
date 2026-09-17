@@ -168,24 +168,24 @@ class WineBaselineComparisonPlotTests(unittest.TestCase):
 
     def test_default_output_inserts_rmse_before_budget_range(self) -> None:
         source = Path(
-            "results/"
+            "results/json/"
             "wine_full_train_rbf_svm_all_baselines_3repeats_71k_1p42m.json"
         )
         self.assertEqual(
             _default_output(source),
             Path(
-                "results/"
+                "results/png/"
                 "wine_full_train_rbf_svm_all_baselines_3repeats_"
                 "rmse_71k_1p42m.png"
-            ),
+            ).resolve(),
         )
         self.assertEqual(
             _linear_output(_default_output(source)),
             Path(
-                "results/"
+                "results/png/"
                 "wine_full_train_rbf_svm_all_baselines_3repeats_"
                 "linear_rmse_71k_1p42m.png"
-            ),
+            ).resolve(),
         )
 
 

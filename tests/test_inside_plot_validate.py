@@ -10,6 +10,7 @@ import numpy as np
 from experiments.compare_inside_mean_balance_reports import build_comparison
 from experiments.plot_inside_comparison import (
     METHOD_ORDER,
+    _dataset_name,
     plot_results,
     validate_plot_pair,
 )
@@ -288,6 +289,61 @@ def _lambda_one_sixteenth_canonical_airport_report(
     return report
 
 
+def _cancer_report() -> dict:
+    """Build a compact canonical Cancer fixture with auditable MC truth."""
+    report = _lambda_one_sixteenth_canonical_airport_report()
+    report["experiment"] = (
+        "cancer_inside_greedy_orbit_baseline_comparison_per_size_ratio_"
+        "k64_lambda1over16"
+    )
+    report["game"] = {
+        "dataset": "cancer",
+        "players": 100,
+        "model": "sklearn.svm.SVC(C=1.0, kernel='rbf', gamma='scale')",
+        "utility": "fixed-test classification accuracy",
+    }
+    report["dataset"] = {
+        "dataset": "cancer",
+        "split": "stratified_train_test",
+    }
+    report["configuration"]["dataset"] = "cancer"
+    report["boundary"] = {
+        "empty": 0.0,
+        "full": 10.0,
+        "efficiency_target": 10.0,
+        "utility_calls": 202,
+    }
+    n = 100
+    standard_errors = np.linspace(1e-6, 2e-6, n)
+    simultaneous_half_widths = 3.0 * standard_errors
+    permutations = 1_000
+    conceptual_calls = permutations * (n - 1)
+    report["ground_truth"].update(
+        {
+            "standard_errors": standard_errors.tolist(),
+            "rmse_standard_error": float(
+                np.sqrt(np.mean(np.square(standard_errors)))
+            ),
+            "simultaneous_half_widths": (
+                simultaneous_half_widths.tolist()
+            ),
+            "max_simultaneous_half_width": float(
+                simultaneous_half_widths.max()
+            ),
+            "independent_pair_units": permutations // 2,
+            "permutations": permutations,
+            "conceptual_internal_prefix_calls": conceptual_calls,
+            "physical_internal_prefix_calls": conceptual_calls,
+            "boundary_reuse_saved_calls": 0,
+            "permutation_path_equivalent_utility_calls": (
+                conceptual_calls + 2
+            ),
+            "shared_boundary_calls_physically_evaluated": 2 * n + 2,
+        }
+    )
+    return report
+
+
 class InsidePlotValidateTests(unittest.TestCase):
     def test_common_validator_recomputes_airport_report(self) -> None:
         validation = validate_report(_airport_report())
@@ -459,6 +515,43 @@ class InsidePlotValidateTests(unittest.TestCase):
             "per_size_ratio_k64_lambda0"
         )
         with self.assertRaisesRegex(ValueError, "protocol version"):
+            validate_report(report)
+
+    def test_cancer_uses_canonical_mc_audit_and_plot_label(self) -> None:
+        report = _cancer_report()
+        self.assertIn(
+            report["experiment"],
+            CURRENT_K64_CANONICAL_INSIDE_EXPERIMENT_IDS,
+        )
+        validation = validate_report(report)
+        self.assertEqual(validation["dataset"], "cancer")
+        self.assertEqual(
+            validation["ground_truth_audit"]["kind"],
+            "monte_carlo_with_standard_error",
+        )
+        self.assertEqual(_dataset_name(report), "Breast Cancer")
+        self.assertIn("high-budget Monte Carlo", validation["caveats"][0])
+        self.assertNotIn("Wine", validation["caveats"][0])
+
+        alias_report = deepcopy(report)
+        alias_report["configuration"]["dataset"] = "breast_cancer"
+        alias_report["dataset"]["dataset"] = "breast_cancer"
+        alias_report["game"]["dataset"] = "breast_cancer"
+        self.assertEqual(_dataset_name(alias_report), "Breast Cancer")
+        self.assertEqual(validate_report(alias_report)["dataset"], "cancer")
+
+        with TemporaryDirectory() as directory:
+            output = Path(directory) / "cancer.png"
+            png, pdf = plot_results(report, output)
+            self.assertGreater(png.stat().st_size, 10_000)
+            self.assertGreater(pdf.stat().st_size, 1_000)
+
+    def test_cancer_mc_errors_are_dataset_generic(self) -> None:
+        report = _cancer_report()
+        report["ground_truth"]["standard_errors"] = [0.0]
+        with self.assertRaisesRegex(
+            ValueError, "Monte Carlo ground-truth SE has wrong shape"
+        ):
             validate_report(report)
 
     def test_canonical_validator_accepts_strict_flat_analytic_schema(self) -> None:

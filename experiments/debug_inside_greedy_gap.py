@@ -924,7 +924,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/inside_greedy_gap_debug.json"),
+        default=Path("results/json/inside_greedy_gap_debug.json"),
     )
     args = parser.parse_args()
     report = run_debug_experiment(

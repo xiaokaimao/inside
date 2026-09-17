@@ -1,0 +1,155 @@
+{
+  "status": "complete",
+  "artifact": "inside_rmse_four_panel",
+  "metric": {
+    "key": "rmse",
+    "display_label": "RMSE",
+    "definition": "sqrt(mean_{repeat,player}((estimate-reference)^2))",
+    "repeat_aggregation": "pooled_root_mean_square"
+  },
+  "layout": "1x4",
+  "chart_title": null,
+  "axes_titles": false,
+  "panel_identification": "in_axes_tags",
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "shared_legend": {
+    "location": "inside_first_panel",
+    "host_panel": "voting",
+    "rendered_once": true,
+    "method_order": [
+      "inside_greedy",
+      "inside_orbit",
+      "ofa_iid_ratio",
+      "cc",
+      "s_diff",
+      "kernel_shap",
+      "tmc_shapley"
+    ],
+    "labels": [
+      "INSIDE-Greedy",
+      "INSIDE-Orbit",
+      "OFA",
+      "CC",
+      "S-Diff",
+      "KernelSHAP",
+      "TMC-Shapley"
+    ]
+  },
+  "panel_alignment": {
+    "status": "PASS",
+    "tolerance_pt": 1.5,
+    "gutter_tolerance_pt": 1.5,
+    "panel_label_anchor_check": "not_requested because panel identifiers and dataset labels are combined in one in-axes tag",
+    "json": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_comparison_four_panel_k64_lambda1over16_3repeats_rmse.alignment.json",
+      "sha256": "80cef3650fa02ac1f034466cee1208c93c596a982c957ae65ee955edf0c972df"
+    },
+    "overlay_svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_comparison_four_panel_k64_lambda1over16_3repeats_rmse.alignment.svg",
+      "sha256": "490308e817bf72f90d826b86632557566511f28de969977c644cd0e50edf3ea2"
+    }
+  },
+  "panels": [
+    {
+      "key": "voting",
+      "tag": "(a) U.S. Electoral Voting",
+      "methods_shown": [
+        "inside_greedy",
+        "inside_orbit",
+        "ofa_iid_ratio",
+        "cc",
+        "s_diff",
+        "kernel_shap",
+        "tmc_shapley"
+      ]
+    },
+    {
+      "key": "airport",
+      "tag": "(b) Airport",
+      "methods_shown": [
+        "inside_greedy",
+        "inside_orbit",
+        "ofa_iid_ratio",
+        "cc",
+        "s_diff",
+        "kernel_shap",
+        "tmc_shapley"
+      ]
+    },
+    {
+      "key": "wine",
+      "tag": "(c) Wine",
+      "methods_shown": [
+        "inside_greedy",
+        "inside_orbit",
+        "ofa_iid_ratio",
+        "cc",
+        "s_diff",
+        "kernel_shap",
+        "tmc_shapley"
+      ]
+    },
+    {
+      "key": "cancer",
+      "tag": "(d) Breast Cancer",
+      "methods_shown": [
+        "inside_greedy",
+        "inside_orbit",
+        "ofa_iid_ratio",
+        "cc",
+        "kernel_shap",
+        "tmc_shapley"
+      ]
+    }
+  ],
+  "presentation_omissions": {
+    "ofa_iid_linear": {
+      "scope": "all_panels",
+      "reason_code": "presentation_baseline_removed",
+      "reason": "OFA linear is omitted from the four-panel presentation at the user's request; its completed measurements remain unchanged in the source reports."
+    },
+    "s_diff": {
+      "scope": [
+        "cancer"
+      ],
+      "reason_code": "quadratic_state_memory_scalability",
+      "reason": "S-Diff is omitted from the Cancer panel because its O(n^2) pairwise state has poor memory scalability at larger n. The source report retains the completed Cancer measurements.",
+      "actual_oom_observed": false
+    }
+  },
+  "source_reports": {
+    "voting": {
+      "path": "/home/maoxiaokai/python_project/frame/results/voting_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_25k_510k.json",
+      "sha256": "0829fc31a36acb0b0ae9fc2557e99facb1472682b8a727d320bf8fb0387b0e64"
+    },
+    "airport": {
+      "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_50k_1m.json",
+      "sha256": "3dd0ff98da99e0f29302df66cebfe473bcfc415e7881a6aa6456bdd51c16d316"
+    },
+    "wine": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_71k_1p42m.json",
+      "sha256": "650aa354f538fc5d983f1d018dd57bfb4e4577b3c14c5f19d0a95ebe1427a982"
+    },
+    "cancer": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_228k_4p55m.json",
+      "sha256": "c5529ace53b36b8b5451c7d40ffc830372c28cd419f3f580d6ed275c1bef6ff6"
+    }
+  },
+  "outputs": {
+    "png": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_comparison_four_panel_k64_lambda1over16_3repeats_rmse.png",
+      "sha256": "30bf03a9e4a15fa340db2711594dd486972036773acf4982d36b96210b1d7bbd"
+    },
+    "pdf": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_comparison_four_panel_k64_lambda1over16_3repeats_rmse.pdf",
+      "sha256": "5f057af1759f55da5cb4353caff39833383aa9d2df958ffd1e74a3c3474a3b74"
+    },
+    "svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/inside_comparison_four_panel_k64_lambda1over16_3repeats_rmse.svg",
+      "sha256": "40747f7c595997168b970027479ebc249a887aa556918d63c8bfe93f61989dae"
+    }
+  }
+}

@@ -718,36 +718,36 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--lower-airport",
         type=Path,
-        default=Path("results/inside_greedy_k64_lambda_fine_screen_airport.json"),
+        default=Path("results/json/inside_greedy_k64_lambda_fine_screen_airport.json"),
     )
     parser.add_argument(
         "--lower-voting",
         type=Path,
-        default=Path("results/inside_greedy_k64_lambda_fine_screen_voting.json"),
+        default=Path("results/json/inside_greedy_k64_lambda_fine_screen_voting.json"),
     )
     parser.add_argument(
         "--upper-airport",
         type=Path,
         default=Path(
-            "results/inside_greedy_k64_lambda_quarter_to_two_screen_airport.json"
+            "results/json/inside_greedy_k64_lambda_quarter_to_two_screen_airport.json"
         ),
     )
     parser.add_argument(
         "--upper-voting",
         type=Path,
         default=Path(
-            "results/inside_greedy_k64_lambda_quarter_to_two_screen_voting.json"
+            "results/json/inside_greedy_k64_lambda_quarter_to_two_screen_voting.json"
         ),
     )
     parser.add_argument(
         "--output-json",
         type=Path,
-        default=Path("results/inside_greedy_k64_lambda_zero_to_two_summary.json"),
+        default=Path("results/json/inside_greedy_k64_lambda_zero_to_two_summary.json"),
     )
     parser.add_argument(
         "--output-figure",
         type=Path,
-        default=Path("results/inside_greedy_k64_lambda_zero_to_two_rmse.png"),
+        default=Path("results/pdf/inside_greedy_k64_lambda_zero_to_two_rmse.png"),
     )
     return parser.parse_args()
 

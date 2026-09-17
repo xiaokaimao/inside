@@ -88,20 +88,20 @@ conda run -n svmsv python -m \
   --jobs 128 \
   --coupled-design orbit_coupled \
   --output \
-    results/digits_100_per_class_full_train_rbf_svm_frame_ofa_640k_8m.json
+    results/json/digits_100_per_class_full_train_rbf_svm_frame_ofa_640k_8m.json
 
 conda run -n svmsv python -m \
   experiments.plot_full_train_results \
   --input \
-    results/digits_100_per_class_full_train_rbf_svm_frame_ofa_640k_8m.json \
+    results/json/digits_100_per_class_full_train_rbf_svm_frame_ofa_640k_8m.json \
   --output \
     results/digits_100_per_class_full_train_rbf_svm_rmse_640k_8m.png
 ```
 
 Expected cache names when explicit paths are not supplied:
 
-- `results/digits_100_per_class_full_train_rbf_svm_gt.npz`
-- `results/digits_100_per_class_full_train_rbf_svm_gt.partial.npz`
+- `results/npz/digits_100_per_class_full_train_rbf_svm_gt.npz`
+- `results/npz/digits_100_per_class_full_train_rbf_svm_gt.partial.npz`
 
 ## Results
 

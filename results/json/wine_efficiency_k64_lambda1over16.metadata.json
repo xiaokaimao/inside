@@ -1,0 +1,701 @@
+{
+  "artifact": "wine_estimated_time_efficiency_sdiff_wall_upper_bound",
+  "axis_semantics": {
+    "x": "estimated utility-dominated one-shot time in seconds",
+    "y": "aggregate RMSE against the high-budget Wine MC reference"
+  },
+  "chart_title": null,
+  "dataset": "wine",
+  "experiment": "wine_estimated_time_efficiency_sdiff_wall_upper_bound_k64_lambda1over16",
+  "full_axis_box": true,
+  "layout": "1x1_near_square",
+  "legend_location": "inside_axes_upper_right",
+  "method_labels": {
+    "cc": "CC",
+    "inside_greedy": "INSIDE-Greedy",
+    "inside_orbit": "INSIDE-Orbit",
+    "kernel_shap": "KernelSHAP",
+    "ofa": "OFA",
+    "s_diff": "S-Diff",
+    "tmc_shapley": "TMC-Shapley"
+  },
+  "methods": [
+    "inside_greedy",
+    "inside_orbit",
+    "ofa",
+    "cc",
+    "s_diff",
+    "kernel_shap",
+    "tmc_shapley"
+  ],
+  "outputs": {
+    "pdf": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.pdf",
+      "sha256": "6ca7c8ab8a795f9f9d96eba41629a20c2e64f750b60c5816ac215271616ca086"
+    },
+    "png": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.png",
+      "sha256": "f8f64504db05c711db333971a8f80d4dac432fd4e457bb1437f5f4459decbf17"
+    },
+    "svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.svg",
+      "sha256": "02b50809d4a5ed967ae4c7c351bc59f3592e593e60036a98b4944c0bf9f020a8"
+    }
+  },
+  "panel_alignment": {
+    "json": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.alignment.json",
+      "sha256": "9226290e732afed314429d19bd89df3880e7d0963ed016825bbbf6b81943618c"
+    },
+    "overlay_svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.alignment.svg",
+      "sha256": "c5ee03de5ab7b7c4c8f17223edf5d7fa3082f775688c2fff92c2417ce077dda0"
+    },
+    "status": "NOT APPLICABLE"
+  },
+  "plotted_values": {
+    "cc": {
+      "aggregate_rmse": [
+        0.001268198201505001,
+        0.0006145396575158054,
+        0.00043739329614191,
+        0.00027265425708931424,
+        0.00020244398750399016
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0010892591174142899,
+          0.0014783194398106387
+        ],
+        [
+          0.0005918279755425483,
+          0.000637543182115269
+        ],
+        [
+          0.0004157534506280572,
+          0.00045423657970046087
+        ],
+        [
+          0.0002560434663834842,
+          0.0002964241011615443
+        ],
+        [
+          0.00019347626014048106,
+          0.00021575860054801432
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          75.2921179457903,
+          75.2921179457903
+        ],
+        [
+          150.2821633144617,
+          150.2821633144617
+        ],
+        [
+          300.2622540518046,
+          300.2622540518046
+        ],
+        [
+          750.2025262638331,
+          750.2025262638331
+        ],
+        [
+          1500.1029799505473,
+          1500.1029799505473
+        ]
+      ],
+      "label": "CC",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        75.2921179457903,
+        150.2821633144617,
+        300.2622540518046,
+        750.2025262638331,
+        1500.1029799505475
+      ]
+    },
+    "inside_greedy": {
+      "aggregate_rmse": [
+        0.0005943727251457693,
+        0.00041801612276599594,
+        0.0002657565418654164,
+        0.0001819266243968701,
+        0.00011670877892371623
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0005528262321806531,
+          0.0006473512682852767
+        ],
+        [
+          0.0004082586499956441,
+          0.00042971085665590407
+        ],
+        [
+          0.00025175668323500764,
+          0.00028958762458554735
+        ],
+        [
+          0.00016823396884985532,
+          0.00019248417783349344
+        ],
+        [
+          0.00011373797098351081,
+          0.00012165121199557972
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          191.1640648021698,
+          192.7927836290896
+        ],
+        [
+          373.3487247824073,
+          386.28496448317173
+        ],
+        [
+          750.6831124387086,
+          771.3497748597861
+        ],
+        [
+          1950.5967383682132,
+          1971.935660142392
+        ],
+        [
+          3984.4687894991935,
+          4041.5695918090046
+        ]
+      ],
+      "label": "INSIDE-Greedy",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        116.75028779730201,
+        230.1054615713656,
+        458.8226699344814,
+        1210.104971413811,
+        2504.64562907815
+      ],
+      "mean_charged_extra_seconds": [
+        116.75028779730201,
+        230.1054615713656,
+        458.8226699344814,
+        1210.104971413811,
+        2504.64562907815
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        192.0424057430923,
+        380.38762488582734,
+        759.084923986286,
+        1960.3074976776443,
+        4004.748609028697
+      ]
+    },
+    "inside_orbit": {
+      "aggregate_rmse": [
+        0.0006353593658663042,
+        0.0004123874449317491,
+        0.0002743887084824147,
+        0.00017557094056054747,
+        0.00013244603951226917
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0006197410028869236,
+          0.0006474699994841251
+        ],
+        [
+          0.0004043227040002764,
+          0.0004257379112288864
+        ],
+        [
+          0.0002650101249985906,
+          0.00029198148710953475
+        ],
+        [
+          0.00016391200816130616,
+          0.00018619131398784827
+        ],
+        [
+          0.000124104072077271,
+          0.0001379483177702673
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          75.2921179457903,
+          75.2921179457903
+        ],
+        [
+          150.2821633144617,
+          150.2821633144617
+        ],
+        [
+          300.2622540518046,
+          300.2622540518046
+        ],
+        [
+          750.2025262638331,
+          750.2025262638331
+        ],
+        [
+          1500.1029799505473,
+          1500.1029799505473
+        ]
+      ],
+      "label": "INSIDE-Orbit",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        75.2921179457903,
+        150.2821633144617,
+        300.2622540518046,
+        750.2025262638331,
+        1500.1029799505475
+      ]
+    },
+    "kernel_shap": {
+      "aggregate_rmse": [
+        0.0036699443027068904,
+        0.002606711719157409,
+        0.0019568012990506247,
+        0.001247324139249671,
+        0.0009312615285829801
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.003410914323324459,
+          0.003833153284665696
+        ],
+        [
+          0.002486917429863001,
+          0.0027964078697383333
+        ],
+        [
+          0.00172033559845835,
+          0.002092621283219858
+        ],
+        [
+          0.0011988392390151299,
+          0.0013054015713908334
+        ],
+        [
+          0.0008973155518521615,
+          0.0009949117686492387
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          75.2921179457903,
+          75.2921179457903
+        ],
+        [
+          150.2821633144617,
+          150.2821633144617
+        ],
+        [
+          300.2622540518046,
+          300.2622540518046
+        ],
+        [
+          750.2025262638331,
+          750.2025262638331
+        ],
+        [
+          1500.1029799505473,
+          1500.1029799505473
+        ]
+      ],
+      "label": "KernelSHAP",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        75.2921179457903,
+        150.2821633144617,
+        300.2622540518046,
+        750.2025262638331,
+        1500.1029799505475
+      ]
+    },
+    "ofa": {
+      "aggregate_rmse": [
+        0.0006116600120098172,
+        0.0004629363150425797,
+        0.0003003718492403485,
+        0.0001989260317854202,
+        0.0001505950559845088
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0005685219880498157,
+          0.0006380914701375941
+        ],
+        [
+          0.000458276837819256,
+          0.00047039533705952555
+        ],
+        [
+          0.00029378403495959875,
+          0.0003048947739028734
+        ],
+        [
+          0.00019756179711667167,
+          0.00019987097382167203
+        ],
+        [
+          0.00014567360191754982,
+          0.00015679669575358943
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          75.2921179457903,
+          75.2921179457903
+        ],
+        [
+          150.2821633144617,
+          150.2821633144617
+        ],
+        [
+          300.2622540518046,
+          300.2622540518046
+        ],
+        [
+          750.2025262638331,
+          750.2025262638331
+        ],
+        [
+          1500.1029799505473,
+          1500.1029799505473
+        ]
+      ],
+      "label": "OFA",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        75.2921179457903,
+        150.2821633144617,
+        300.2622540518046,
+        750.2025262638331,
+        1500.1029799505475
+      ]
+    },
+    "s_diff": {
+      "aggregate_rmse": [
+        0.0006457489934256435,
+        0.0004560277317121886,
+        0.0002949990643180941,
+        0.00019322064638493123,
+        0.00014514493541829335
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0006262323008842016,
+          0.0006717812812682115
+        ],
+        [
+          0.0004399418349585235,
+          0.00046392490749355995
+        ],
+        [
+          0.00027845658693993454,
+          0.0003189849510643018
+        ],
+        [
+          0.000189707605787841,
+          0.00019734904035153934
+        ],
+        [
+          0.00014317104037028306,
+          0.00014745774038185352
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          78.2031145952046,
+          78.26526334875822
+        ],
+        [
+          154.44285482162238,
+          154.55083804944158
+        ],
+        [
+          306.82203037658337,
+          306.9320905543268
+        ],
+        [
+          763.8047582990826,
+          764.1978361717761
+        ],
+        [
+          1526.452808722794,
+          1526.6753087564707
+        ]
+      ],
+      "label": "S-Diff",
+      "mean_actual_utility_calls": [
+        71286.0,
+        142286.0,
+        284286.0,
+        710286.0,
+        1420286.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        2.946424100548029,
+        4.213686019182205,
+        6.596786030878623,
+        13.84235479310155,
+        26.497818794101477
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        2.946424100548029,
+        4.213686019182205,
+        6.596786030878623,
+        13.84235479310155,
+        26.497818794101477
+      ],
+      "mean_estimated_total_seconds": [
+        78.23854204633832,
+        154.49584933364392,
+        306.8590400826832,
+        764.0448810569346,
+        1526.600798744649
+      ]
+    },
+    "tmc_shapley": {
+      "aggregate_rmse": [
+        0.0023982159995749523,
+        0.001906327976976885,
+        0.0015793892454091815,
+        0.0014561660366119071,
+        0.0014219611765870512
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0021070860672770613,
+          0.0025685193714336807
+        ],
+        [
+          0.0018611215669378511,
+          0.00195369648497367
+        ],
+        [
+          0.0015396870593412156,
+          0.0016018787530514024
+        ],
+        [
+          0.0014489597194648604,
+          0.001462936499746465
+        ],
+        [
+          0.0013679515990476024,
+          0.0014538971465409248
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          27.324893855392936,
+          27.949106768250466
+        ],
+        [
+          54.358277111887936,
+          56.24992741125823
+        ],
+        [
+          109.86147266292572,
+          111.28628352493048
+        ],
+        [
+          273.10423945230247,
+          277.1896126281619
+        ],
+        [
+          538.8087569630146,
+          546.2697383782864
+        ]
+      ],
+      "label": "TMC-Shapley",
+      "mean_actual_utility_calls": [
+        26131.666666666668,
+        52572.0,
+        104678.66666666667,
+        260412.66666666666,
+        513978.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_extra_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_charged_sdiff_end_to_end_wall_upper_bound_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        27.600209421018764,
+        55.52643190312386,
+        110.56137975303334,
+        275.04729137901467,
+        542.8624442042113
+      ]
+    }
+  },
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "source_report": {
+    "path": "/home/maoxiaokai/python_project/frame/results/wine_efficiency_k64_lambda1over16.json",
+    "sha256": "7b58da715d56d0222b881d51c66e56dc63d1d22aebc293eed63dca1c2a0a8545"
+  },
+  "status": "complete",
+  "time_proxy": {
+    "actual_call_policy": "use per-repeat physical calls; preserves TMC truncation",
+    "charged_extra_time_components": [
+      "INSIDE-Greedy production design time",
+      "S-Diff source complete 128-process pipeline wall time as a conservative upper-bound surcharge"
+    ],
+    "formula": "actual_utility_calls * median_scalar_utility_seconds + I[method=INSIDE-Greedy] * measured_design_seconds + I[method=S-Diff] * source_complete_parallel_wall_seconds",
+    "sdiff_surcharge_caveat": "The source did not separately time S-Diff coalition generation, its O(n^3) stratified pair state, inter-process merging, and reconstruction. Its complete persistent-128-process estimator wall time is therefore added as an upper-bound surcharge. That wall time includes some utility evaluation and hence slightly double-counts utility work.",
+    "utility_cost_caveat": "RBF-SVM utility cost depends on coalition composition and size; one common Q*-averaged scalar calibration is used as the requested cross-method proxy, not measured end-to-end time.",
+    "utility_seconds_per_call": 0.0010561978220939637
+  }
+}

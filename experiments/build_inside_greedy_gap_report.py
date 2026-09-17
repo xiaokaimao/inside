@@ -10,7 +10,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RESULTS = ROOT / "results"
+RESULTS = ROOT / "results" / "json"
 OUTPUT = RESULTS / "inside_greedy_gap_report_artifact.json"
 
 FORMAL_REPORTS = {
@@ -360,7 +360,7 @@ def build_artifact() -> dict[str, Any]:
                 "from experiments.build_inside_greedy_gap_report import _ablation_rows, _read, DEBUG_REPORT\n"
                 "rows = _ablation_rows(_read(DEBUG_REPORT))"
             ),
-            ["results/inside_greedy_gap_debug.json"],
+            ["results/json/inside_greedy_gap_debug.json"],
             "Read paired same-coalition ablations and express before/after changes as RMSE reductions.",
             [
                 "RMSE reduction (%) = 100 * (1 - after RMSE / before RMSE)",
@@ -375,7 +375,7 @@ def build_artifact() -> dict[str, Any]:
                 "from experiments.build_inside_greedy_gap_report import _synthetic_rows\n"
                 "rows = _synthetic_rows()"
             ),
-            ["results/synthetic_n8_t40.json"],
+            ["results/json/synthetic_n8_t40.json"],
             "Read exact n=8 synthetic results for the true row-Greedy and cyclic-Orbit methods.",
             ["RMSE is aggregate coordinate RMSE over 100 independent repeats"],
         ),
@@ -391,7 +391,7 @@ def build_artifact() -> dict[str, Any]:
                 "frame_ofa/design.py",
                 "frame_ofa/estimator.py",
                 "experiments/run_analytic_inside_comparison.py",
-                "results/inside_greedy_gap_debug.json",
+                "results/json/inside_greedy_gap_debug.json",
             ],
             "Assemble reviewed formula, implementation, invariant, and comparison checks.",
             ["PASS denotes exact identity or validated implementation behavior"],
@@ -404,7 +404,7 @@ def build_artifact() -> dict[str, Any]:
                 "from experiments.build_inside_greedy_gap_report import _size_profile_rows, _read, DEBUG_REPORT\n"
                 "rows = _size_profile_rows(_read(DEBUG_REPORT))"
             ),
-            ["results/inside_greedy_gap_debug.json"],
+            ["results/json/inside_greedy_gap_debug.json"],
             "Read exact fixed-size means and summarize mismatch from the endpoint-linear baseline.",
             ["q*-weighted RMS mismatch = sqrt(sum_s q_s * (mu_s - ell_s)^2)"],
         ),
@@ -416,7 +416,7 @@ def build_artifact() -> dict[str, Any]:
                 "from experiments.build_inside_greedy_gap_report import _sensitivity_rows, _read, DEBUG_REPORT\n"
                 "rows = _sensitivity_rows(_read(DEBUG_REPORT))"
             ),
-            ["results/inside_greedy_gap_debug.json"],
+            ["results/json/inside_greedy_gap_debug.json"],
             "Read the fixed-budget Greedy candidate-pool and raw-lambda sweep.",
             ["Aggregate RMSE = sqrt(mean over repeats of coordinate MSE)"],
         ),
@@ -437,12 +437,12 @@ def build_artifact() -> dict[str, Any]:
         {
             "id": "debug_results",
             "label": "Paired INSIDE gap ablation",
-            "path": "results/inside_greedy_gap_debug.json",
+            "path": "results/json/inside_greedy_gap_debug.json",
         },
         {
             "id": "synthetic_results",
             "label": "Exact n=8 synthetic benchmark",
-            "path": "results/synthetic_n8_t40.json",
+            "path": "results/json/synthetic_n8_t40.json",
         },
         *[
             {

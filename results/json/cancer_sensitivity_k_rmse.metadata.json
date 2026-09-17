@@ -1,0 +1,56 @@
+{
+  "dataset": "cancer",
+  "plot": "k_rmse",
+  "source_sha256": "1efa0ca1ce1e47979763c95ae0babb1b0d3e3ecd77ac8840b507c8b687c3ec86",
+  "panel_tags": false,
+  "legend_location": "inside_upper_right",
+  "grid": "full-span uniform horizontal/vertical grid; only opaque legend footprint occludes lines",
+  "grid_linewidth_pt": 0.8,
+  "grid_color": "#D8DDE4",
+  "legend_frame": true,
+  "uncertainty": "mean +/- sample std across 3 seeds, ddof=1",
+  "plotted_values": [
+    {
+      "panel": 2,
+      "metric": "rmse",
+      "x": [
+        8,
+        16,
+        32,
+        64,
+        128
+      ],
+      "mean": [
+        0.0002401247400276959,
+        0.00024183582168746352,
+        0.00024173447816934276,
+        0.00023672620998652926,
+        0.00023555958815524845
+      ],
+      "std": [
+        9.953484501967964e-06,
+        6.623331135131009e-06,
+        9.012055647821244e-06,
+        5.472181445243256e-06,
+        7.907939596766217e-06
+      ],
+      "lower": [
+        0.00023017125552572793,
+        0.0002352124905523325,
+        0.00023272242252152153,
+        0.000231254028541286,
+        0.00022765164855848222
+      ],
+      "upper": [
+        0.00025007822452966384,
+        0.0002484591528225945,
+        0.000250746533817164,
+        0.00024219839143177252,
+        0.00024346752775201468
+      ]
+    }
+  ],
+  "outputs": {
+    ".pdf": "e7549d4bd202dae32ef6698804855b38b9188a1a3caf83e8636601bd25adc1eb"
+  }
+}

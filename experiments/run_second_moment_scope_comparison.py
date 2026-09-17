@@ -80,11 +80,11 @@ EXPERIMENT_ID = "analytic_inside_second_moment_scope_ablation"
 GLOBAL_SOURCE_METHOD = "inside_greedy"
 DEFAULT_SOURCE_REPORTS = {
     "airport": Path(
-        "results/airport_inside_comparison_normalized_mean_balance_"
+        "results/json/airport_inside_comparison_normalized_mean_balance_"
         "3repeats_50k_1m.json"
     ),
     "voting": Path(
-        "results/voting_inside_comparison_normalized_mean_balance_"
+        "results/json/voting_inside_comparison_normalized_mean_balance_"
         "3repeats_25k_510k.json"
     ),
 }
@@ -996,7 +996,7 @@ def main() -> None:
     args = _parse_args()
     source = args.source_report or DEFAULT_SOURCE_REPORTS[args.dataset]
     output = args.output or Path(
-        f"results/{args.dataset}_inside_global_vs_per_size.json"
+        f"results/json/{args.dataset}_inside_global_vs_per_size.json"
     )
     report = run_experiment(
         dataset=args.dataset,

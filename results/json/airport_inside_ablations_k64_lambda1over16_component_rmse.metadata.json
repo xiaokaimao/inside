@@ -1,0 +1,213 @@
+{
+  "artifact": "airport_inside_component_ablation",
+  "chart_title": null,
+  "dataset": "airport",
+  "experiment": "airport_inside_component_orbit_geometry_ablations",
+  "full_axis_box": true,
+  "interpretation": {
+    "comparison": "OFA (IID), first-moment-only Greedy, frame-only Greedy, and the complete INSIDE objective",
+    "uncertainty": "repeat bootstrap 95% intervals"
+  },
+  "layout": "1x1_near_square",
+  "legend_location": "inside_axes",
+  "method_labels": {
+    "first_only": "First-only",
+    "frame_only": "Frame-only",
+    "full_inside": "INSIDE-Coalition",
+    "iid_ofa": "OFA (IID)"
+  },
+  "methods": [
+    "iid_ofa",
+    "first_only",
+    "frame_only",
+    "full_inside"
+  ],
+  "outputs": {
+    "pdf": {
+      "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16_component_rmse.pdf",
+      "sha256": "cd606a9172f15212867747c06dfdfaca4e6058c3a2c6ceaa898f361ff0eda836"
+    },
+    "png": {
+      "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16_component_rmse.png",
+      "sha256": "0de626019973693fe03f0c05e48a0675351a4d7a5dc85c356b1b96a9b4a4232b"
+    }
+  },
+  "plotted_values": {
+    "first_only": {
+      "aggregate_rmse": [
+        0.005859133945695518,
+        0.0044967408185256005,
+        0.0030168126584018233,
+        0.0016417006602282565,
+        0.0013092780568451574
+      ],
+      "bootstrap_95": [
+        [
+          0.005424273370149203,
+          0.006370553364731951
+        ],
+        [
+          0.003712832314790093,
+          0.00497782232211578
+        ],
+        [
+          0.002673336780083146,
+          0.0032283478256532505
+        ],
+        [
+          0.0016318475510660973,
+          0.0016522176119780029
+        ],
+        [
+          0.0011644641074390562,
+          0.0014377256782450378
+        ]
+      ],
+      "label": "First-only",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    },
+    "frame_only": {
+      "aggregate_rmse": [
+        0.0048379502927627,
+        0.003481030708486489,
+        0.0018280887095202135,
+        0.0010804243301984194,
+        0.0007047062987014773
+      ],
+      "bootstrap_95": [
+        [
+          0.0045660856199368684,
+          0.005198196870631131
+        ],
+        [
+          0.003030488668585679,
+          0.0038915995937347262
+        ],
+        [
+          0.001613525973348869,
+          0.0019542870201183695
+        ],
+        [
+          0.0009613432801642628,
+          0.0011820896006394634
+        ],
+        [
+          0.0006673766084310714,
+          0.0007515792661399164
+        ]
+      ],
+      "label": "Frame-only",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    },
+    "full_inside": {
+      "aggregate_rmse": [
+        0.0050466030525927125,
+        0.0031011697459668273,
+        0.0018850575032842705,
+        0.0010512574025270298,
+        0.0007301239785588524
+      ],
+      "bootstrap_95": [
+        [
+          0.004708541285481985,
+          0.005288333968918456
+        ],
+        [
+          0.0029402349078731837,
+          0.0032742633907201953
+        ],
+        [
+          0.0017116228613870874,
+          0.002042581925837672
+        ],
+        [
+          0.0008737392638684998,
+          0.0011964103629532464
+        ],
+        [
+          0.0006874867274334743,
+          0.0007979167250143065
+        ]
+      ],
+      "label": "INSIDE-Coalition",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    },
+    "iid_ofa": {
+      "aggregate_rmse": [
+        0.006808587632678769,
+        0.004822876420908429,
+        0.003230419084157697,
+        0.0021064740333474738,
+        0.0014744799580594546
+      ],
+      "bootstrap_95": [
+        [
+          0.006447695279824298,
+          0.0070919483171508185
+        ],
+        [
+          0.004569480893170159,
+          0.004969332651814009
+        ],
+        [
+          0.002805989975388169,
+          0.0038199352373520516
+        ],
+        [
+          0.0019024947240269938,
+          0.0023468999583482184
+        ],
+        [
+          0.0013255171959302983,
+          0.001549756272063231
+        ]
+      ],
+      "label": "OFA (IID)",
+      "total_utility_calls": [
+        50202.0,
+        100202.0,
+        200202.0,
+        500202.0,
+        1000202.0
+      ]
+    }
+  },
+  "plotting_script": {
+    "path": "/home/maoxiaokai/python_project/frame/experiments/plot_airport_inside_ablations.py",
+    "sha256": "da91ac8a4ebdb7812fc82b5c6c6dc3b16b5a9741f36c8a3fc8a7cfcdf811fd47"
+  },
+  "protocol_version": "airport_ablation_v1",
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "source_report": {
+    "path": "/home/maoxiaokai/python_project/frame/results/airport_inside_ablations_k64_lambda1over16.json",
+    "sha256": "9e3cf36db0aa113097317432165b5a299a6cd64745dfe8ce0f7e2e1d16344f9f"
+  },
+  "status": "complete",
+  "validation": {
+    "figure_contract": "passed",
+    "output_hashes": "passed",
+    "plotted_aggregate_recomputation": "passed",
+    "source_schema": "passed"
+  }
+}

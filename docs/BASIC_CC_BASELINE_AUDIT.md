@@ -142,6 +142,6 @@ fall from 0.01883 to 0.000472 across the five budgets.
 
 The augmented raw report and log-scale figure are:
 
-- `results/wine_full_train_rbf_svm_frame_ofa_with_cc_71k_1p42m.json`
+- `results/json/wine_full_train_rbf_svm_frame_ofa_with_cc_71k_1p42m.json`
 - `results/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.png`
-- `results/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.pdf`
+- `results/pdf/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.pdf`

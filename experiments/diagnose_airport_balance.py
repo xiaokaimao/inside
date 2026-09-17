@@ -267,7 +267,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/airport_100_balance_diagnostic.json"),
+        default=Path("results/json/airport_100_balance_diagnostic.json"),
     )
     args = parser.parse_args()
     report = run_diagnostic(

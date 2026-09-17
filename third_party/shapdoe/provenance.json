@@ -1,0 +1,17 @@
+{
+  "package": "ShapDoE",
+  "version": "1.0.0",
+  "author": "Liuqing Yang",
+  "paper_doi": "10.1080/01621459.2023.2257364",
+  "cran_url": "https://CRAN.R-project.org/package=ShapDoE",
+  "source_url": "https://cran.r-project.org/src/contrib/ShapDoE_1.0.0.tar.gz",
+  "cran_mirror_url": "https://github.com/cran/ShapDoE",
+  "cran_mirror_commit": "c26f94633341aaaacfc6160a8589f6beb6a067a5",
+  "license": "MIT + file LICENSE",
+  "source_archive_sha256": "c17198073154b4e3562d95465ea1d4af06fe711c9503561dd79e762f229b60d3",
+  "files": {
+    "R/estsh.R": "5bf4eb481e6c027a4eb01114b10eceb3f3c61d357d16b32f95c940e75b42d3e8",
+    "DESCRIPTION": "2cde7eb648f6042e0c4f33f246757b872eeb812c6b9be1a7dddc741075c8fb66",
+    "LICENSE": "033ecf6962627a124a5e62976a9c20eecfcd47412e1eb53f60d20c1ff4facd3c"
+  }
+}

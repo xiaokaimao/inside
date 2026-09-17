@@ -1,0 +1,56 @@
+{
+  "dataset": "wine",
+  "plot": "k_design_time",
+  "source_sha256": "023fa357e75bcd312b33799397657ede162ab37d98f2c83a18f54c8a6d02e99f",
+  "panel_tags": false,
+  "legend_location": "inside_upper_right",
+  "grid": "full-span uniform horizontal/vertical grid; only opaque legend footprint occludes lines",
+  "grid_linewidth_pt": 0.8,
+  "grid_color": "#D8DDE4",
+  "legend_frame": true,
+  "uncertainty": "mean +/- sample std across 3 seeds, ddof=1",
+  "plotted_values": [
+    {
+      "panel": 3,
+      "metric": "design_seconds",
+      "x": [
+        8,
+        16,
+        32,
+        64,
+        128
+      ],
+      "mean": [
+        2.5349645506648812,
+        3.570124185323948,
+        6.0080964953328175,
+        9.465442390996031,
+        16.664709985343507
+      ],
+      "std": [
+        0.04092690671842158,
+        0.017660236310541453,
+        0.5910034224298993,
+        0.10530535460241514,
+        0.112633823416994
+      ],
+      "lower": [
+        2.4940376439464598,
+        3.5524639490134065,
+        5.417093072902918,
+        9.360137036393617,
+        16.55207616192651
+      ],
+      "upper": [
+        2.5758914573833027,
+        3.5877844216344896,
+        6.599099917762717,
+        9.570747745598446,
+        16.777343808760502
+      ]
+    }
+  ],
+  "outputs": {
+    ".pdf": "f661602b38f247e5b63ba6778183e4161d89e30ce5efb7237ea79043d46e1c6f"
+  }
+}

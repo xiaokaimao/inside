@@ -9,5 +9,9 @@ description = "Geometry-aware coupled sampling for Shapley-specific OFA"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24"]
 
+[project.optional-dependencies]
+experiments = ["scipy>=1.10", "scikit-learn>=1.2", "matplotlib>=3.7"]
+dev = ["pytest>=8", "pytest-subtests>=0.13"]
+
 [tool.setuptools.packages.find]
 include = ["frame_ofa*"]

@@ -539,7 +539,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/airport_100_frame_ofa_greedy.json"),
+        default=Path("results/json/airport_100_frame_ofa_greedy.json"),
     )
     parser.add_argument("--plot", type=Path)
     return parser.parse_args()

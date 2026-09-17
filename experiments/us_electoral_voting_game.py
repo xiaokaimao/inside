@@ -722,7 +722,7 @@ def _parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path(
-            "results/us_electoral_college_2024_frame_ofa_greedy.json"
+            "results/json/us_electoral_college_2024_frame_ofa_greedy.json"
         ),
     )
     parser.add_argument("--plot", type=Path)

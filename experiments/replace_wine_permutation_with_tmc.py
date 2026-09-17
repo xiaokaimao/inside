@@ -100,7 +100,7 @@ def parse_args() -> argparse.Namespace:
         "--input",
         type=Path,
         default=Path(
-            "results/"
+            "results/json/"
             "wine_full_train_rbf_svm_all_baselines_3repeats_71k_1p42m.json"
         ),
     )
@@ -108,7 +108,7 @@ def parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path(
-            "results/"
+            "results/json/"
             "wine_full_train_rbf_svm_all_baselines_tmc_"
             "3repeats_71k_1p42m.json"
         ),

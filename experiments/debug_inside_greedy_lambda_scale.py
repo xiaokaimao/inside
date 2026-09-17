@@ -473,13 +473,13 @@ def main() -> None:
         "--formal-report",
         type=Path,
         default=Path(
-            "results/airport_inside_comparison_3repeats_50k_1m.json"
+            "results/json/airport_inside_comparison_3repeats_50k_1m.json"
         ),
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/inside_greedy_lambda_scale_debug.json"),
+        default=Path("results/json/inside_greedy_lambda_scale_debug.json"),
     )
     args = parser.parse_args()
     report = run_experiment(processes=args.processes)

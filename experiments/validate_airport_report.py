@@ -174,12 +174,12 @@ def validate_report(report: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "report", type=Path, nargs="?", default=Path("results/airport_100_frame_ofa_greedy.json")
+        "report", type=Path, nargs="?", default=Path("results/json/airport_100_frame_ofa_greedy.json")
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/airport_100_frame_ofa_greedy_validation.json"),
+        default=Path("results/json/airport_100_frame_ofa_greedy_validation.json"),
     )
     args = parser.parse_args()
     report = json.loads(args.report.read_text(encoding="utf-8"))

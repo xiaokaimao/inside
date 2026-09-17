@@ -269,10 +269,10 @@ linear baseline but has a substantial non-utility design cost.
 ## Artifacts
 
 - Extended raw report:
-  `results/iris_full_train_rbf_svm_frame_ofa_60k_1p2m.json`
-- Ground-truth cache: `results/iris_full_train_rbf_svm_gt.npz`
+  `results/json/iris_full_train_rbf_svm_frame_ofa_60k_1p2m.json`
+- Ground-truth cache: `results/npz/iris_full_train_rbf_svm_gt.npz`
 - Extended figure: `results/iris_full_train_rbf_svm_rmse_60k_1p2m.png`
 - Extended vector figure:
-  `results/iris_full_train_rbf_svm_rmse_60k_1p2m.pdf`
+  `results/pdf/iris_full_train_rbf_svm_rmse_60k_1p2m.pdf`
 - Earlier diagnostic report:
-  `results/iris_full_train_rbf_svm_frame_ofa.json`
+  `results/json/iris_full_train_rbf_svm_frame_ofa.json`

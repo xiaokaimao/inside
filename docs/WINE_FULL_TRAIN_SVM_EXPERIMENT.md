@@ -181,18 +181,18 @@ worker, a CC repeat took about 1.47, 2.29, 4.42, 10.82, and 21.44 seconds at
 the five budgets. Every repeat used 128 coarse tasks.
 
 - Raw method report:
-  `results/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json`
+  `results/json/wine_full_train_rbf_svm_frame_ofa_71k_1p42m.json`
 - Raw report augmented with official basic CC:
-  `results/wine_full_train_rbf_svm_frame_ofa_with_cc_71k_1p42m.json`
+  `results/json/wine_full_train_rbf_svm_frame_ofa_with_cc_71k_1p42m.json`
 - Ground-truth report:
-  `results/wine_full_train_rbf_svm_ground_truth_report.json`
-- Ground-truth cache: `results/wine_full_train_rbf_svm_gt.npz`
+  `results/json/wine_full_train_rbf_svm_ground_truth_report.json`
+- Ground-truth cache: `results/npz/wine_full_train_rbf_svm_gt.npz`
 - Figure: `results/wine_full_train_rbf_svm_rmse_71k_1p42m.png`
-- Vector figure: `results/wine_full_train_rbf_svm_rmse_71k_1p42m.pdf`
+- Vector figure: `results/pdf/wine_full_train_rbf_svm_rmse_71k_1p42m.pdf`
 - Figure including CC:
   `results/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.png`
 - Vector figure including CC:
-  `results/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.pdf`
+  `results/pdf/wine_full_train_rbf_svm_rmse_with_cc_71k_1p42m.pdf`
 - Basic CC formula, source, and finite-budget theorem audit:
   `docs/BASIC_CC_BASELINE_AUDIT.md`
 
@@ -283,15 +283,15 @@ validator.  The main comparison and linear-estimator ablation are exported as
 two separate near-square figures with logarithmic axes.
 
 - Twelve-method raw report:
-  `results/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_71k_1p42m.json`
+  `results/json/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_71k_1p42m.json`
 - Twelve-method PNG:
   `results/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_rmse_71k_1p42m.png`
 - Twelve-method vector PDF:
-  `results/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_rmse_71k_1p42m.pdf`
+  `results/pdf/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_rmse_71k_1p42m.pdf`
 - Linear-estimator PNG:
   `results/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_linear_rmse_71k_1p42m.png`
 - Linear-estimator vector PDF:
-  `results/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_linear_rmse_71k_1p42m.pdf`
+  `results/pdf/wine_full_train_rbf_svm_all_baselines_gels_shapley_tmc_3repeats_linear_rmse_71k_1p42m.pdf`
 - External-baseline formula, target, and immutability audit:
   `docs/INTEGRAL_BASELINES_AUDIT.md`
 
@@ -311,7 +311,7 @@ INSIDE-Greedy with the explicitly configured protocol:
 INSIDE-Orbit and the six retained OFA/external baselines are copied verbatim
 from the source report, so this augmentation neither changes their estimates
 nor reruns their utility calls.  The output path is
-`results/wine_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_71k_1p42m.json`.
+`results/json/wine_inside_comparison_per_size_ratio_k64_lambda1over16_3repeats_71k_1p42m.json`.
 The unified INSIDE validator chooses the required `K` and `lambda0` from the
 versioned experiment ID, so both the historical K4 report and the new K64
 report remain auditable.

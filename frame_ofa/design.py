@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 import hashlib
 from itertools import combinations
 from math import comb
+import multiprocessing as mp
 from typing import Any
 
 import numpy as np
@@ -197,6 +199,7 @@ def _greedy_frame_rows(
     *,
     radial_weights: bool,
     mean_balance: float,
+    second_moment_weight: float = 1.0,
     second_moment_scope: str = "global",
 ) -> np.ndarray:
     """Greedily minimize a global or fixed-slice frame potential.
@@ -214,6 +217,15 @@ def _greedy_frame_rows(
 
     if mean_balance < 0:
         raise ValueError("mean_balance must be nonnegative")
+    if (
+        not np.isfinite(second_moment_weight)
+        or second_moment_weight < 0
+    ):
+        raise ValueError(
+            "second_moment_weight must be finite and nonnegative"
+        )
+    if second_moment_weight == 0 and mean_balance == 0:
+        raise ValueError("at least one moment objective must be active")
     if second_moment_scope not in {"global", "per_size"}:
         raise ValueError(
             "second_moment_scope must be 'global' or 'per_size'"
@@ -250,13 +262,16 @@ def _greedy_frame_rows(
                 size, np.zeros_like(operator_sum)
             )
         )
-        scores = weight * np.einsum(
-            "bi,ij,bj->b",
-            directions,
-            active_operator,
-            directions,
-            optimize=True,
-        )
+        if second_moment_weight:
+            scores = second_moment_weight * weight * np.einsum(
+                "bi,ij,bj->b",
+                directions,
+                active_operator,
+                directions,
+                optimize=True,
+            )
+        else:
+            scores = np.zeros(len(candidates), dtype=np.float64)
         direction_sum = direction_sums.setdefault(
             size, np.zeros(num_players, dtype=np.float64)
         )
@@ -271,9 +286,168 @@ def _greedy_frame_rows(
         coalitions[row_index] = coalition
         used.add(tuple(np.flatnonzero(coalition).tolist()))
 
-        active_operator += weight * np.outer(direction, direction)
+        if second_moment_weight:
+            active_operator += weight * np.outer(direction, direction)
         direction_sum += direction
     return coalitions
+
+
+@dataclass(frozen=True)
+class _FixedSliceGreedyTask:
+    """One independent fixed-size component of a per-size design."""
+
+    num_players: int
+    size: int
+    num_rows: int
+    candidate_pool: int
+    mean_balance: float
+    second_moment_weight: float
+    seed_words: tuple[int, ...]
+
+
+def _run_fixed_slice_greedy_task(
+    task: _FixedSliceGreedyTask,
+) -> tuple[int, np.ndarray, np.ndarray]:
+    """Build one slice and return its exact first-moment counts.
+
+    Per-size INSIDE has no state shared across coalition sizes.  Keeping this
+    helper at module scope makes that mathematical decomposition directly
+    usable by a spawn-based process pool without changing the public default
+    (the historical single-stream implementation remains the default).
+    """
+    rng = np.random.default_rng(np.random.SeedSequence(task.seed_words))
+    sampled_sizes = np.full(
+        task.num_rows, task.size, dtype=np.int64
+    )
+    rows = _greedy_frame_rows(
+        task.num_players,
+        sampled_sizes,
+        rng,
+        task.candidate_pool,
+        radial_weights=False,
+        mean_balance=task.mean_balance,
+        second_moment_weight=task.second_moment_weight,
+        second_moment_scope="per_size",
+    )
+    member_counts = rows.sum(axis=0, dtype=np.int64)
+    return task.size, rows, member_counts
+
+
+def _parallel_fixed_slice_rows(
+    num_players: int,
+    sampled_sizes: np.ndarray,
+    *,
+    candidate_pool: int,
+    mean_balance: float,
+    second_moment_weight: float,
+    seed_sequence: np.random.SeedSequence,
+    design_jobs: int,
+    start_method: str,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    """Build independent fixed-size states with deterministic substreams."""
+    if design_jobs < 1:
+        raise ValueError("design_jobs must be positive")
+    if start_method not in mp.get_all_start_methods():
+        raise ValueError(f"unsupported design start method: {start_method}")
+
+    sizes, _, _ = inner_size_distribution(num_players)
+    counts = np.bincount(sampled_sizes, minlength=num_players)
+    active_sizes = [int(size) for size in sizes if counts[int(size)] > 0]
+    child_sequences = seed_sequence.spawn(len(active_sizes))
+    tasks = [
+        _FixedSliceGreedyTask(
+            num_players=num_players,
+            size=size,
+            num_rows=int(counts[size]),
+            candidate_pool=candidate_pool,
+            mean_balance=mean_balance,
+            second_moment_weight=second_moment_weight,
+            seed_words=tuple(
+                int(word)
+                for word in child.generate_state(4, dtype=np.uint32)
+            ),
+        )
+        for size, child in zip(
+            active_sizes, child_sequences, strict=True
+        )
+    ]
+
+    coalitions = np.empty(
+        (len(sampled_sizes), num_players), dtype=bool
+    )
+    member_counts_by_size: dict[int, np.ndarray] = {}
+
+    def consume(
+        results: Any,
+    ) -> None:
+        for size, rows, member_counts in results:
+            positions = np.flatnonzero(sampled_sizes == size)
+            if rows.shape != (len(positions), num_players):
+                raise RuntimeError(
+                    "a fixed-slice design worker returned an invalid shape"
+                )
+            if member_counts.shape != (num_players,):
+                raise RuntimeError(
+                    "a fixed-slice design worker returned invalid counts"
+                )
+            coalitions[positions] = rows
+            member_counts_by_size[size] = member_counts
+
+    actual_jobs = min(design_jobs, len(tasks))
+    if actual_jobs <= 1:
+        consume(map(_run_fixed_slice_greedy_task, tasks))
+    else:
+        context = mp.get_context(start_method)
+        with ProcessPoolExecutor(
+            max_workers=actual_jobs,
+            mp_context=context,
+        ) as executor:
+            consume(executor.map(_run_fixed_slice_greedy_task, tasks))
+
+    missing_results = set(active_sizes) - set(member_counts_by_size)
+    if missing_results:
+        raise RuntimeError(
+            "fixed-slice design workers omitted sizes "
+            f"{sorted(missing_results)}"
+        )
+
+    minimum_inclusion = np.iinfo(np.int64).max
+    minimum_exclusion = np.iinfo(np.int64).max
+    missing_inclusion = 0
+    missing_exclusion = 0
+    exactly_balanced_sizes = 0
+    for size in sizes:
+        size_value = int(size)
+        row_count = int(counts[size_value])
+        inclusion = member_counts_by_size.get(
+            size_value, np.zeros(num_players, dtype=np.int64)
+        )
+        exclusion = row_count - inclusion
+        minimum_inclusion = min(
+            minimum_inclusion, int(inclusion.min())
+        )
+        minimum_exclusion = min(
+            minimum_exclusion, int(exclusion.min())
+        )
+        missing_inclusion += int(np.count_nonzero(inclusion == 0))
+        missing_exclusion += int(np.count_nonzero(exclusion == 0))
+        exactly_balanced_sizes += int(
+            row_count > 0 and np.all(inclusion == inclusion[0])
+        )
+    coverage = {
+        "all_player_size_strata_covered": (
+            missing_inclusion == 0 and missing_exclusion == 0
+        ),
+        "expected_inner_sizes": int(len(sizes)),
+        "observed_inner_sizes": int(len(active_sizes)),
+        "missing_inner_sizes": int(len(sizes) - len(active_sizes)),
+        "minimum_inclusion_count": int(minimum_inclusion),
+        "minimum_exclusion_count": int(minimum_exclusion),
+        "missing_inclusion_strata": int(missing_inclusion),
+        "missing_exclusion_strata": int(missing_exclusion),
+        "exactly_1_balanced_sizes": int(exactly_balanced_sizes),
+    }
+    return coalitions, coverage
 
 
 def _resolve_mean_balance(
@@ -496,8 +670,12 @@ def per_size_frame_coupled_design(
     candidate_pool: int = 64,
     mean_balance: float = 1.0 / 16.0,
     *,
+    second_moment_weight: float = 1.0,
     mean_balance_mode: str = "normalized",
     relabel_seed: int | None = None,
+    design_jobs: int | None = None,
+    design_start_method: str = "spawn",
+    compute_frame_diagnostics: bool = True,
 ) -> CoalitionDesign:
     """Generate the design-only per-size counterpart of coupled Greedy.
 
@@ -506,14 +684,53 @@ def per_size_frame_coupled_design(
     sampling marginal.  Aggregation is chosen separately by the estimator;
     INSIDE-Greedy uses the covered official OFA ratio estimator.  Every
     fixed-size slice maintains a separate, unweighted second-moment operator.
+
+    ``design_jobs=None`` preserves the historical single RNG stream exactly.
+    Passing a positive ``design_jobs`` instead assigns deterministic child
+    seed streams to the independent fixed-size problems and may solve them in
+    parallel.  The resulting rows retain the same randomized-systematic size
+    marginals and the same uniform fixed-slice marginals after the common
+    random relabeling; only the otherwise-irrelevant coupling of candidate RNG
+    draws *between different sizes* changes.  Results in this mode are
+    invariant to the requested worker count.  Large experiments may set
+    ``compute_frame_diagnostics=False`` because those diagnostics do not enter
+    either the design objective or the OFA-ratio estimate.  Setting
+    ``second_moment_weight=0`` gives the exact first-moment-only ablation;
+    setting ``mean_balance=0`` gives the frame-only ablation.
     """
     if num_samples < 1:
         raise ValueError("num_samples must be positive")
-    rng = np.random.default_rng(seed)
+    if (
+        not np.isfinite(second_moment_weight)
+        or second_moment_weight < 0
+    ):
+        raise ValueError(
+            "second_moment_weight must be finite and nonnegative"
+        )
+    if second_moment_weight == 0 and mean_balance == 0:
+        raise ValueError("at least one moment objective must be active")
     sizes, probabilities, _ = inner_size_distribution(num_players)
-    sampled_sizes = _systematic_sizes(
-        sizes, probabilities, num_samples, rng
-    )
+    parallel_slices = design_jobs is not None
+    if parallel_slices:
+        if (
+            isinstance(design_jobs, bool)
+            or not isinstance(design_jobs, int)
+            or design_jobs < 1
+        ):
+            raise ValueError("design_jobs must be a positive integer or None")
+        root_sequence = np.random.SeedSequence(seed)
+        size_sequence, slice_sequence, relabel_sequence = (
+            root_sequence.spawn(3)
+        )
+        size_rng = np.random.default_rng(size_sequence)
+        sampled_sizes = _systematic_sizes(
+            sizes, probabilities, num_samples, size_rng
+        )
+    else:
+        rng = np.random.default_rng(seed)
+        sampled_sizes = _systematic_sizes(
+            sizes, probabilities, num_samples, rng
+        )
     effective_mean_balance, balance_diagnostics = _resolve_mean_balance(
         num_players,
         sampled_sizes,
@@ -521,27 +738,77 @@ def per_size_frame_coupled_design(
         mean_balance_mode,
         radial_weights=False,
     )
-    base = _greedy_frame_rows(
-        num_players,
-        sampled_sizes,
-        rng,
-        candidate_pool,
-        radial_weights=False,
-        mean_balance=effective_mean_balance,
-        second_moment_scope="per_size",
-    )
-    relabel_rng = (
-        rng if relabel_seed is None else np.random.default_rng(relabel_seed)
-    )
+    if parallel_slices:
+        base, coverage = _parallel_fixed_slice_rows(
+            num_players,
+            sampled_sizes,
+            candidate_pool=candidate_pool,
+            mean_balance=effective_mean_balance,
+            second_moment_weight=second_moment_weight,
+            seed_sequence=slice_sequence,
+            design_jobs=design_jobs,
+            start_method=design_start_method,
+        )
+        relabel_rng = (
+            np.random.default_rng(relabel_sequence)
+            if relabel_seed is None
+            else np.random.default_rng(relabel_seed)
+        )
+    else:
+        base = _greedy_frame_rows(
+            num_players,
+            sampled_sizes,
+            rng,
+            candidate_pool,
+            radial_weights=False,
+            mean_balance=effective_mean_balance,
+            second_moment_weight=second_moment_weight,
+            second_moment_scope="per_size",
+        )
+        coverage = None
+        relabel_rng = (
+            rng
+            if relabel_seed is None
+            else np.random.default_rng(relabel_seed)
+        )
     permutation = relabel_rng.permutation(num_players)
     coalitions = _relabel_with_permutation(base, permutation)
-    diagnostics: dict[str, Any] = frame_diagnostics(coalitions)
+    diagnostics: dict[str, Any] = (
+        frame_diagnostics(coalitions)
+        if compute_frame_diagnostics
+        else {}
+    )
     diagnostics.update(balance_diagnostics)
     diagnostics["second_moment_scope"] = "per_size"
+    diagnostics["second_moment_weight"] = float(second_moment_weight)
+    diagnostics["objective_components"] = [
+        component
+        for component, active in (
+            ("first_moment", effective_mean_balance > 0),
+            ("second_moment", second_moment_weight > 0),
+        )
+        if active
+    ]
     diagnostics["relabel_seed"] = relabel_seed
     diagnostics["relabel_permutation_sha256"] = _permutation_sha256(
         permutation
     )
+    diagnostics["frame_diagnostics_computed"] = bool(
+        compute_frame_diagnostics
+    )
+    diagnostics["fixed_slice_rng_partitioning"] = (
+        "independent_seedsequence_substreams"
+        if parallel_slices
+        else "historical_shared_stream"
+    )
+    diagnostics["design_jobs"] = (
+        None if design_jobs is None else int(design_jobs)
+    )
+    diagnostics["design_start_method"] = (
+        None if not parallel_slices else design_start_method
+    )
+    if coverage is not None:
+        diagnostics["ratio_coverage"] = coverage
     return CoalitionDesign(
         coalitions=coalitions,
         sizes=sampled_sizes,
@@ -1039,3 +1306,158 @@ def cyclic_orbit_frame_design(
             [0.0] * len(realized_operators),
         ),
     )
+
+
+def paired_cyclic_orbit_designs(
+    num_players: int,
+    num_orbits: int,
+    seed: int = 0,
+    candidate_pool: int = 4,
+) -> tuple[CoalitionDesign, CoalitionDesign]:
+    """Return a strict Random-Orbit/INSIDE-Orbit ablation pair.
+
+    At every orbit, both designs see the exact same ``candidate_pool`` base
+    coalitions.  Random-Orbit selects one uniformly, whereas INSIDE-Orbit
+    selects the minimum per-size frame-potential increment.  Independent RNG
+    substreams keep candidate generation, random selection, greedy tie
+    breaking, and the shared per-size relabeling from perturbing one another.
+    Consequently the selection rule is the pair's only algorithmic change.
+    """
+    if num_players < 4:
+        raise ValueError("at least 4 players are required")
+    if num_orbits < 1:
+        raise ValueError("num_orbits must be positive")
+    if candidate_pool < 1:
+        raise ValueError("candidate_pool must be positive")
+
+    sizes, probabilities, _ = inner_size_distribution(num_players)
+    orbit_counts = _minimum_one_counts(num_orbits, probabilities)
+    root = np.random.SeedSequence(seed)
+    candidate_seed, random_seed, tie_seed, relabel_seed = root.spawn(4)
+    candidate_rng = np.random.default_rng(candidate_seed)
+    random_rng = np.random.default_rng(random_seed)
+    tie_rng = np.random.default_rng(tie_seed)
+    relabel_rng = np.random.default_rng(relabel_seed)
+
+    random_blocks: list[np.ndarray] = []
+    frame_blocks: list[np.ndarray] = []
+    recorded_sizes: list[np.ndarray] = []
+    random_operators: list[np.ndarray] = []
+    frame_operators: list[np.ndarray] = []
+    candidate_digest = hashlib.sha256()
+    relabel_digest = hashlib.sha256()
+    target = efficiency_projector(num_players) / (num_players - 1)
+
+    for size_value, count_value in zip(
+        sizes, orbit_counts, strict=True
+    ):
+        size = int(size_value)
+        count = int(count_value)
+        random_signature_sum = np.zeros(num_players, dtype=np.float64)
+        frame_signature_sum = np.zeros(num_players, dtype=np.float64)
+        random_orbits: list[np.ndarray] = []
+        frame_orbits: list[np.ndarray] = []
+        for orbit_index in range(count):
+            candidates = _candidate_coalitions(
+                num_players, size, candidate_pool, candidate_rng
+            )
+            signatures = _cyclic_orbit_signatures(candidates)
+            candidate_digest.update(
+                np.asarray([size, orbit_index], dtype="<i8").tobytes()
+            )
+            candidate_digest.update(
+                np.ascontiguousarray(candidates, dtype=np.uint8).tobytes()
+            )
+
+            random_chosen = int(random_rng.integers(len(candidates)))
+            scores = num_players * (
+                2.0 * (signatures @ frame_signature_sum)
+                + np.einsum("bi,bi->b", signatures, signatures)
+            )
+            best = np.flatnonzero(
+                np.isclose(scores, scores.min(), rtol=1e-12, atol=1e-14)
+            )
+            frame_chosen = int(tie_rng.choice(best))
+
+            random_signature_sum += signatures[random_chosen]
+            frame_signature_sum += signatures[frame_chosen]
+            random_orbits.append(_cyclic_orbit(candidates[random_chosen]))
+            frame_orbits.append(_cyclic_orbit(candidates[frame_chosen]))
+
+        permutation = relabel_rng.permutation(num_players)
+        relabel_digest.update(
+            np.ascontiguousarray(permutation, dtype="<i8").tobytes()
+        )
+        random_rows = _relabel_with_permutation(
+            np.concatenate(random_orbits, axis=0), permutation
+        )
+        frame_rows = _relabel_with_permutation(
+            np.concatenate(frame_orbits, axis=0), permutation
+        )
+        random_operator = _circulant_from_first_row(
+            random_signature_sum / count
+        )
+        frame_operator = _circulant_from_first_row(
+            frame_signature_sum / count
+        )
+        relabeled_random_operator = np.empty_like(random_operator)
+        relabeled_frame_operator = np.empty_like(frame_operator)
+        relabeled_random_operator[np.ix_(permutation, permutation)] = (
+            random_operator
+        )
+        relabeled_frame_operator[np.ix_(permutation, permutation)] = (
+            frame_operator
+        )
+
+        random_blocks.append(random_rows)
+        frame_blocks.append(frame_rows)
+        recorded_sizes.append(
+            np.full(len(random_rows), size, dtype=np.int64)
+        )
+        random_operators.append(relabeled_random_operator)
+        frame_operators.append(relabeled_frame_operator)
+
+    sampled_sizes = np.concatenate(recorded_sizes)
+    common = {
+        "paired_orbit_ablation": True,
+        "candidate_pool": int(candidate_pool),
+        "num_orbits": int(num_orbits),
+        "orbit_counts_by_size": orbit_counts.astype(int).tolist(),
+        "shared_candidate_pools": True,
+        "shared_candidate_pool_sha256": candidate_digest.hexdigest(),
+        "shared_relabeling": True,
+        "shared_relabel_permutations_sha256": relabel_digest.hexdigest(),
+        "exact_first_moment_by_complete_orbits": True,
+    }
+    random_diagnostics: dict[str, Any] = _summarize_stratified_operators(
+        random_operators, target, [0.0] * len(random_operators)
+    )
+    random_diagnostics.update(common)
+    random_diagnostics["selection_rule"] = (
+        "uniform_random_from_shared_candidate_pool"
+    )
+    frame_diagnostics_by_slice: dict[str, Any] = (
+        _summarize_stratified_operators(
+            frame_operators, target, [0.0] * len(frame_operators)
+        )
+    )
+    frame_diagnostics_by_slice.update(common)
+    frame_diagnostics_by_slice["selection_rule"] = (
+        "minimum_per_size_frame_increment"
+    )
+
+    random_design = CoalitionDesign(
+        coalitions=np.concatenate(random_blocks, axis=0),
+        sizes=sampled_sizes.copy(),
+        method="cyclic_orbit_random",
+        seed=seed,
+        diagnostics=random_diagnostics,
+    )
+    frame_design = CoalitionDesign(
+        coalitions=np.concatenate(frame_blocks, axis=0),
+        sizes=sampled_sizes.copy(),
+        method="cyclic_orbit_frame",
+        seed=seed,
+        diagnostics=frame_diagnostics_by_slice,
+    )
+    return random_design, frame_design

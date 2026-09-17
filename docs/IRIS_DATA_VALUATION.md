@@ -133,7 +133,7 @@ conda run -n svmsv python -m experiments.iris_data_valuation \
   --jobs 16 \
   --chunksize 32 \
   --candidate-pool 16 \
-  --output results/iris_rbf_svm_frame_ofa.json
+  --output results/json/iris_rbf_svm_frame_ofa.json
 ```
 
 完整 ground truth、每次 repeat 的 Shapley vectors、bootstrap 区间、

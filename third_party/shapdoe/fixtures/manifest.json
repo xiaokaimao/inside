@@ -1,0 +1,37 @@
+{
+  "generated_by": "experiments/verify_shapdoe_r.R",
+  "generator_sha256": "61dcbeefefd8915810b7b0312590a36b9cf1418f4bfd2a5045f0a03b78929357",
+  "official_source_sha256": "5bf4eb481e6c027a4eb01114b10eceb3f3c61d357d16b32f95c940e75b42d3e8",
+  "runtime": [
+    "R version 4.1.2 (2021-11-01)",
+    "gtools 3.9.2",
+    "RNGkind Mersenne-Twister, Inversion, Rejection"
+  ],
+  "cases": [
+    "ls5",
+    "coa5",
+    "coa8",
+    "coa9",
+    "coa7_project6"
+  ],
+  "seed": 1234,
+  "comparison": "Replay captured R sample() draws in the Python generator; compare designs exactly and estimates with atol=rtol=1e-12.",
+  "files": {
+    "coa5_design.csv": "37cafc46ddb7697af0a69b7dc5a72af0bfc90cd79d2f07f0e7884321392fb71e",
+    "coa5_draws.txt": "59cd4021ce862130904a69a2e806ae76e36a3736bbfa72a927e66500d0e13ef1",
+    "coa5_values.csv": "6125ecc746d5d94d107eea83d49a690049f1e5befa79a5d29b56f771e4c6e350",
+    "coa7_project6_design.csv": "f478eac0b144729e0bd063a369bfd4dac67385ce6fc89f65c7fd9f5a07140c5c",
+    "coa7_project6_draws.txt": "ff3731aa3cf1612131f88b22a59aaddb4a0f7902f4bfdda9394157442ac211ef",
+    "coa7_project6_values.csv": "a4d3f2a2a6a75ef8f42edf03d42c6b067c9f90a49342b4f3bad2bc25b5dafa88",
+    "coa8_design.csv": "bb8ab19207aace1152b11d9e71a26bf55f4dae2717d0e8c3ef0abe2fc29bef58",
+    "coa8_draws.txt": "759169496b7e4660aff3c8dd9c5eb1eea76e55fd11628d60b7748631e69a40a6",
+    "coa8_values.csv": "89d0659fd59d26a2a63c20f3582a67345bcf93f5d2fa147b0d347a7a7154e2fa",
+    "coa9_design.csv": "f46cfe0e5bc28c16142e2b241b9e1ce3829a383dc4cb97ea8f084c175ac09edf",
+    "coa9_draws.txt": "70ed01209f018d2b0b35facf632b611c1936c7194dce6d4854fdb67c4b5950a8",
+    "coa9_values.csv": "48a4ee909ffde3fe1e8dbca433a34dfe1b46b62635a72dce5d380cef7ed10e25",
+    "ls5_design.csv": "109acdf9b5f7e9b07f117ff37dae22a163afd84bbe48c8b6e81ca18fdb7660f6",
+    "ls5_draws.txt": "c4d27357a1fea1ef40d2fea8c79d1d7000cd0aaaabfe51f13fcc20331cb0094c",
+    "ls5_values.csv": "2fa43b3b3a25cc4423bb2fe70a72341fcc46947e28f7c1be31290b147b0c1be2",
+    "runtime.txt": "470581877dc6c7b73b0b88a582b5640cf216aaf6b7645a8d41e6a763ec6119c3"
+  }
+}

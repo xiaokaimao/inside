@@ -531,12 +531,12 @@ def _parse_args() -> argparse.Namespace:
         "report",
         type=Path,
         nargs="?",
-        default=Path("results/airport_100_all_baselines_3repeats_50k_1m.json"),
+        default=Path("results/json/airport_100_all_baselines_3repeats_50k_1m.json"),
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/airport_100_all_baselines_3repeats_validation.json"),
+        default=Path("results/json/airport_100_all_baselines_3repeats_validation.json"),
     )
     return parser.parse_args()
 

@@ -201,10 +201,10 @@ def build_artifact(
     ]
 
     result_path = (
-        "results/us_electoral_college_2024_frame_ofa_greedy.json"
+        "results/json/us_electoral_college_2024_frame_ofa_greedy.json"
     )
     diagnostic_path = (
-        "results/us_electoral_college_frame_design_diagnostics.json"
+        "results/json/us_electoral_college_frame_design_diagnostics.json"
     )
     design_path = "frame_ofa/design.py"
     estimator_path = "frame_ofa/estimator.py"
@@ -637,21 +637,21 @@ def main() -> None:
         "--experiment",
         type=Path,
         default=Path(
-            "results/us_electoral_college_2024_frame_ofa_greedy.json"
+            "results/json/us_electoral_college_2024_frame_ofa_greedy.json"
         ),
     )
     parser.add_argument(
         "--diagnostics",
         type=Path,
         default=Path(
-            "results/us_electoral_college_frame_design_diagnostics.json"
+            "results/json/us_electoral_college_frame_design_diagnostics.json"
         ),
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path(
-            "results/us_electoral_college_frame_design_report_artifact.json"
+            "results/json/us_electoral_college_frame_design_report_artifact.json"
         ),
     )
     args = parser.parse_args()

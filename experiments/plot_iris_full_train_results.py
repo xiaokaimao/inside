@@ -11,6 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
+from experiments.result_paths import by_format
+
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, LogLocator
 import numpy as np
@@ -96,7 +98,7 @@ def _default_output(input_path: Path) -> Path:
         stem = stem.replace("_frame_ofa", "_rmse", 1)
     else:
         stem = f"{stem}_rmse"
-    return input_path.with_name(f"{stem}.png")
+    return by_format(input_path.with_name(f"{stem}.png"))
 
 
 def _calls_label(value: float, _: int) -> str:
@@ -353,7 +355,7 @@ def plot_results(report: dict, output: Path) -> None:
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(output, dpi=220, bbox_inches="tight")
-    figure.savefig(output.with_suffix(".pdf"), bbox_inches="tight")
+    figure.savefig(by_format(output.with_suffix(".pdf")), bbox_inches="tight")
     plt.close(figure)
 
 
@@ -363,7 +365,7 @@ def parse_args() -> argparse.Namespace:
         "--input",
         type=Path,
         default=Path(
-            "results/iris_full_train_rbf_svm_frame_ofa.json"
+            "results/json/iris_full_train_rbf_svm_frame_ofa.json"
         ),
     )
     parser.add_argument(
@@ -383,7 +385,7 @@ def main() -> None:
     report = json.loads(args.input.read_text(encoding="utf-8"))
     output = args.output or _default_output(args.input)
     plot_results(report, output)
-    print(f"Saved {output} and {output.with_suffix('.pdf')}")
+    print(f"Saved {output} and {by_format(output.with_suffix('.pdf'))}")
 
 
 if __name__ == "__main__":

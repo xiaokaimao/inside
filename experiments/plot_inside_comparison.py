@@ -1,12 +1,12 @@
 """Draw the common eight-method INSIDE comparison.
 
-The plotting contract is intentionally shared by Wine, Airport, and the U.S.
-Electoral College voting game.  Each input report produces one near-square
-log--log figure; the two proposed INSIDE implementations are visually
-prominent and the six baselines remain secondary.  TMC-Shapley is positioned
-at its observed physical call count after truncation.  Its raw early points
-are retained in the report and merely clipped by the common target-budget
-viewport when they lie far to the left.
+The plotting contract is intentionally shared by Wine, Breast Cancer,
+Airport, and the U.S. Electoral College voting game.  Each input report
+produces one near-square log--log figure; the two proposed INSIDE
+implementations are visually prominent and the six baselines remain
+secondary.  TMC-Shapley is positioned at its observed physical call count
+after truncation.  Its raw early points are retained in the report and merely
+clipped by the common target-budget viewport when they lie far to the left.
 """
 
 from __future__ import annotations
@@ -284,6 +284,9 @@ def _dataset_name(report: Mapping[str, Any]) -> str:
     normalized = str(candidate or "INSIDE").strip().lower()
     labels = {
         "wine": "Wine",
+        "cancer": "Breast Cancer",
+        "breast_cancer": "Breast Cancer",
+        "breast cancer": "Breast Cancer",
         "airport": "Airport",
         "voting": "U.S. Electoral Voting",
         "us_electoral_voting": "U.S. Electoral Voting",

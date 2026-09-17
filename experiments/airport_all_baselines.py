@@ -555,7 +555,7 @@ def _parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path(
-            "results/airport_100_all_baselines_3repeats_50k_1m.json"
+            "results/json/airport_100_all_baselines_3repeats_50k_1m.json"
         ),
     )
     return parser.parse_args()

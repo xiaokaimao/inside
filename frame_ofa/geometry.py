@@ -10,6 +10,8 @@ It is a unit vector in the efficiency subspace 1^perp.
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 
 
@@ -167,3 +169,117 @@ def fixed_slice_frame_operator(coalitions: np.ndarray) -> np.ndarray:
         raise ValueError("all coalitions must have the same size")
     directions = centered_directions(coalitions)
     return directions.T @ directions / len(directions)
+
+
+def fixed_slice_moment_diagnostics(
+    coalitions: np.ndarray,
+    sizes: np.ndarray | None = None,
+    *,
+    require_all_inner_sizes: bool = False,
+) -> dict[str, Any]:
+    """Compute first- and second-moment errors on every fixed-size slice.
+
+    The two headline summaries weight coalition sizes equally:
+
+    ``first_moment_rms``
+        ``sqrt(mean_s ||mean(u | s)||_2**2)``;
+
+    ``frame_frobenius_rms``
+        ``sqrt(mean_s ||mean(u u^T | s) - P/(n-1)||_F**2)``.
+
+    Row-weighted counterparts are retained only as sensitivity diagnostics.
+    Missing slices are never silently treated as zero-error observations.
+    """
+    rows = np.asarray(coalitions, dtype=bool)
+    if rows.ndim != 2 or len(rows) == 0:
+        raise ValueError(
+            "coalitions must be a nonempty two-dimensional array"
+        )
+    num_samples, num_players = rows.shape
+    observed_sizes = (
+        rows.sum(axis=1, dtype=np.int64)
+        if sizes is None
+        else np.asarray(sizes, dtype=np.int64)
+    )
+    if observed_sizes.shape != (num_samples,):
+        raise ValueError("sizes must contain one entry per coalition")
+    if not np.array_equal(rows.sum(axis=1), observed_sizes):
+        raise ValueError("sizes disagree with coalition cardinalities")
+    if num_players < 4:
+        raise ValueError("at least four players are required")
+    if np.any(observed_sizes < 2) or np.any(
+        observed_sizes > num_players - 2
+    ):
+        raise ValueError("all rows must use OFA inner sizes 2 through n-2")
+
+    expected_sizes = np.arange(2, num_players - 1, dtype=np.int64)
+    counts = np.bincount(
+        observed_sizes, minlength=num_players + 1
+    )[2 : num_players - 1]
+    missing = expected_sizes[counts == 0]
+    if require_all_inner_sizes and len(missing):
+        raise ValueError(
+            "fixed-slice diagnostics require every inner size; missing "
+            f"{missing.tolist()}"
+        )
+
+    projector = efficiency_projector(num_players)
+    target = projector / (num_players - 1)
+    present_sizes: list[int] = []
+    present_counts: list[int] = []
+    first_norms: list[float] = []
+    frame_discrepancies: list[float] = []
+    for size, count in zip(expected_sizes, counts, strict=True):
+        if count == 0:
+            continue
+        take = rows[observed_sizes == size]
+        inclusion = take.sum(axis=0, dtype=np.int64)
+        if np.all(inclusion * num_players == int(size) * int(count)):
+            first_norm = 0.0
+        else:
+            centered_mean = (
+                inclusion.astype(np.float64) / count
+                - float(size) / num_players
+            )
+            scale = np.sqrt(
+                num_players / (float(size) * (num_players - size))
+            )
+            first_norm = float(np.linalg.norm(scale * centered_mean))
+        directions = centered_directions(take)
+        operator = directions.T @ directions / count
+        frame_discrepancy = float(
+            np.linalg.norm(operator - target, ord="fro")
+        )
+        present_sizes.append(int(size))
+        present_counts.append(int(count))
+        first_norms.append(first_norm)
+        frame_discrepancies.append(frame_discrepancy)
+
+    first = np.asarray(first_norms, dtype=np.float64)
+    second = np.asarray(frame_discrepancies, dtype=np.float64)
+    weights = np.asarray(present_counts, dtype=np.float64)
+    weights /= weights.sum()
+    return {
+        "aggregation": "equal_size_macro_rms",
+        "target": "P/(n-1)",
+        "expected_inner_size_count": int(len(expected_sizes)),
+        "observed_inner_size_count": int(len(present_sizes)),
+        "all_inner_sizes_present": len(missing) == 0,
+        "missing_sizes": missing.astype(int).tolist(),
+        "sizes": present_sizes,
+        "counts": present_counts,
+        "first_moment_norm_by_size": first.tolist(),
+        "frame_frobenius_by_size": second.tolist(),
+        "first_moment_rms": float(np.sqrt(np.mean(np.square(first)))),
+        "frame_frobenius_rms": float(
+            np.sqrt(np.mean(np.square(second)))
+        ),
+        "first_moment_worst": float(first.max()),
+        "frame_frobenius_worst": float(second.max()),
+        "row_weighted_first_moment_rms": float(
+            np.sqrt(np.dot(weights, np.square(first)))
+        ),
+        "row_weighted_frame_frobenius_rms": float(
+            np.sqrt(np.dot(weights, np.square(second)))
+        ),
+    }

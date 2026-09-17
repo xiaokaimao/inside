@@ -1,0 +1,38 @@
+{
+  "repository": "https://github.com/RAMitchell/shap_sampling",
+  "commit": "fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac",
+  "retrieved_date": "2026-09-08",
+  "paper": "https://jmlr.org/papers/v23/21-0439.html",
+  "paper_pdf": "https://jmlr.org/papers/volume23/21-0439/21-0439.pdf",
+  "method": "OrthogonalSphericalCodes",
+  "source_functions": [
+    "get_orthogonal_vectors",
+    "_orthogonal_permutations",
+    "OrthogonalSphericalCodes",
+    "estimate_shap_given_permutations"
+  ],
+  "license_at_commit": null,
+  "integration": "Independent mathematical implementation; upstream source used temporarily for behavioral comparison, not redistributed.",
+  "files": {
+    "README.md": {
+      "sha256": "edc19698383866e693ad8daccb08ad51e6dab81b49c0f800e985ed5a82d62af8",
+      "url": "https://raw.githubusercontent.com/RAMitchell/shap_sampling/fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac/README.md"
+    },
+    "algorithms.py": {
+      "sha256": "8934eab8fa3a73b031f4b11f189cc72f974f36b5864424d9bb6697ccd1673c46",
+      "url": "https://raw.githubusercontent.com/RAMitchell/shap_sampling/fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac/algorithms.py"
+    },
+    "experiments.py": {
+      "sha256": "0078ed91bf77cf845cbb8e2c8b09b83bad2c204f5db937a7424c014890d34c68",
+      "url": "https://raw.githubusercontent.com/RAMitchell/shap_sampling/fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac/experiments.py"
+    },
+    "sobol_sphere.py": {
+      "sha256": "fa6b2ef0935d6ff211321269e00a1bd5b30063f23d5801d1a93c158440fff759",
+      "url": "https://raw.githubusercontent.com/RAMitchell/shap_sampling/fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac/sobol_sphere.py"
+    },
+    "test/test_algorithms.py": {
+      "sha256": "21efd0956e842e65e9a44860dea23995760bf6641ca380552020c948e43409e7",
+      "url": "https://raw.githubusercontent.com/RAMitchell/shap_sampling/fae42e3aa332665f8bd60bcd0ac2cfbf0f8da4ac/test/test_algorithms.py"
+    }
+  }
+}

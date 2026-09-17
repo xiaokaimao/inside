@@ -276,7 +276,7 @@ def main() -> None:
         "--output",
         type=Path,
         default=Path(
-            "results/us_electoral_college_frame_design_diagnostics.json"
+            "results/json/us_electoral_college_frame_design_diagnostics.json"
         ),
     )
     args = parser.parse_args()

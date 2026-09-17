@@ -1,0 +1,535 @@
+{
+  "artifact": "cancer_estimated_time_efficiency",
+  "axis_semantics": {
+    "x": "estimated utility-dominated one-shot time in seconds",
+    "y": "aggregate RMSE against the high-budget Cancer MC reference"
+  },
+  "chart_title": null,
+  "dataset": "cancer",
+  "experiment": "cancer_estimated_time_efficiency_k64_lambda1over16",
+  "full_axis_box": true,
+  "layout": "1x1_near_square",
+  "legend_location": "inside_axes_upper_right",
+  "method_labels": {
+    "cc": "CC",
+    "inside_greedy": "INSIDE-Greedy",
+    "inside_orbit": "INSIDE-Orbit",
+    "kernel_shap": "KernelSHAP",
+    "ofa": "OFA",
+    "tmc_shapley": "TMC-Shapley"
+  },
+  "methods": [
+    "inside_greedy",
+    "inside_orbit",
+    "ofa",
+    "cc",
+    "kernel_shap",
+    "tmc_shapley"
+  ],
+  "omitted_methods": [
+    {
+      "method": "ofa_iid_linear",
+      "reason": "OFA is represented by the ratio estimator"
+    },
+    {
+      "actual_oom_observed": false,
+      "method": "s_diff",
+      "reason": "presentation omission due to O(n^2) pairwise-state memory scalability"
+    }
+  ],
+  "outputs": {
+    "pdf": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.pdf",
+      "sha256": "4d45fee7d4a8cf59d16358fe388a9efff927da7983947984b69a179e60147e7e"
+    },
+    "png": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.png",
+      "sha256": "5d649658ec2be0228babfb6303bc94a6b322e19840fe1e629c000e6d0c903151"
+    },
+    "svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.svg",
+      "sha256": "45bc60c7b68581e4127982ce1a7c118b42b29d705a74cb193190452d512592bc"
+    }
+  },
+  "panel_alignment": {
+    "json": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.alignment.json",
+      "sha256": "0d132caea3cec961e740f72b944c2038dbe5e2fd7db9ddf68ed7a84708750b54"
+    },
+    "overlay_svg": {
+      "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.alignment.svg",
+      "sha256": "b78843bc5924be8a5b6161af86017cf3fded2f63427d9eb507e6de0678474d5e"
+    },
+    "status": "NOT APPLICABLE"
+  },
+  "plotted_values": {
+    "cc": {
+      "aggregate_rmse": [
+        0.000834589678372218,
+        0.0004827768843979544,
+        0.00025939913280523193,
+        0.0001420718936622096,
+        9.980832222752047e-05
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0008059981005835135,
+          0.000859095515379565
+        ],
+        [
+          0.00047193912990704817,
+          0.0004990496081236622
+        ],
+        [
+          0.00023962611002553607,
+          0.0002840382833473446
+        ],
+        [
+          0.00013579070128421733,
+          0.00014756985029611405
+        ],
+        [
+          9.808831788763588e-05,
+          0.00010268186681315237
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          451.8034764350056,
+          451.8034764350056
+        ],
+        [
+          901.8029987410306,
+          901.8029987410306
+        ],
+        [
+          1801.8020433530805,
+          1801.8020433530805
+        ],
+        [
+          4501.79917718923,
+          4501.79917718923
+        ],
+        [
+          9001.79440024948,
+          9001.79440024948
+        ]
+      ],
+      "label": "CC",
+      "mean_actual_utility_calls": [
+        228412.0,
+        455912.0,
+        910912.0,
+        2275912.0,
+        4550912.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        451.8034764350056,
+        901.8029987410306,
+        1801.8020433530808,
+        4501.79917718923,
+        9001.79440024948
+      ]
+    },
+    "inside_greedy": {
+      "aggregate_rmse": [
+        0.00023444827092564206,
+        0.00016691465531435705,
+        0.00011538627774900471,
+        7.013473983897836e-05,
+        4.7809187326860915e-05
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.00023054993213379136,
+          0.0002380717877288777
+        ],
+        [
+          0.00015923535743683488,
+          0.00017449666226266523
+        ],
+        [
+          0.00011343229476448,
+          0.0001179629347834638
+        ],
+        [
+          6.947410423054559e-05,
+          7.107737338323848e-05
+        ],
+        [
+          4.634968361818702e-05,
+          4.959209275686741e-05
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          522.789636970371,
+          523.2944962874651
+        ],
+        [
+          1032.844662421256,
+          1045.1454975091515
+        ],
+        [
+          2050.193043545693,
+          2099.1639307857154
+        ],
+        [
+          5163.029662893026,
+          5210.784879793286
+        ],
+        [
+          10367.295526844322,
+          10427.850381416141
+        ]
+      ],
+      "label": "INSIDE-Greedy",
+      "mean_actual_utility_calls": [
+        228412.0,
+        455912.0,
+        910912.0,
+        2275912.0,
+        4550912.0
+      ],
+      "mean_charged_design_seconds": [
+        71.30327375357349,
+        137.46569738040367,
+        278.24723812937737,
+        681.1744866209725,
+        1398.5788251223664
+      ],
+      "mean_estimated_total_seconds": [
+        523.1067501885792,
+        1039.2686961214342,
+        2080.049281482458,
+        5182.973663810203,
+        10400.373225371846
+      ]
+    },
+    "inside_orbit": {
+      "aggregate_rmse": [
+        0.00026178509793599254,
+        0.0001704423275592445,
+        0.00011942948203974285,
+        7.114746834966881e-05,
+        5.0920116383060816e-05
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.00025424022342278405,
+          0.00026588094463969857
+        ],
+        [
+          0.00016467789962581266,
+          0.00017852757409998602
+        ],
+        [
+          0.0001154476632346711,
+          0.00012170398872987541
+        ],
+        [
+          6.997159830982083e-05,
+          7.176100126060458e-05
+        ],
+        [
+          4.9091146783283365e-05,
+          5.357619247328777e-05
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          451.8034764350056,
+          451.8034764350056
+        ],
+        [
+          901.8029987410306,
+          901.8029987410306
+        ],
+        [
+          1801.8020433530805,
+          1801.8020433530805
+        ],
+        [
+          4501.79917718923,
+          4501.79917718923
+        ],
+        [
+          9001.79440024948,
+          9001.79440024948
+        ]
+      ],
+      "label": "INSIDE-Orbit",
+      "mean_actual_utility_calls": [
+        228412.0,
+        455912.0,
+        910912.0,
+        2275912.0,
+        4550912.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        451.8034764350056,
+        901.8029987410306,
+        1801.8020433530808,
+        4501.79917718923,
+        9001.79440024948
+      ]
+    },
+    "kernel_shap": {
+      "aggregate_rmse": [
+        0.0012987582640189943,
+        0.0009392416075960392,
+        0.0006425950557791397,
+        0.0004009464288339063,
+        0.0002953352691538087
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0012822370554353294,
+          0.001322111598138307
+        ],
+        [
+          0.0009010482371455664,
+          0.0009695759763850674
+        ],
+        [
+          0.0006332393972805115,
+          0.0006476762377560402
+        ],
+        [
+          0.00038583254278782284,
+          0.00041904413545028855
+        ],
+        [
+          0.00028345731803994955,
+          0.00030372238239217573
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          451.8034764350056,
+          451.8034764350056
+        ],
+        [
+          901.8029987410306,
+          901.8029987410306
+        ],
+        [
+          1801.8020433530805,
+          1801.8020433530805
+        ],
+        [
+          4501.79917718923,
+          4501.79917718923
+        ],
+        [
+          9001.79440024948,
+          9001.79440024948
+        ]
+      ],
+      "label": "KernelSHAP",
+      "mean_actual_utility_calls": [
+        228412.0,
+        455912.0,
+        910912.0,
+        2275912.0,
+        4550912.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        451.8034764350056,
+        901.8029987410306,
+        1801.8020433530808,
+        4501.79917718923,
+        9001.79440024948
+      ]
+    },
+    "ofa": {
+      "aggregate_rmse": [
+        0.00025043504080009006,
+        0.00017126417677018315,
+        0.00012170066710878248,
+        7.867302592664734e-05,
+        5.804528780200728e-05
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.0002476630515479356,
+          0.00025347452454361526
+        ],
+        [
+          0.00016110302482383795,
+          0.00018060831561076603
+        ],
+        [
+          0.00011781162579441007,
+          0.0001242797278854611
+        ],
+        [
+          7.593897864230159e-05,
+          8.003811850732954e-05
+        ],
+        [
+          5.410182445307866e-05,
+          6.126788668298125e-05
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          451.8034764350056,
+          451.8034764350056
+        ],
+        [
+          901.8029987410306,
+          901.8029987410306
+        ],
+        [
+          1801.8020433530805,
+          1801.8020433530805
+        ],
+        [
+          4501.79917718923,
+          4501.79917718923
+        ],
+        [
+          9001.79440024948,
+          9001.79440024948
+        ]
+      ],
+      "label": "OFA",
+      "mean_actual_utility_calls": [
+        228412.0,
+        455912.0,
+        910912.0,
+        2275912.0,
+        4550912.0
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        451.8034764350056,
+        901.8029987410306,
+        1801.8020433530808,
+        4501.79917718923,
+        9001.79440024948
+      ]
+    },
+    "tmc_shapley": {
+      "aggregate_rmse": [
+        0.0010567702540206863,
+        0.0007856938209937618,
+        0.0005850083758823687,
+        0.0004422013869814838,
+        0.00037041428445191066
+      ],
+      "aggregate_rmse_bootstrap_95": [
+        [
+          0.001020010523678009,
+          0.0011156623315796733
+        ],
+        [
+          0.0007610310330554143,
+          0.0008141658028911985
+        ],
+        [
+          0.0005741018071615416,
+          0.0005927733119151073
+        ],
+        [
+          0.000439641994614071,
+          0.0004460706402382261
+        ],
+        [
+          0.0003577236207551998,
+          0.00038653399338881255
+        ]
+      ],
+      "estimated_total_seconds_range": [
+        [
+          253.62170879155394,
+          260.8256571882069
+        ],
+        [
+          505.80539713160687,
+          509.4014372702986
+        ],
+        [
+          1007.0712386425881,
+          1031.6995641469061
+        ],
+        [
+          2526.9401746864614,
+          2556.426517011806
+        ],
+        [
+          5085.944051599651,
+          5123.431484332591
+        ]
+      ],
+      "label": "TMC-Shapley",
+      "mean_actual_utility_calls": [
+        129681.33333333333,
+        256425.33333333334,
+        514330.6666666667,
+        1283144.0,
+        2580919.6666666665
+      ],
+      "mean_charged_design_seconds": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_estimated_total_seconds": [
+        256.5122551736633,
+        507.21440662489334,
+        1017.3562826696235,
+        2538.084338680625,
+        5105.110404880111
+      ]
+    }
+  },
+  "scales": {
+    "x": "log",
+    "y": "log"
+  },
+  "source_report": {
+    "path": "/home/maoxiaokai/python_project/frame/results/cancer_efficiency_k64_lambda1over16.json",
+    "sha256": "a8cbd4a3c24d3fea577953208570ba43702cd04a59accdfb9eae7ae47877f0f6"
+  },
+  "status": "complete",
+  "time_proxy": {
+    "actual_call_policy": "use per-repeat physical calls; preserves TMC truncation",
+    "caveat": "RBF-SVM utility cost depends on coalition composition and size; one common Q*-averaged scalar calibration is used as the requested cross-method proxy, not measured end-to-end time.",
+    "charged_overhead": [
+      "INSIDE-Greedy production design time"
+    ],
+    "formula": "actual_utility_calls * median_scalar_utility_seconds + I[method=INSIDE-Greedy] * measured_design_seconds",
+    "utility_seconds_per_call": 0.0019780198782682417
+  }
+}
