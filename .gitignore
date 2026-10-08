@@ -1,7 +1,15 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.tox/
+.nox/
 .coverage
+.coverage.*
+htmlcov/
+coverage.xml
 build/
 dist/
 *.egg-info/
@@ -13,10 +21,27 @@ exp/
 
 # Local environments, credentials, and disposable diagnostics.
 .venv/
+venv/
+env/
 .env
 .env.*
 !.env.example
 *.log
+.screen/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.tmp
+.agents/
+.codex/
+*.pem
+*.key
+
+# Keep paper results and reference caches; omit regenerable plot diagnostics.
 results/**/*.collision-audit.*
 results/**/*.text-audit.json
 results/**/*.source-audit.json

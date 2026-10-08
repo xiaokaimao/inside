@@ -1,0 +1,217 @@
+{
+  "archetype": "two-panel method schematic",
+  "source_category": "structural adaptation of supplied schematic",
+  "claim": "Within-size coalition design balances directions and improves moment coverage",
+  "interpretation": "Panel a is an exact n=4 s=2 map; panel b is a conceptual continuous-sphere comparison, not literal IID sampling from the n=4 coalition slice or an error benchmark",
+  "dimensions_mm": [
+    180.0,
+    58.0
+  ],
+  "vertical_layout": "Compact 58 mm canvas; sphere-to-bottom-caption center gap 4 mm; sphere-to-method-title baseline gap 3.5 mm",
+  "n": 4,
+  "s": 2,
+  "samples_per_batch": 6,
+  "iid_seed": 0,
+  "design_seed": 0,
+  "iid_selection": "One batch of six IID standard-normal 3D vectors, normalized to the sphere; no rejection, seed search, duplicates or manual clustering",
+  "design_function": "per_size_frame_coupled_design",
+  "candidate_pool": 64,
+  "mean_balance": 0.0625,
+  "legal_coalitions": [
+    [
+      1,
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      1,
+      1
+    ]
+  ],
+  "iid_vectors_3d": [
+    [
+      0.18881711923692265,
+      -0.19839032737660414,
+      0.9617636786063786
+    ],
+    [
+      0.16021416297716448,
+      -0.818128926665578,
+      0.5522648652001644
+    ],
+    [
+      0.7415052042025201,
+      0.5385471155343273,
+      -0.4001712589507583
+    ],
+    [
+      -0.8967022761251738,
+      -0.4416644114201207,
+      0.029284393059288184
+    ],
+    [
+      -0.8784069177470692,
+      -0.08266045905288898,
+      -0.4707106705432322
+    ],
+    [
+      -0.7583158229918717,
+      -0.5636195521419911,
+      -0.32755169522293953
+    ]
+  ],
+  "iid_camera_coordinates": [
+    [
+      0.7357704690651105,
+      0.5412797432650224,
+      -0.40701112562515873
+    ],
+    [
+      0.9858620604525611,
+      0.0987320520782024,
+      0.1353808688576709
+    ],
+    [
+      -0.6709404477979168,
+      0.59499892065801,
+      0.44251011279352026
+    ],
+    [
+      0.37090216497166945,
+      -0.8623045003429243,
+      -0.34476445975139075
+    ],
+    [
+      -0.21629803508362813,
+      -0.958424421317447,
+      -0.18611230115518618
+    ],
+    [
+      0.2543646245798292,
+      -0.9667805108716253,
+      0.025180976175714034
+    ]
+  ],
+  "inside_indices": [
+    1,
+    0,
+    3,
+    5,
+    4,
+    2
+  ],
+  "zero_sum_basis": [
+    [
+      0.5,
+      0.5,
+      0.5
+    ],
+    [
+      0.5,
+      -0.5,
+      -0.5
+    ],
+    [
+      -0.5,
+      0.5,
+      -0.5
+    ],
+    [
+      -0.5,
+      -0.5,
+      0.5
+    ]
+  ],
+  "camera": [
+    [
+      0.0,
+      -0.8,
+      0.6
+    ],
+    [
+      0.8,
+      0.36,
+      0.48
+    ],
+    [
+      0.6,
+      -0.48,
+      -0.64
+    ]
+  ],
+  "iid_sphere_moments": {
+    "first_moment_norm": 0.3595121589523201,
+    "second_moment_frobenius": 0.3730823178057657
+  },
+  "inside_coalition_moments": {
+    "first_moment_norm": 0.0,
+    "second_moment_frobenius": 0.0
+  },
+  "depth_encoding": "dashed direction shafts are behind the viewing plane",
+  "sphere_style": "original soft radial gray gradient; no specular or contact shadow; narrower horizontal ellipse, slightly below center, uniformly light dashed",
+  "sphere_style_reference": "supplied original schematic",
+  "radial_gradient": {
+    "center_xy": [
+      -0.32,
+      0.48
+    ],
+    "radius": 1.44,
+    "stops": [
+      0,
+      0.46,
+      0.78,
+      1
+    ],
+    "gray_8bit": [
+      255,
+      232,
+      207,
+      155
+    ]
+  },
+  "ellipse": {
+    "radius_x": 0.82,
+    "radius_y": 0.24,
+    "center_y": -0.094
+  },
+  "display_labels": "INSIDE abbreviates INSIDE-Coalition; no unsampled markers or multiplicity labels",
+  "mapping_annotation": "Center + normalize below panel a sphere, 7.2 pt; mapping formula and complement equation omitted",
+  "label_shorthand": "u_i denotes the normalized direction of coalition S_i",
+  "uncertainty": "Not applicable: schematic coordinates and one continuous-sphere IID illustration",
+  "qa": {
+    "pdf_sha256": "dc77a6f552e6efac0dac4b93da296420c738df83b780f6bd6f81ec9c78222dd2",
+    "source_sha256": "7539b97b3412612509e2577c7d36ba9b58c521bf16e6edf8b84d433624638e80",
+    "alignment": "PASS",
+    "collisions": "PASS; 0 fail, 0 warn",
+    "minimum_font_size_pt": 5,
+    "font_audit": "PASS",
+    "visual_review": "Reviewed rendered PDF: compact title and caption spacing; no clipping or overlaps; three spheres retain their diameter and soft shading."
+  }
+}

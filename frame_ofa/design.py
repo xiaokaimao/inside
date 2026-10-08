@@ -1227,6 +1227,8 @@ def cyclic_orbit_frame_design(
     num_orbits: int,
     seed: int = 0,
     candidate_pool: int = 32,
+    *,
+    compute_frame_diagnostics: bool = True,
 ) -> CoalitionDesign:
     """Build a ratio-OFA-compatible design from complete cyclic orbits.
 
@@ -1242,7 +1244,8 @@ def cyclic_orbit_frame_design(
     blocks: list[np.ndarray] = []
     recorded_sizes: list[np.ndarray] = []
     realized_operators: list[np.ndarray] = []
-    target = efficiency_projector(num_players) / (num_players - 1)
+    target = (efficiency_projector(num_players) / (num_players - 1)
+              if compute_frame_diagnostics else None)
     for size, count in zip(sizes, orbit_counts):
         # Every orbit operator is circulant, so its first row is a complete
         # representation.  Frobenius products of circulant matrices are n
@@ -1275,9 +1278,6 @@ def cyclic_orbit_frame_design(
             slice_orbits.append(_cyclic_orbit(candidates[chosen]))
 
         slice_rows = np.concatenate(slice_orbits, axis=0)
-        base_operator = _circulant_from_first_row(
-            signature_sum / int(count)
-        )
         # A common relabeling preserves the optimized slice frame.  Track the
         # conjugated small operator directly so diagnostics do not multiply
         # all O(n * num_orbits) materialized directions.
@@ -1285,9 +1285,11 @@ def cyclic_orbit_frame_design(
         relabeled_rows = np.empty_like(slice_rows)
         relabeled_rows[:, permutation] = slice_rows
         slice_rows = relabeled_rows
-        relabeled_operator = np.empty_like(base_operator)
-        relabeled_operator[np.ix_(permutation, permutation)] = base_operator
-        realized_operators.append(relabeled_operator)
+        if compute_frame_diagnostics:
+            base_operator = _circulant_from_first_row(signature_sum / int(count))
+            relabeled_operator = np.empty_like(base_operator)
+            relabeled_operator[np.ix_(permutation, permutation)] = base_operator
+            realized_operators.append(relabeled_operator)
         blocks.append(slice_rows)
         recorded_sizes.append(
             np.full(len(slice_rows), size, dtype=np.int64)
@@ -1304,7 +1306,7 @@ def cyclic_orbit_frame_design(
             realized_operators,
             target,
             [0.0] * len(realized_operators),
-        ),
+        ) if compute_frame_diagnostics else {"frame_diagnostics_computed": False},
     )
 
 

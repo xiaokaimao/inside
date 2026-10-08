@@ -46,6 +46,29 @@ print(result.values)
 print(result.utility_evaluations)
 ```
 
+## Introductory schematic
+
+```bash
+python -m experiments.plot_inside_intro
+```
+
+This exports only `results/pdf/inside_intro_figure.pdf`, at 180 × 58 mm,
+using Matplotlib directly (no SVG or CairoSVG intermediate). The two-panel
+schematic uses exact n=4, s=2 coalition geometry in panel (a): complementary
+coalitions have opposite directions under a common orthographic projection.
+Panel (b) is conceptual: six independent random directions on the continuous
+unit sphere (seed 0, normalized Gaussian vectors, no selected batches) are
+compared with the balanced directions of the existing six-coalition design.
+The IID panel is not a literal sample from the discrete four-player slice.
+The exact balance of this toy design is not a general finite-budget guarantee.
+Dashed arrows indicate rear-facing directions. Unsampled markers and repeat
+counts are omitted. The spheres restore the supplied original diagram's soft
+upper-left radial gradient. A narrower, slightly lowered horizontal ellipse
+uses a uniform light dashed line, without specular highlights or ground shadows.
+Optional `--metadata PATH` records the coordinates and moment diagnostics.
+For `--audit-alignment`, add the figure audit helper directory to `PYTHONPATH`;
+this writes an alignment JSON report and no extra figure format.
+
 ## Run the synthetic experiment
 
 ```bash
@@ -184,3 +207,22 @@ Result files are organized by format; see [the results index](results/README.md)
 Current workflows are documented above; historical diagnostics remain available
 for reproducing prior experiments. Plotting recorded reports does not rerun
 SVM training. The four-panel and sensitivity workflows support PDF-only output.
+
+## Large-n synthetic interaction experiment
+
+`frame_ofa.interaction_game` supplies sparse pairwise and cubic games with
+closed-form Shapley values at n=500, 1000, and 5000. The checkpointed runner
+is `python -m experiments.run_large_interaction`. See
+[the protocol and runnable commands](docs/LARGE_INTERACTION_EXPERIMENT.md)
+for exact-reference validation, paired game construction, pilot results,
+and the current dense-design memory limit at large budgets.
+
+For all nine methods used in the main RMSE figure on both n=500 interaction
+games, run `python -m experiments.run_interaction_baselines`, followed by
+`python -m experiments.plot_interaction_baselines`. The two-panel PDF uses
+three budgets, three estimator seeds, and the same method colors and labels.
+
+The current interaction-game figure shows five selected methods and five
+budgets (up to 2,001,002 calls), with a single-row legend. See the
+[extended-grid command](docs/LARGE_INTERACTION_EXPERIMENT.md#extended-five-method-budget-grid)
+for reproducing the extension while reusing the original runs.

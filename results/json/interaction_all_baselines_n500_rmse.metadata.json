@@ -1,0 +1,421 @@
+{
+  "source": "results/json/interaction_selected_baselines_n500_extended.json",
+  "source_sha256": "38ab7059839d0177b64478322b092730583592ae18c3c096693ad4e80c6681df",
+  "outputs": {
+    "pdf": "results/pdf/interaction_all_baselines_n500_rmse.pdf"
+  },
+  "statistics": "mean +/- sample SD, ddof=1, per-seed RMSE",
+  "rows": [
+    {
+      "degree": 2,
+      "method": "inside_greedy",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.05316040657333782,
+      "std": 0.0038787203964106907
+    },
+    {
+      "degree": 2,
+      "method": "inside_greedy",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.03538218637566482,
+      "std": 0.0006555349432408708
+    },
+    {
+      "degree": 2,
+      "method": "inside_greedy",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.024371601256772842,
+      "std": 0.0008874714982259363
+    },
+    {
+      "degree": 2,
+      "method": "inside_greedy",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.0192740541205086,
+      "std": 0.0007043494901357996
+    },
+    {
+      "degree": 2,
+      "method": "inside_greedy",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.015691485882880326,
+      "std": 0.0003355999985827314
+    },
+    {
+      "degree": 2,
+      "method": "inside_orbit",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.05095561404332686,
+      "std": 0.0004934605545219629
+    },
+    {
+      "degree": 2,
+      "method": "inside_orbit",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.039942587855433136,
+      "std": 0.000882228991788238
+    },
+    {
+      "degree": 2,
+      "method": "inside_orbit",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.02533464700156991,
+      "std": 0.0002603457410730421
+    },
+    {
+      "degree": 2,
+      "method": "inside_orbit",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.02125689934130741,
+      "std": 0.001139209717255247
+    },
+    {
+      "degree": 2,
+      "method": "inside_orbit",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.018652388075860334,
+      "std": 0.0006253983692361488
+    },
+    {
+      "degree": 2,
+      "method": "ofa",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.05927398468822221,
+      "std": 0.002024638292829116
+    },
+    {
+      "degree": 2,
+      "method": "ofa",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.039323292209322444,
+      "std": 0.000523346348584286
+    },
+    {
+      "degree": 2,
+      "method": "ofa",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.0284348075619197,
+      "std": 0.00045039159740546116
+    },
+    {
+      "degree": 2,
+      "method": "ofa",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.024120166025716778,
+      "std": 0.0005932956137276031
+    },
+    {
+      "degree": 2,
+      "method": "ofa",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.020125563705469314,
+      "std": 0.00012220485152559819
+    },
+    {
+      "degree": 2,
+      "method": "cc",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.07222344875230498,
+      "std": 0.0015214676441177332
+    },
+    {
+      "degree": 2,
+      "method": "cc",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.04935387931037329,
+      "std": 0.0015453522792161205
+    },
+    {
+      "degree": 2,
+      "method": "cc",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.03532932211927668,
+      "std": 0.0008841718666963065
+    },
+    {
+      "degree": 2,
+      "method": "cc",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.029303760692607112,
+      "std": 0.0006675259336439503
+    },
+    {
+      "degree": 2,
+      "method": "cc",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.023954444583730434,
+      "std": 0.00019602964126773294
+    },
+    {
+      "degree": 2,
+      "method": "s_diff",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.08542101663563297,
+      "std": 0.0017210090933404039
+    },
+    {
+      "degree": 2,
+      "method": "s_diff",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.05824544438352266,
+      "std": 0.0020126156097941676
+    },
+    {
+      "degree": 2,
+      "method": "s_diff",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.040535263316888274,
+      "std": 0.0007987422059115586
+    },
+    {
+      "degree": 2,
+      "method": "s_diff",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.033552999376205976,
+      "std": 0.0005186005254332436
+    },
+    {
+      "degree": 2,
+      "method": "s_diff",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.02829163259425478,
+      "std": 0.0013079908265661534
+    },
+    {
+      "degree": 3,
+      "method": "inside_greedy",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.058637906828108495,
+      "std": 0.004110549787364848
+    },
+    {
+      "degree": 3,
+      "method": "inside_greedy",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.03888389921421189,
+      "std": 0.0006518709766522698
+    },
+    {
+      "degree": 3,
+      "method": "inside_greedy",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.027494385215875234,
+      "std": 0.0005792912566910637
+    },
+    {
+      "degree": 3,
+      "method": "inside_greedy",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.0212063836172196,
+      "std": 0.00030859547701443674
+    },
+    {
+      "degree": 3,
+      "method": "inside_greedy",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.017509568881365158,
+      "std": 0.0005954360198825028
+    },
+    {
+      "degree": 3,
+      "method": "inside_orbit",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.056288953563894024,
+      "std": 0.0015424758218074038
+    },
+    {
+      "degree": 3,
+      "method": "inside_orbit",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.04389546908408618,
+      "std": 0.0011687506572341856
+    },
+    {
+      "degree": 3,
+      "method": "inside_orbit",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.02801427332434059,
+      "std": 0.000745913808341859
+    },
+    {
+      "degree": 3,
+      "method": "inside_orbit",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.023941728934065574,
+      "std": 0.001432600918771436
+    },
+    {
+      "degree": 3,
+      "method": "inside_orbit",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.020878676804643465,
+      "std": 0.0007697869066340451
+    },
+    {
+      "degree": 3,
+      "method": "ofa",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.06407119278839975,
+      "std": 0.0018182454144967752
+    },
+    {
+      "degree": 3,
+      "method": "ofa",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.04324708087837679,
+      "std": 0.0010538448619887314
+    },
+    {
+      "degree": 3,
+      "method": "ofa",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.03125916930139844,
+      "std": 0.001161365939679177
+    },
+    {
+      "degree": 3,
+      "method": "ofa",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.02673332432722142,
+      "std": 0.0008579053679843506
+    },
+    {
+      "degree": 3,
+      "method": "ofa",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.022019586682074765,
+      "std": 0.0002521183104823575
+    },
+    {
+      "degree": 3,
+      "method": "cc",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.07591244149646593,
+      "std": 0.0019659287938688973
+    },
+    {
+      "degree": 3,
+      "method": "cc",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.05262908185692991,
+      "std": 0.0017738038582166978
+    },
+    {
+      "degree": 3,
+      "method": "cc",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.03810838937945653,
+      "std": 0.000595937339596708
+    },
+    {
+      "degree": 3,
+      "method": "cc",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.0313419557561832,
+      "std": 0.0009498475550070324
+    },
+    {
+      "degree": 3,
+      "method": "cc",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.02589653888001735,
+      "std": 0.0006116293440912994
+    },
+    {
+      "degree": 3,
+      "method": "s_diff",
+      "multiplier": 500,
+      "actual_calls": 251002.0,
+      "mean": 0.09300169608948589,
+      "std": 0.0018694100505157905
+    },
+    {
+      "degree": 3,
+      "method": "s_diff",
+      "multiplier": 1000,
+      "actual_calls": 501002.0,
+      "mean": 0.06466304518654532,
+      "std": 0.0017141220132081577
+    },
+    {
+      "degree": 3,
+      "method": "s_diff",
+      "multiplier": 2000,
+      "actual_calls": 1001002.0,
+      "mean": 0.04485622973667903,
+      "std": 0.0007978648798596246
+    },
+    {
+      "degree": 3,
+      "method": "s_diff",
+      "multiplier": 3000,
+      "actual_calls": 1501002.0,
+      "mean": 0.03594643355382299,
+      "std": 0.0005878001018319725
+    },
+    {
+      "degree": 3,
+      "method": "s_diff",
+      "multiplier": 4000,
+      "actual_calls": 2001002.0,
+      "mean": 0.030656862333485455,
+      "std": 0.0012880491271077396
+    }
+  ],
+  "x_axis": "mean actual utility calls; clip only outside common target-budget viewport",
+  "display_methods": [
+    "inside_greedy",
+    "inside_orbit",
+    "ofa",
+    "cc",
+    "s_diff"
+  ],
+  "omitted_methods": [],
+  "omission_reason": "user-requested presentation subset; all source measurements retained",
+  "y_axis": "log; no measured means floored; nonpositive lower SD bounds clipped to viewport"
+}
