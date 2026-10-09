@@ -18,7 +18,7 @@ and baseline methods.
 Requires Python 3.10 or later. Run the following commands in a Bash shell:
 
 ```bash
-git clone https://github.com/xiaokaimao/inside.git
+git clone
 cd inside
 python -m venv .venv
 source .venv/bin/activate
